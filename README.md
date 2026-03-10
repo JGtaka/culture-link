@@ -105,6 +105,6 @@
   |---|---|
   | フレームワーク | Ruby on Rails 7.2.1 |
   | フロントエンド | Tailwind CSS|
-  | バックエンド | Ruby 3.3.6（Rails） |
+  | バックエンド | Ruby 3.3.6 |
   | データベース | PostgreSQL 16 |
   | 認証 | Devise, OmniAuth（Google OAuth2),LINEログイン |
