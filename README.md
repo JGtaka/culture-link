@@ -111,3 +111,7 @@
 | バックエンド   | Ruby 3.3.6                                    |
 | データベース   | PostgreSQL 16                                 |
 | 認証           | Devise, OmniAuth（Google OAuth2),LINEログイン |
+
+### 画面遷移図
+Figma：<https://www.figma.com/design/vrBPJEDp9hfkNy3qDuQNQo/%E7%94%BB%E9%9D%A2%E9%81%B7%E7%A7%BB%E5%9B%B3?node-id=4-293&t=dOFzgHKyjO1TQOph-1>
+
