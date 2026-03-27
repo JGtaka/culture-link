@@ -84,6 +84,7 @@
 * **お気に入り機能**
 
 ## MVPで取り上げる時代
+
 **近世ヨーロッパのルネサンス**
 
 ## 本リリースで作る機能
@@ -99,8 +100,8 @@
 * **学習履歴**
 
 ## 本リリースで取り上げる時代
--中世ヨーロッパのキリスト教 
--近世ヨーロッパのロマン主義
+
+-中世ヨーロッパのキリスト教 -近世ヨーロッパのロマン主義
 
 ## 技術スタック
 
@@ -113,5 +114,9 @@
 | 認証           | Devise, OmniAuth（Google OAuth2),LINEログイン |
 
 ### 画面遷移図
+
 Figma：<https://www.figma.com/design/vrBPJEDp9hfkNy3qDuQNQo/%E7%94%BB%E9%9D%A2%E9%81%B7%E7%A7%BB%E5%9B%B3?node-id=4-293&t=dOFzgHKyjO1TQOph-1>
 
+### ER図
+
+ER図：[![Image from Gyazo](https://i.gyazo.com/3269bf65a084ecc004b1544cb751d3f9.png)](https://gyazo.com/3269bf65a084ecc004b1544cb751d3f9)
