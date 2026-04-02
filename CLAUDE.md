@@ -77,6 +77,7 @@ bin/rails tailwindcss:watch  # Watch Tailwind changes
 - 新しい機能は必ずブランチを切って作業する
 - mainブランチへの直接コミットは禁止
 - テストを書いてから実装する（TDD）
+- docker compose exec web bundle exec rubocop -Aを実行してからcommitをする
 
 ## 注意事項
 
