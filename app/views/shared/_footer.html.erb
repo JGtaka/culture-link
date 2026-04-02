@@ -1,0 +1,30 @@
+<footer class="bg-[#0f172a] w-full py-8">
+  <div class="px-4">
+    <%# 上段：ロゴとリンク %>
+    <div class="flex items-center justify-between pb-8 border-b border-[#1e293b]">
+      <div class="flex items-center gap-2">
+        <div class="bg-[#3713ec] rounded flex items-center justify-center size-6">
+          <svg width="16" height="16" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8.66602 8.66675L6.66602 6.66675V4.00008L12.666 6.66675M12.666 6.66675C12.666 9.97824 9.97751 12.6667 6.66602 12.6667C3.35453 12.6667 0.666016 9.97824 0.666016 6.66675C0.666016 3.35526 3.35453 0.666748 6.66602 0.666748C9.97751 0.666748 12.666 3.35526 12.666 6.66675Z" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="font-bold text-[18px] text-white" style="font-family: 'Lexend', sans-serif;">
+          Chronicle
+        </span>
+      </div>
+
+      <nav class="flex items-center gap-6">
+        <%= link_to "プライバシー", "#", class: "text-[14px] text-[#94a3b8] font-medium hover:text-white" %>
+        <%= link_to "利用規約", "#", class: "text-[14px] text-[#94a3b8] font-medium hover:text-white" %>
+        <%= link_to "お問い合わせ", "#", class: "text-[14px] text-[#94a3b8] font-medium hover:text-white" %>
+      </nav>
+    </div>
+
+    <%# 下段：コピーライト %>
+    <div class="pt-8 text-center">
+      <p class="text-[12px] text-[#94a3b8]" style="font-family: 'Lexend', sans-serif;">
+        &copy; 2023 Chronicle Learning Systems. All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>
