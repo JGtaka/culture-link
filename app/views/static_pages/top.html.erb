@@ -1,1 +1,22 @@
-<h1>トップページ</h1>
+<%# ヒーローセクション %>
+<section class="bg-[#f8fafc] py-24 px-8">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+    <%# テキストコンテンツ %>
+    <div class="flex flex-col gap-6">
+      <h1 class="text-5xl md:text-6xl font-bold text-[#0f172a] leading-tight">
+        歴史を<span class="text-[#3713ec]">「つながり」</span><br>でマスターする
+      </h1>
+      <p class="text-lg text-[#475569] leading-relaxed max-w-xl">
+        年号や暗記だけの学習はもう終わり。ビジュアルタイムラインで、文明、芸術、革新の隠れたつながりを発見しましょう。
+      </p>
+      <div class="pt-4">
+        <%= link_to "無料で学習を始める", "#",
+          class: "inline-block bg-[#3713ec] text-white text-lg font-medium px-8 py-4 rounded-lg shadow-[0px_20px_25px_0px_rgba(55,19,236,0.25),0px_8px_10px_0px_rgba(55,19,236,0.25)] hover:opacity-90 transition" %>
+      </div>
+    </div>
+    <%# イラスト %>
+    <div class="flex justify-center">
+      <%= image_tag "/toppage_icon.png", alt: "文化史学習のイラスト", class: "w-full max-w-md" %>
+    </div>
+  </div>
+</section>
