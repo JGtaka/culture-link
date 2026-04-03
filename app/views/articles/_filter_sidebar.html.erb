@@ -1,0 +1,40 @@
+<aside class="w-64 shrink-0 flex flex-col gap-8">
+  <%# 時代フィルター %>
+  <div class="flex flex-col gap-4">
+    <h3 class="text-xs font-medium text-[#94a3b8] uppercase tracking-wider">時代</h3>
+    <div class="flex flex-col gap-2">
+      <% ["古代 (500 CE以前)", "中世 (500–1500)", "近世 (1500–1800)", "近代・現代 (1800–現在)"].each do |era| %>
+        <label class="flex items-center gap-3 cursor-pointer">
+          <input type="checkbox" class="size-4 rounded-lg border-[#cbd5e1] text-[#3713ec] focus:ring-[#3713ec]" />
+          <span class="text-sm text-[#475569]"><%= era %></span>
+        </label>
+      <% end %>
+    </div>
+  </div>
+
+  <%# 文化タイプフィルター %>
+  <div class="flex flex-col gap-4">
+    <h3 class="text-xs font-medium text-[#94a3b8] uppercase tracking-wider">文化タイプ</h3>
+    <select class="w-full border border-[#e2e8f0] rounded-lg px-3 py-2 text-sm text-[#0f172a]">
+      <option>すべての文化</option>
+    </select>
+  </div>
+
+  <%# 地域フィルター %>
+  <div class="flex flex-col gap-4">
+    <h3 class="text-xs font-medium text-[#94a3b8] uppercase tracking-wider">地域</h3>
+    <div class="flex flex-col gap-2">
+      <% ["グローバル", "ヨーロッパ", "アジア", "アメリカ", "アフリカ"].each do |region| %>
+        <label class="flex items-center gap-3 cursor-pointer">
+          <input type="radio" name="region" class="size-4 border-[#cbd5e1] text-[#3713ec] focus:ring-[#3713ec]" />
+          <span class="text-sm text-[#475569]"><%= region %></span>
+        </label>
+      <% end %>
+    </div>
+  </div>
+
+  <%# リセットボタン %>
+  <button class="w-full border border-[#e2e8f0] rounded-lg py-2.5 text-sm text-[#64748b] hover:bg-[#f8fafc]">
+    フィルターをリセット
+  </button>
+</aside>
