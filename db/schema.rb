@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_03_024037) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_03_124110) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -25,6 +25,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_03_024037) do
     t.text "description"
     t.text "achievement"
     t.bigint "study_unit_id", null: false
+    t.string "image_url"
     t.index ["study_unit_id"], name: "index_characters_on_study_unit_id"
   end
 
@@ -43,6 +44,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_03_024037) do
     t.bigint "category_id", null: false
     t.text "description"
     t.bigint "study_unit_id", null: false
+    t.string "image_url"
     t.index ["category_id"], name: "index_events_on_category_id"
     t.index ["period_id"], name: "index_events_on_period_id"
     t.index ["study_unit_id"], name: "index_events_on_study_unit_id"

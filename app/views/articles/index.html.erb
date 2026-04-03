@@ -1,0 +1,35 @@
+<%# 検索バー %>
+<%= render "articles/search_bar" %>
+
+<%# メインコンテンツ %>
+<div class="flex gap-8 px-8 py-8">
+  <%# サイドバー %>
+  <%= render "articles/filter_sidebar" %>
+
+  <%# 記事一覧 %>
+  <div class="flex-1 flex flex-col gap-6">
+    <%# 検索結果ヘッダー %>
+    <div class="flex items-center justify-between">
+      <p class="text-sm text-[#64748b]">
+        検索結果: <span class="font-semibold text-[#0f172a]"><%= @articles.size %>件</span>
+      </p>
+      <div class="flex items-center gap-2">
+        <span class="text-sm text-[#64748b]">並び替え:</span>
+        <select class="text-sm border border-[#e2e8f0] rounded-lg px-3 py-2">
+          <option>年代</option>
+          <option>名前順</option>
+        </select>
+      </div>
+    </div>
+
+    <%# カードグリッド %>
+    <div class="grid grid-cols-2 gap-6">
+      <% @articles.each do |article| %>
+        <%= render "articles/card", article: article %>
+      <% end %>
+    </div>
+
+    <%# ページネーション（見た目のみ） %>
+    <%= render "articles/pagination" %>
+  </div>
+</div>
