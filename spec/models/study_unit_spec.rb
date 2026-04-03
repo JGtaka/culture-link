@@ -23,4 +23,16 @@ RSpec.describe StudyUnit, type: :model do
       expect(study_unit).not_to be_valid
     end
   end
+
+  describe 'アソシエーション' do
+    it '複数のeventsを持つこと' do
+      association = described_class.reflect_on_association(:events)
+      expect(association.macro).to eq :has_many
+    end
+
+    it '複数のcharactersを持つこと' do
+      association = described_class.reflect_on_association(:characters)
+      expect(association.macro).to eq :has_many
+    end
+  end
 end

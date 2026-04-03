@@ -23,4 +23,11 @@ RSpec.describe Category, type: :model do
       expect(category).not_to be_valid
     end
   end
+
+  describe 'アソシエーション' do
+    it '複数のeventsを持つこと' do
+      association = described_class.reflect_on_association(:events)
+      expect(association.macro).to eq :has_many
+    end
+  end
 end

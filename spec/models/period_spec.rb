@@ -23,4 +23,11 @@ RSpec.describe Period, type: :model do
       expect(period).not_to be_valid
     end
   end
+
+  describe 'アソシエーション' do
+    it '複数のeventsを持つこと' do
+      association = described_class.reflect_on_association(:events)
+      expect(association.macro).to eq :has_many
+    end
+  end
 end
