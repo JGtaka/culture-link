@@ -1,0 +1,5 @@
+<% if page.current? %>
+  <span class="bg-[#3713ec] text-white font-bold size-10 rounded-lg flex items-center justify-center"><%= page %></span>
+<% else %>
+  <%= link_to page, url, class: "text-[#0f172a] size-10 rounded-lg flex items-center justify-center hover:bg-[#f1f5f9]" %>
+<% end %>
