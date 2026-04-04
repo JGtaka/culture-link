@@ -42,5 +42,50 @@ RSpec.describe "Articles", type: :request do
         expect(response.body).not_to include("page=2")
       end
     end
+
+    context "テキスト検索" do
+      let!(:event_renaissance) { create(:event, title: "ルネサンス", description: "文化復興の時代") }
+      let!(:event_baroque) { create(:event, title: "バロック音楽", description: "装飾的な音楽様式") }
+      let!(:char_davinci) { create(:character, name: "ダ・ヴィンチ", description: "万能の天才", achievement: "モナ・リザを制作") }
+      let!(:char_bach) { create(:character, name: "バッハ", description: "音楽の父", achievement: "マタイ受難曲を作曲") }
+
+      it "Eventのtitleで検索できる" do
+        get articles_path, params: { q: { keyword: "ルネサンス" } }
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("ルネサンス")
+        expect(response.body).not_to include("バロック")
+      end
+
+      it "Characterのnameで検索できる" do
+        get articles_path, params: { q: { keyword: "ヴィンチ" } }
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("ダ・ヴィンチ")
+        expect(response.body).not_to include("バッハ")
+      end
+
+      it "Eventのdescriptionで検索できる" do
+        get articles_path, params: { q: { keyword: "装飾的" } }
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("バロック")
+      end
+
+      it "Characterのachievementで検索できる" do
+        get articles_path, params: { q: { keyword: "モナ・リザ" } }
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("ダ・ヴィンチ")
+      end
+
+      it "検索キーワードが空の場合は全件表示される" do
+        get articles_path, params: { q: { keyword: "" } }
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("4件")
+      end
+
+      it "該当なしの場合は0件になる" do
+        get articles_path, params: { q: { keyword: "存在しないキーワード" } }
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("0件")
+      end
+    end
   end
 end
