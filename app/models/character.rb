@@ -1,5 +1,7 @@
 class Character < ApplicationRecord
   belongs_to :study_unit
+  belongs_to :period
+  belongs_to :region
   has_many :event_characters
   has_many :events, through: :event_characters
 

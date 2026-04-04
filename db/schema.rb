@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_03_124110) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_04_132156) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -26,6 +26,11 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_03_124110) do
     t.text "achievement"
     t.bigint "study_unit_id", null: false
     t.string "image_url"
+    t.integer "year"
+    t.bigint "period_id"
+    t.bigint "region_id"
+    t.index ["period_id"], name: "index_characters_on_period_id"
+    t.index ["region_id"], name: "index_characters_on_region_id"
     t.index ["study_unit_id"], name: "index_characters_on_study_unit_id"
   end
 
@@ -45,8 +50,10 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_03_124110) do
     t.text "description"
     t.bigint "study_unit_id", null: false
     t.string "image_url"
+    t.bigint "region_id"
     t.index ["category_id"], name: "index_events_on_category_id"
     t.index ["period_id"], name: "index_events_on_period_id"
+    t.index ["region_id"], name: "index_events_on_region_id"
     t.index ["study_unit_id"], name: "index_events_on_study_unit_id"
   end
 
@@ -54,14 +61,23 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_03_124110) do
     t.string "name"
   end
 
+  create_table "regions", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "study_units", force: :cascade do |t|
     t.string "name"
   end
 
+  add_foreign_key "characters", "periods"
+  add_foreign_key "characters", "regions"
   add_foreign_key "characters", "study_units"
   add_foreign_key "event_characters", "characters"
   add_foreign_key "event_characters", "events"
   add_foreign_key "events", "categories"
   add_foreign_key "events", "periods"
+  add_foreign_key "events", "regions"
   add_foreign_key "events", "study_units"
 end

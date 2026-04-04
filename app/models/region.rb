@@ -1,4 +1,4 @@
-class Period < ApplicationRecord
+class Region < ApplicationRecord
   has_many :events
   has_many :characters
 

@@ -2,6 +2,7 @@ class Event < ApplicationRecord
   belongs_to :period
   belongs_to :category
   belongs_to :study_unit
+  belongs_to :region
   has_many :event_characters
   has_many :characters, through: :event_characters
 

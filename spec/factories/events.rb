@@ -6,5 +6,6 @@ FactoryBot.define do
     association :category
     description { "レオナルド・ダ・ヴィンチによる油彩画" }
     association :study_unit
+    association :region
   end
 end
