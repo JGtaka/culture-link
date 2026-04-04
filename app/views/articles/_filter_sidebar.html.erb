@@ -1,7 +1,8 @@
 <aside class="w-64 shrink-0 flex flex-col gap-8">
   <%= form_with url: articles_path, method: :get, local: true, data: { controller: "filter", action: "change->filter#submit" } do |f| %>
-    <%# 検索キーワードを保持 %>
+    <%# 検索キーワードとソートを保持 %>
     <%= hidden_field_tag "q[keyword]", params.dig(:q, :keyword) %>
+    <%= hidden_field_tag :sort, params[:sort] %>
 
     <%# 時代フィルター（チェックボックス） %>
     <div class="flex flex-col gap-4">

@@ -160,5 +160,40 @@ RSpec.describe "Articles", type: :request do
         expect(response.body).not_to include("水墨画")
       end
     end
+
+    context "ソート" do
+      let!(:event_old) { create(:event, title: "古代イベント", year: -500) }
+      let!(:event_new) { create(:event, title: "近代イベント", year: 1800) }
+      let!(:char_middle) { create(:character, name: "中世キャラ", year: 1200) }
+
+      it "年代（古い順）でソートできる" do
+        get articles_path, params: { sort: "year_asc" }
+        body = response.body
+        expect(body.index("古代イベント")).to be < body.index("中世キャラ")
+        expect(body.index("中世キャラ")).to be < body.index("近代イベント")
+      end
+
+      it "年代（新しい順）でソートできる" do
+        get articles_path, params: { sort: "year_desc" }
+        body = response.body
+        expect(body.index("近代イベント")).to be < body.index("中世キャラ")
+        expect(body.index("中世キャラ")).to be < body.index("古代イベント")
+      end
+
+      it "名前順でソートできる" do
+        get articles_path, params: { sort: "name_asc" }
+        body = response.body
+        # Eventはtitle、Characterはnameで比較（Unicode順: 中 < 古 < 近）
+        expect(body.index("中世キャラ")).to be < body.index("古代イベント")
+        expect(body.index("古代イベント")).to be < body.index("近代イベント")
+      end
+
+      it "デフォルトは年代（古い順）" do
+        get articles_path
+        body = response.body
+        expect(body.index("古代イベント")).to be < body.index("中世キャラ")
+        expect(body.index("中世キャラ")).to be < body.index("近代イベント")
+      end
+    end
   end
 end
