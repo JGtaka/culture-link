@@ -39,6 +39,11 @@ RSpec.describe Event, type: :model do
       expect(association.macro).to eq :belongs_to
     end
 
+    it 'regionに属すること' do
+      association = described_class.reflect_on_association(:region)
+      expect(association.macro).to eq :belongs_to
+    end
+
     it '複数のevent_charactersを持つこと' do
       association = described_class.reflect_on_association(:event_characters)
       expect(association.macro).to eq :has_many
