@@ -9,7 +9,7 @@ class ArticlesController < ApplicationController
     events = apply_filters(events)
     characters = apply_filters(characters)
 
-    all_articles = events + characters
+    all_articles = sort_articles(events + characters)
     @articles = Kaminari.paginate_array(all_articles).page(params[:page]).per(6)
 
     @periods = Period.all
@@ -18,6 +18,18 @@ class ArticlesController < ApplicationController
   end
 
   private
+
+  def sort_articles(articles)
+    case params[:sort]
+    when "year_desc"
+      articles.sort_by { |a| -(a.year || 0) }
+    when "name_asc"
+      articles.sort_by { |a| a.is_a?(Event) ? a.title.to_s : a.name.to_s }
+    else
+      # デフォルト: 年代（古い順）
+      articles.sort_by { |a| a.year || 0 }
+    end
+  end
 
   def apply_filters(scope)
     scope = scope.where(period_id: params[:period_ids]) if params[:period_ids].present?

@@ -13,13 +13,22 @@
       <p class="text-sm text-[#64748b]">
         検索結果: <span class="font-semibold text-[#0f172a]"><%= @articles.total_count %>件</span>
       </p>
-      <div class="flex items-center gap-2">
+      <%= form_with url: articles_path, method: :get, local: true, class: "flex items-center gap-2", data: { controller: "filter", action: "change->filter#submit" } do %>
         <span class="text-sm text-[#64748b]">並び替え:</span>
-        <select class="text-sm border border-[#e2e8f0] rounded-lg px-3 py-2">
-          <option>年代</option>
-          <option>名前順</option>
-        </select>
-      </div>
+        <%# フィルター・検索パラメータを保持 %>
+        <%= hidden_field_tag "q[keyword]", params.dig(:q, :keyword) %>
+        <% params[:period_ids]&.each do |id| %>
+          <%= hidden_field_tag "period_ids[]", id %>
+        <% end %>
+        <%= hidden_field_tag :study_unit_id, params[:study_unit_id] %>
+        <%= hidden_field_tag :region_id, params[:region_id] %>
+        <%= select_tag :sort,
+          options_for_select(
+            [["年代（古い順）", "year_asc"], ["年代（新しい順）", "year_desc"], ["名前順", "name_asc"]],
+            params[:sort] || "year_asc"
+          ),
+          class: "text-sm border border-[#e2e8f0] rounded-lg px-3 py-2" %>
+      <% end %>
     </div>
 
     <%# カードグリッド %>
