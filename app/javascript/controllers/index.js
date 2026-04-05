@@ -9,3 +9,6 @@ application.register("hello", HelloController)
 
 import FilterController from "./filter_controller"
 application.register("filter", FilterController)
+
+import DropdownController from "./dropdown_controller"
+application.register("dropdown", DropdownController)
