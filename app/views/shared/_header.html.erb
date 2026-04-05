@@ -15,6 +15,19 @@
     <%# ナビゲーション %>
     <nav class="flex items-center gap-8">
       <%= link_to "記事一覧", articles_path, class: "text-[14px] text-[#475569] font-medium hover:text-[#0f172a]" %>
+      <div class="relative" data-controller="dropdown">
+        <button type="button" data-action="click->dropdown#toggle" class="text-[14px] text-[#475569] font-medium hover:text-[#0f172a] flex items-center gap-1">
+          タイムライン
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </button>
+        <div data-dropdown-target="menu" class="hidden absolute top-full right-0 mt-2 w-48 bg-white border border-[#e2e8f0] rounded-lg shadow-lg py-2 z-50">
+          <% StudyUnit.all.each do |unit| %>
+            <%= link_to unit.name, timeline_path(unit), class: "block px-4 py-2 text-sm text-[#475569] hover:bg-[#f8fafc] hover:text-[#0f172a]" %>
+          <% end %>
+        </div>
+      </div>
       <%= link_to "ログイン", "#", class: "text-[14px] text-[#475569] font-medium hover:text-[#0f172a]" %>
       <%= link_to "会員登録", "#", class: "bg-[#3713ec] text-white text-[14px] font-medium px-5 py-2 rounded-lg shadow-[0px_4px_6px_-1px_rgba(55,19,236,0.2),0px_2px_4px_-2px_rgba(55,19,236,0.2)] hover:opacity-90" %>
     </nav>
