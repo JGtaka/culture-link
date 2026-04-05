@@ -95,6 +95,36 @@ event7.update!(
   region: region_europe
 )
 
+event8 = Event.find_or_initialize_by(title: "モナ・リザの制作")
+event8.update!(
+  year: 1503,
+  description: "スフマート技法を用い、神秘的な微笑みを浮かべた肖像画の傑作。背景の空気遠近法も特徴的です。",
+  period: period_medieval,
+  category: category_art,
+  study_unit: unit_renaissance,
+  region: region_europe
+)
+
+event9 = Event.find_or_initialize_by(title: "最後の晩餐の制作")
+event9.update!(
+  year: 1495,
+  description: "一点透視図法を完璧に駆使し、イエスが裏切りを告げた瞬間の弟子の動揺を見事に描き出しています。",
+  period: period_medieval,
+  category: category_art,
+  study_unit: unit_renaissance,
+  region: region_europe
+)
+
+event10 = Event.find_or_initialize_by(title: "ウィトルウィウス的人体図")
+event10.update!(
+  year: 1490,
+  description: "黄金比と幾何学を人体に適用。芸術と科学、数学が見事に融合したルネサンス人文主義の象徴です。",
+  period: period_medieval,
+  category: category_art,
+  study_unit: unit_renaissance,
+  region: region_europe
+)
+
 # === 人物 ===
 
 char1 = Character.find_or_initialize_by(name: "レオナルド・ダ・ヴィンチ")
@@ -160,6 +190,9 @@ char6.update!(
 
 # === 出来事と人物の関連付け ===
 EventCharacter.find_or_create_by!(event: event1, character: char1)
+EventCharacter.find_or_create_by!(event: event8, character: char1)
+EventCharacter.find_or_create_by!(event: event9, character: char1)
+EventCharacter.find_or_create_by!(event: event10, character: char1)
 EventCharacter.find_or_create_by!(event: event3, character: char2)
 EventCharacter.find_or_create_by!(event: event5, character: char4)
 EventCharacter.find_or_create_by!(event: event7, character: char5)
