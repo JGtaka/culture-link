@@ -10,7 +10,7 @@ RSpec.describe User, type: :model do
     it "名前がなければ無効" do
       user = build(:user, name: "")
       expect(user).not_to be_valid
-      expect(user.errors[:name]).to include("can't be blank")
+      expect(user.errors[:name]).to include("を入力してください")
     end
 
     it "メールアドレスがなければ無効" do
