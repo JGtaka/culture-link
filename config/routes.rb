@@ -6,6 +6,8 @@ Rails.application.routes.draw do
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
 
+  get "profile", to: "profiles#show"
+
   resources :articles, only: [ :index ]
   resources :characters, only: [ :show ]
   resources :events, only: [ :show ]
