@@ -63,3 +63,4 @@ end
 gem "tailwindcss-rails", "~> 4.4"
 gem "kaminari"
 gem "ransack", "~> 4.0"
+gem "devise"
