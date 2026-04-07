@@ -1,0 +1,240 @@
+<div class="max-w-[1280px] mx-auto px-8 py-12">
+  <%# ウェルカムメッセージ %>
+  <div class="mb-8">
+    <h1 class="text-[30px] font-medium text-[#0f172a]">
+      おかえりなさい、<%= current_user.name %>さん！ 👋
+    </h1>
+    <p class="text-[16px] text-[#64748b] mt-1">
+      順調ですね！今日は3つの学習セッションが予定されています。
+    </p>
+  </div>
+
+  <%# 学習進捗カード %>
+  <div class="grid grid-cols-3 gap-6 mb-8">
+    <%# ルネサンス %>
+    <div class="bg-white border border-[#e2e8f0] rounded-lg shadow-sm p-6 flex items-center justify-between">
+      <div>
+        <p class="text-[14px] text-[#64748b] uppercase tracking-wider">ルネサンス</p>
+        <p class="text-[24px] font-bold text-[#0f172a] mt-1">75% 完了</p>
+        <p class="text-[12px] text-[#16a34a] mt-1">↑ 昨日より12%アップ</p>
+      </div>
+      <div class="relative size-[80px]">
+        <svg class="size-[80px] -rotate-90" viewBox="0 0 36 36">
+          <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                fill="none" stroke="#e2e8f0" stroke-width="3" />
+          <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                fill="none" stroke="#3713ec" stroke-width="3" stroke-dasharray="75, 100" />
+        </svg>
+        <span class="absolute inset-0 flex items-center justify-center text-[12px] font-bold text-[#1e293b]">75%</span>
+      </div>
+    </div>
+
+    <%# 中世キリスト教 %>
+    <div class="bg-white border border-[#e2e8f0] rounded-lg shadow-sm p-6 flex items-center justify-between">
+      <div>
+        <p class="text-[14px] text-[#64748b] uppercase tracking-wider">中世キリスト教</p>
+        <p class="text-[24px] font-bold text-[#0f172a] mt-1">42% 完了</p>
+        <p class="text-[12px] text-[#2563eb] mt-1">次：蒸気機関</p>
+      </div>
+      <div class="relative size-[80px]">
+        <svg class="size-[80px] -rotate-90" viewBox="0 0 36 36">
+          <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                fill="none" stroke="#e2e8f0" stroke-width="3" />
+          <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                fill="none" stroke="#3713ec" stroke-width="3" stroke-dasharray="42, 100" />
+        </svg>
+        <span class="absolute inset-0 flex items-center justify-center text-[12px] font-bold text-[#1e293b]">42%</span>
+      </div>
+    </div>
+
+    <%# 近代ロマン主義 %>
+    <div class="bg-white border border-[#e2e8f0] rounded-lg shadow-sm p-6 flex items-center justify-between">
+      <div>
+        <p class="text-[14px] text-[#64748b] uppercase tracking-wider">近代ロマン主義</p>
+        <p class="text-[24px] font-bold text-[#0f172a] mt-1">18% 完了</p>
+        <p class="text-[12px] text-[#94a3b8] mt-1">開始したばかり</p>
+      </div>
+      <div class="relative size-[80px]">
+        <svg class="size-[80px] -rotate-90" viewBox="0 0 36 36">
+          <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                fill="none" stroke="#e2e8f0" stroke-width="3" />
+          <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                fill="none" stroke="#3713ec" stroke-width="3" stroke-dasharray="18, 100" />
+        </svg>
+        <span class="absolute inset-0 flex items-center justify-center text-[12px] font-bold text-[#1e293b]">18%</span>
+      </div>
+    </div>
+  </div>
+
+  <%# スケジュール＋最近チェックした項目 %>
+  <div class="grid grid-cols-3 gap-8">
+    <%# 今後の学習スケジュール（2カラム分） %>
+    <div class="col-span-2">
+      <div class="bg-white border border-[#e2e8f0] rounded-lg shadow-sm overflow-hidden">
+        <%# ヘッダー %>
+        <div class="flex items-center justify-between px-6 py-6 border-b border-[#f1f5f9]">
+          <h2 class="text-[18px] font-medium text-[#0f172a]">今後の学習スケジュール</h2>
+          <div class="flex items-center gap-2">
+            <button class="p-1 rounded">
+              <svg class="w-5 h-5 text-[#64748b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+              </svg>
+            </button>
+            <span class="text-[14px] font-semibold text-[#1e293b] px-2">2023年10月</span>
+            <button class="p-1 rounded">
+              <svg class="w-5 h-5 text-[#64748b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <%# 曜日ヘッダー %>
+        <div class="grid grid-cols-7 gap-2 px-6 pt-6">
+          <% %w[月 火 水 木 金 土 日].each do |day| %>
+            <div class="text-center text-[12px] text-[#64748b]"><%= day %></div>
+          <% end %>
+        </div>
+
+        <%# カレンダー日付 %>
+        <div class="grid grid-cols-7 gap-2 px-6 pt-2 pb-6">
+          <%# 25 %>
+          <div class="flex flex-col items-center justify-center h-[64px] border border-[#f1f5f9] rounded-lg">
+            <span class="text-[14px] text-[#1e293b]">25</span>
+          </div>
+          <%# 26（イベントあり） %>
+          <div class="flex flex-col items-center justify-center h-[64px] border border-[#f1f5f9] rounded-lg bg-[rgba(55,19,236,0.05)]">
+            <span class="text-[14px] font-bold text-[#1e293b]">26</span>
+            <div class="w-1 h-1 bg-[#3713ec] rounded-full mt-1"></div>
+          </div>
+          <%# 27（今日） %>
+          <div class="flex flex-col items-center justify-center h-[64px] border border-[#f1f5f9] rounded-lg bg-[#3713ec] shadow-[0px_4px_6px_-1px_rgba(55,19,236,0.3),0px_2px_4px_-2px_rgba(55,19,236,0.3)]">
+            <span class="text-[14px] font-bold text-white">27</span>
+          </div>
+          <%# 28 %>
+          <div class="flex flex-col items-center justify-center h-[64px] border border-[#f1f5f9] rounded-lg">
+            <span class="text-[14px] text-[#1e293b]">28</span>
+          </div>
+          <%# 29 %>
+          <div class="flex flex-col items-center justify-center h-[64px] border border-[#f1f5f9] rounded-lg">
+            <span class="text-[14px] text-[#1e293b]">29</span>
+          </div>
+          <%# 30 %>
+          <div class="flex flex-col items-center justify-center h-[64px] border border-[#f1f5f9] rounded-lg">
+            <span class="text-[14px] text-[#cbd5e1]">30</span>
+          </div>
+          <%# 1 %>
+          <div class="flex flex-col items-center justify-center h-[64px] border border-[#f1f5f9] rounded-lg">
+            <span class="text-[14px] text-[#cbd5e1]">1</span>
+          </div>
+        </div>
+
+        <%# スケジュールリスト %>
+        <div class="flex flex-col gap-4 px-6 pb-8">
+          <%# アクティブなスケジュール %>
+          <div class="flex items-start gap-4 bg-[#f8fafc] border border-[#f1f5f9] rounded-lg p-4">
+            <div class="flex flex-col items-center justify-center size-[48px] bg-white border border-[#e2e8f0] rounded-lg shrink-0">
+              <span class="text-[12px] text-[#94a3b8]">10月</span>
+              <span class="text-[16px] font-bold text-[#3713ec]">27</span>
+            </div>
+            <div class="flex-1">
+              <p class="text-[16px] text-[#0f172a]">ローマの興隆 - 講義とクイズ</p>
+              <p class="text-[14px] text-[#64748b]">14:00 • 1.5時間 • 世界史101</p>
+            </div>
+            <span class="text-[14px] text-[#3713ec] shrink-0">ルームに参加</span>
+          </div>
+
+          <%# 予定のスケジュール %>
+          <div class="flex items-start gap-4 bg-[#f8fafc] border border-[#f1f5f9] rounded-lg p-4 opacity-60">
+            <div class="flex flex-col items-center justify-center size-[48px] bg-white border border-[#e2e8f0] rounded-lg shrink-0">
+              <span class="text-[12px] text-[#94a3b8]">10月</span>
+              <span class="text-[16px] font-bold text-[#475569]">29</span>
+            </div>
+            <div class="flex-1">
+              <p class="text-[16px] text-[#0f172a]">第二次世界大戦：太平洋戦域</p>
+              <p class="text-[14px] text-[#64748b]">10:00 • 2時間 • 現代史</p>
+            </div>
+            <span class="text-[14px] text-[#94a3b8] shrink-0">リマインダー設定済み</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%# 最近チェックした項目 %>
+    <div class="col-span-1">
+      <div class="bg-white border border-[#e2e8f0] rounded-lg shadow-sm">
+        <div class="px-6 py-6 border-b border-[#f1f5f9]">
+          <h2 class="text-[18px] font-medium text-[#0f172a]">最近チェックした項目</h2>
+        </div>
+
+        <div class="flex flex-col gap-6 p-6">
+          <%# ルネサンス期 %>
+          <div class="flex gap-4">
+            <div class="size-[64px] rounded-lg bg-[#e2e8f0] shrink-0 flex items-center justify-center">
+              <svg class="w-6 h-6 text-[#64748b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div class="flex flex-col gap-1">
+              <p class="text-[14px] font-medium text-[#1e293b]">ルネサンス期</p>
+              <p class="text-[12px] text-[#64748b] pb-1">動画レッスン • 残り12分</p>
+              <div class="w-full h-1 bg-[#f1f5f9] rounded-full">
+                <div class="h-1 bg-[#3713ec] rounded-full" style="width: 67%"></div>
+              </div>
+            </div>
+          </div>
+
+          <%# 中世キリスト教 %>
+          <div class="flex gap-4">
+            <div class="size-[64px] rounded-lg bg-[#e2e8f0] shrink-0 flex items-center justify-center">
+              <svg class="w-6 h-6 text-[#64748b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+              </svg>
+            </div>
+            <div class="flex flex-col gap-1">
+              <p class="text-[14px] font-medium text-[#1e293b]">中世キリスト教</p>
+              <p class="text-[12px] text-[#64748b]">練習用クイズ • 完了 9/10</p>
+              <p class="text-[10px] font-bold text-[#16a34a] uppercase">スコア: 90%</p>
+            </div>
+          </div>
+
+          <%# ルネサンス %>
+          <div class="flex gap-4">
+            <div class="size-[64px] rounded-lg bg-[#e2e8f0] shrink-0 flex items-center justify-center">
+              <svg class="w-6 h-6 text-[#64748b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+              </svg>
+            </div>
+            <div class="flex flex-col gap-1">
+              <p class="text-[14px] font-medium text-[#1e293b]">ルネサンス</p>
+              <p class="text-[12px] text-[#64748b] pb-1">読解資料 • 残り5ページ</p>
+              <div class="w-full h-1 bg-[#f1f5f9] rounded-full">
+                <div class="h-1 bg-[#3713ec] rounded-full" style="width: 25%"></div>
+              </div>
+            </div>
+          </div>
+
+          <%# 近代ロマン主義革命 %>
+          <div class="flex gap-4">
+            <div class="size-[64px] rounded-lg bg-[#e2e8f0] shrink-0 flex items-center justify-center">
+              <svg class="w-6 h-6 text-[#64748b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+              </svg>
+            </div>
+            <div class="flex flex-col gap-1">
+              <p class="text-[14px] font-medium text-[#1e293b]">近代ロマン主義革命</p>
+              <p class="text-[12px] text-[#64748b]">ポッドキャスト • 合計 45:00</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t border-[#f1f5f9] px-4 py-4">
+          <div class="flex items-center justify-center py-2">
+            <span class="text-[14px] text-[#475569] cursor-pointer hover:text-[#0f172a]">すべての履歴を見る</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
