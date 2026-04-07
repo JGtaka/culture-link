@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_07_052817) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_07_070639) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,6 +29,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_07_052817) do
     t.integer "year"
     t.bigint "period_id"
     t.bigint "region_id"
+    t.string "image_credit"
     t.index ["period_id"], name: "index_characters_on_period_id"
     t.index ["region_id"], name: "index_characters_on_region_id"
     t.index ["study_unit_id"], name: "index_characters_on_study_unit_id"
@@ -51,6 +52,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_07_052817) do
     t.bigint "study_unit_id", null: false
     t.string "image_url"
     t.bigint "region_id"
+    t.string "image_credit"
     t.index ["category_id"], name: "index_events_on_category_id"
     t.index ["period_id"], name: "index_events_on_period_id"
     t.index ["region_id"], name: "index_events_on_region_id"
