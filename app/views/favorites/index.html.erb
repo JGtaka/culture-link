@@ -1,0 +1,26 @@
+<div class="max-w-[1280px] mx-auto px-8 py-12">
+  <div class="mb-8">
+    <h1 class="text-[30px] font-medium text-[#0f172a]">お気に入り</h1>
+    <p class="text-[16px] text-[#64748b] mt-1"><%= @articles.total_count %>件の記事</p>
+  </div>
+
+  <% if @articles.any? %>
+    <div class="grid grid-cols-3 gap-6">
+      <% @articles.each do |article| %>
+        <%= render "articles/card", article: article %>
+      <% end %>
+    </div>
+
+    <div class="mt-8">
+      <%= paginate @articles, outer_window: 1, inner_window: 1, theme: "articles" %>
+    </div>
+  <% else %>
+    <div class="text-center py-20">
+      <svg class="mx-auto size-16 text-[#cbd5e1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+      </svg>
+      <p class="text-[#64748b] mt-4 text-lg">お気に入りの記事はまだありません</p>
+      <%= link_to "記事一覧を見る", articles_path, class: "inline-block mt-4 text-[#3713ec] hover:underline" %>
+    </div>
+  <% end %>
+</div>

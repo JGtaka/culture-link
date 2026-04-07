@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   end
 
   get "profile", to: "profiles#show"
+  resources :favorites, only: [ :index, :create, :destroy ]
 
   resources :articles, only: [ :index ]
   resources :characters, only: [ :show ]

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_07_010105) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_07_052817) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -57,6 +57,17 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_07_010105) do
     t.index ["study_unit_id"], name: "index_events_on_study_unit_id"
   end
 
+  create_table "favorites", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "favorable_type", null: false
+    t.bigint "favorable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["favorable_type", "favorable_id"], name: "index_favorites_on_favorable"
+    t.index ["user_id", "favorable_type", "favorable_id"], name: "index_favorites_on_user_id_and_favorable_type_and_favorable_id", unique: true
+    t.index ["user_id"], name: "index_favorites_on_user_id"
+  end
+
   create_table "periods", force: :cascade do |t|
     t.string "name"
   end
@@ -93,4 +104,5 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_07_010105) do
   add_foreign_key "events", "periods"
   add_foreign_key "events", "regions"
   add_foreign_key "events", "study_units"
+  add_foreign_key "favorites", "users"
 end

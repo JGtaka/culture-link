@@ -4,6 +4,7 @@ class Character < ApplicationRecord
   belongs_to :region
   has_many :event_characters
   has_many :events, through: :event_characters
+  has_many :favorites, as: :favorable, dependent: :destroy
 
   validates :name, presence: true
   validates :description, presence: true
