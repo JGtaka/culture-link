@@ -1,62 +1,71 @@
-<% if article.is_a?(Event) %>
-  <%= link_to event_path(article), class: "block" do %>
-  <div class="bg-white border border-[#e2e8f0] rounded-lg overflow-hidden hover:shadow-md transition-shadow">
-    <%# サムネイル %>
-    <div class="relative h-48 bg-[#f1f5f9]">
-      <% if article.image_url.present? %>
-        <%= image_tag article.image_url, class: "w-full h-full object-cover", alt: article.title %>
-      <% end %>
-      <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1">
-        <span class="text-[10px] font-medium text-[#0f172a] uppercase tracking-wider"><%= article.category.name %></span>
-      </div>
-    </div>
-
-    <%# コンテンツ %>
-    <div class="p-5 flex flex-col gap-2">
-      <div class="flex items-center justify-between">
-        <span class="text-xs font-bold text-[#3713ec] uppercase tracking-wider"><%= article.year %>年</span>
-        <div class="flex items-center gap-1">
-          <svg class="size-3 text-[#94a3b8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-          </svg>
-          <span class="text-xs text-[#94a3b8]">ヨーロッパ</span>
+<div class="relative">
+  <% if article.is_a?(Event) %>
+    <%= link_to event_path(article), class: "block" do %>
+    <div class="bg-white border border-[#e2e8f0] rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+      <%# サムネイル %>
+      <div class="relative h-48 bg-[#f1f5f9]">
+        <% if article.image_url.present? %>
+          <%= image_tag article.image_url, class: "w-full h-full object-cover", alt: article.title %>
+        <% end %>
+        <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1">
+          <span class="text-[10px] font-medium text-[#0f172a] uppercase tracking-wider"><%= article.category.name %></span>
         </div>
       </div>
-      <h2 class="text-lg font-medium text-[#0f172a]"><%= article.title %></h2>
-      <p class="text-sm text-[#475569] line-clamp-2"><%= article.description %></p>
-    </div>
-  </div>
-  <% end %>
 
-<% elsif article.is_a?(Character) %>
-  <%= link_to character_path(article), class: "block" do %>
-  <div class="bg-white border border-[#e2e8f0] rounded-lg overflow-hidden hover:shadow-md transition-shadow">
-    <%# サムネイル %>
-    <div class="relative h-48 bg-[#f1f5f9]">
-      <% if article.image_url.present? %>
-        <%= image_tag article.image_url, class: "w-full h-full object-cover", alt: article.name %>
-      <% end %>
-      <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1">
-        <span class="text-[10px] font-medium text-[#0f172a] uppercase tracking-wider">人物</span>
+      <%# コンテンツ %>
+      <div class="p-5 flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-[#3713ec] uppercase tracking-wider"><%= article.year %>年</span>
+          <div class="flex items-center gap-1">
+            <svg class="size-3 text-[#94a3b8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            <span class="text-xs text-[#94a3b8]">ヨーロッパ</span>
+          </div>
+        </div>
+        <h2 class="text-lg font-medium text-[#0f172a]"><%= article.title %></h2>
+        <p class="text-sm text-[#475569] line-clamp-2"><%= article.description %></p>
       </div>
     </div>
+    <% end %>
 
-    <%# コンテンツ %>
-    <div class="p-5 flex flex-col gap-2">
-      <div class="flex items-center justify-between">
-        <span class="text-xs font-bold text-[#3713ec] uppercase tracking-wider"><%= article.year %>年</span>
-        <div class="flex items-center gap-1">
-          <svg class="size-3 text-[#94a3b8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-          </svg>
-          <span class="text-xs text-[#94a3b8]">イタリア</span>
+  <% elsif article.is_a?(Character) %>
+    <%= link_to character_path(article), class: "block" do %>
+    <div class="bg-white border border-[#e2e8f0] rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+      <%# サムネイル %>
+      <div class="relative h-48 bg-[#f1f5f9]">
+        <% if article.image_url.present? %>
+          <%= image_tag article.image_url, class: "w-full h-full object-cover", alt: article.name %>
+        <% end %>
+        <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1">
+          <span class="text-[10px] font-medium text-[#0f172a] uppercase tracking-wider">人物</span>
         </div>
       </div>
-      <h2 class="text-lg font-medium text-[#0f172a]"><%= article.name %></h2>
-      <p class="text-sm text-[#475569] line-clamp-2"><%= article.description %></p>
+
+      <%# コンテンツ %>
+      <div class="p-5 flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-[#3713ec] uppercase tracking-wider"><%= article.year %>年</span>
+          <div class="flex items-center gap-1">
+            <svg class="size-3 text-[#94a3b8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            <span class="text-xs text-[#94a3b8]">イタリア</span>
+          </div>
+        </div>
+        <h2 class="text-lg font-medium text-[#0f172a]"><%= article.name %></h2>
+        <p class="text-sm text-[#475569] line-clamp-2"><%= article.description %></p>
+      </div>
     </div>
-  </div>
+    <% end %>
   <% end %>
-<% end %>
+
+  <%# お気に入りボタン（リンクの外に配置） %>
+  <% if user_signed_in? %>
+    <div class="absolute top-3 right-3 z-10">
+      <%= render "shared/favorite_button", article: article %>
+    </div>
+  <% end %>
+</div>

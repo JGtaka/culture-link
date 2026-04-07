@@ -29,6 +29,7 @@
         </div>
       </div>
       <% if user_signed_in? %>
+        <%= link_to "お気に入り", favorites_path, class: "text-[14px] text-[#475569] font-medium hover:text-[#0f172a]" %>
         <%= link_to "#{current_user.name}さん", profile_path, class: "text-[14px] text-[#475569] font-medium hover:text-[#0f172a]" %>
         <%= button_to "ログアウト", destroy_user_session_path, method: :delete,
             class: "text-[14px] text-[#475569] font-medium hover:text-[#0f172a] cursor-pointer" %>

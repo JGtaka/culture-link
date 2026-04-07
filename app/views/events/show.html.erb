@@ -8,7 +8,12 @@
   <div class="absolute inset-0 opacity-90" style="background-image: linear-gradient(154deg, rgb(0, 11, 96) 0%, rgb(20, 34, 131) 100%)"></div>
   <div class="relative max-w-[1280px] mx-auto px-20 py-20 flex flex-col justify-center min-h-[500px]">
     <%# カテゴリ・時代バッジ %>
-    <div class="pb-6 flex gap-3">
+    <div class="pb-6 flex gap-3 items-center">
+      <% if user_signed_in? %>
+        <div class="mr-2">
+          <%= render "shared/favorite_button", article: @event %>
+        </div>
+      <% end %>
       <span class="inline-flex items-center gap-2 bg-[rgba(236,119,0,0.2)] rounded-full px-4 py-1.5">
         <span class="text-xs font-semibold tracking-[1.2px] uppercase text-[#ec7700]"><%= @event.category.name %></span>
       </span>
