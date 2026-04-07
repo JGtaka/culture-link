@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
+  devise_for :users
    root "static_pages#top"
+
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
 
   resources :articles, only: [ :index ]
   resources :characters, only: [ :show ]
