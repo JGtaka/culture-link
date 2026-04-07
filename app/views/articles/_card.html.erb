@@ -5,7 +5,7 @@
       <%# サムネイル %>
       <div class="relative h-48 bg-[#f1f5f9]">
         <% if article.image_url.present? %>
-          <%= image_tag article.image_url, class: "w-full h-full object-cover", alt: article.title %>
+          <%= image_tag article.image_url, class: "w-full h-full object-contain", alt: article.title %>
         <% end %>
         <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1">
           <span class="text-[10px] font-medium text-[#0f172a] uppercase tracking-wider"><%= article.category.name %></span>
@@ -36,7 +36,7 @@
       <%# サムネイル %>
       <div class="relative h-48 bg-[#f1f5f9]">
         <% if article.image_url.present? %>
-          <%= image_tag article.image_url, class: "w-full h-full object-cover", alt: article.name %>
+          <%= image_tag article.image_url, class: "w-full h-full object-contain", alt: article.name %>
         <% end %>
         <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-2 py-1">
           <span class="text-[10px] font-medium text-[#0f172a] uppercase tracking-wider">人物</span>

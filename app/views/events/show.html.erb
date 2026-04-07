@@ -35,6 +35,11 @@
     <%# 年代 %>
     <p class="text-4xl font-normal text-white leading-[44px] mt-4"><%= @event.year %>年</p>
   </div>
+  <% if @event.image_credit.present? %>
+    <div class="absolute bottom-2 right-4 text-xs text-white/50">
+      出典: <%= @event.image_credit %>
+    </div>
+  <% end %>
 </section>
 
 <%# Main Content %>
