@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_07_070639) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_11_023122) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -80,6 +80,28 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_07_070639) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "schedules", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.integer "daily_study_hours", default: 1, null: false
+    t.integer "weekdays", default: [], array: true
+    t.text "memo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_schedules_on_user_id"
+  end
+
+  create_table "study_unit_schedules", force: :cascade do |t|
+    t.bigint "schedule_id", null: false
+    t.bigint "study_unit_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["schedule_id", "study_unit_id"], name: "index_study_unit_schedules_on_schedule_id_and_study_unit_id", unique: true
+    t.index ["schedule_id"], name: "index_study_unit_schedules_on_schedule_id"
+    t.index ["study_unit_id"], name: "index_study_unit_schedules_on_study_unit_id"
+  end
+
   create_table "study_units", force: :cascade do |t|
     t.string "name"
   end
@@ -107,4 +129,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_07_070639) do
   add_foreign_key "events", "regions"
   add_foreign_key "events", "study_units"
   add_foreign_key "favorites", "users"
+  add_foreign_key "schedules", "users"
+  add_foreign_key "study_unit_schedules", "schedules"
+  add_foreign_key "study_unit_schedules", "study_units"
 end

@@ -1,0 +1,13 @@
+<div class="max-w-[960px] mx-auto px-8 pt-24 pb-20">
+  <%# ヘッダーセクション %>
+  <div class="mb-12">
+    <h1 class="text-[36px] font-medium text-[#000b60] tracking-tight leading-tight">
+      学習スケジュールの編集
+    </h1>
+    <p class="text-[16px] text-[#454652] mt-3">
+      スケジュールの内容を変更できます。
+    </p>
+  </div>
+
+  <%= render "form", schedule: @schedule, study_units: @study_units %>
+</div>
