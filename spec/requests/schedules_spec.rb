@@ -31,9 +31,9 @@ RSpec.describe "Schedules", type: :request do
           start_date: Date.today,
           end_date: Date.today + 30.days,
           daily_study_hours: 2,
-          weekdays: [0, 1, 2],
+          weekdays: [ 0, 1, 2 ],
           memo: "テストメモ",
-          study_unit_ids: [study_unit.id]
+          study_unit_ids: [ study_unit.id ]
         }
       }
     end

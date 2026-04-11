@@ -7,6 +7,6 @@ class CreateStudyUnitSchedules < ActiveRecord::Migration[7.2]
       t.timestamps
     end
 
-    add_index :study_unit_schedules, [:schedule_id, :study_unit_id], unique: true
+    add_index :study_unit_schedules, [ :schedule_id, :study_unit_id ], unique: true
   end
 end
