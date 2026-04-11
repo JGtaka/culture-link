@@ -1,0 +1,9 @@
+ja:
+  activerecord:
+    attributes:
+      schedule:
+        start_date: 開始日
+        end_date: 終了日
+        daily_study_hours: 1日の目標学習時間
+        weekdays: 学習曜日
+        memo: メモ

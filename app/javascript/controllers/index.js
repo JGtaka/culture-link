@@ -12,3 +12,12 @@ application.register("filter", FilterController)
 
 import DropdownController from "./dropdown_controller"
 application.register("dropdown", DropdownController)
+
+import WeekdayToggleController from "./weekday_toggle_controller"
+application.register("weekday-toggle", WeekdayToggleController)
+
+import UnitSelectController from "./unit_select_controller"
+application.register("unit-select", UnitSelectController)
+
+import SchedulePaginationController from "./schedule_pagination_controller"
+application.register("schedule-pagination", SchedulePaginationController)
