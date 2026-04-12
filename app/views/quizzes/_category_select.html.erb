@@ -1,0 +1,9 @@
+<%= form_with url: quizzes_path, method: :get, local: true,
+              data: { controller: "filter", action: "change->filter#submit" },
+              class: "flex items-center gap-3" do %>
+  <label for="quiz_category_id" class="text-sm font-medium text-[#475569]">カテゴリ</label>
+  <%= select_tag :quiz_category_id,
+        options_from_collection_for_select(@quiz_categories, :id, :name, params[:quiz_category_id]),
+        include_blank: "すべてのカテゴリ",
+        class: "text-sm border border-[#e2e8f0] rounded-full px-5 py-2 bg-white text-[#334155] focus:outline-none focus:ring-2 focus:ring-[#ec5b13]/40" %>
+<% end %>

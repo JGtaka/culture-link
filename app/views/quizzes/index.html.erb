@@ -1,0 +1,31 @@
+<div class="px-8 py-8 max-w-[1152px] mx-auto">
+  <%# ページタイトル %>
+  <div class="flex flex-col gap-2 mb-8">
+    <div class="flex items-end gap-2">
+      <h1 class="text-4xl font-medium text-[#0f172a] tracking-tight">小テスト一覧</h1>
+      <span class="text-2xl font-medium text-[#94a3b8]">(Quiz List)</span>
+    </div>
+    <p class="text-base text-[#64748b]">歴史と文化の知識を深めましょう</p>
+  </div>
+
+  <%# カテゴリフィルター %>
+  <div class="mb-8">
+    <%= render "quizzes/category_select" %>
+  </div>
+
+  <%# クイズカードグリッド %>
+  <% if @quizzes.any? %>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% @quizzes.each do |quiz| %>
+        <%= render "quizzes/card", quiz: quiz %>
+      <% end %>
+    </div>
+
+    <%# ページネーション %>
+    <%= paginate @quizzes, outer_window: 1, inner_window: 1, theme: "articles" %>
+  <% else %>
+    <div class="text-center py-16 text-[#64748b]">
+      <p>該当する小テストがありません</p>
+    </div>
+  <% end %>
+</div>

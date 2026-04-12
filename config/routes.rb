@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :schedules, only: [ :new, :create, :edit, :update, :destroy ]
 
   resources :articles, only: [ :index ]
+  resources :quizzes, only: [ :index ]
   resources :characters, only: [ :show ]
   resources :events, only: [ :show ]
   resources :timelines, only: [ :show ]

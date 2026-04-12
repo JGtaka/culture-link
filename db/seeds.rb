@@ -222,5 +222,81 @@ EventCharacter.find_or_create_by!(event: event5, character: char4)
 EventCharacter.find_or_create_by!(event: event7, character: char5)
 EventCharacter.find_or_create_by!(event: event6, character: char6)
 
+# === 小テスト（クイズ） ===
+quiz_cat_renaissance = QuizCategory.find_or_create_by!(name: "ルネサンス")
+quiz_cat_greek = QuizCategory.find_or_create_by!(name: "古代ギリシャ文化")
+quiz_cat_baroque = QuizCategory.find_or_create_by!(name: "バロック")
+quiz_cat_romanticism = QuizCategory.find_or_create_by!(name: "ロマン主義")
+
+quiz_data = [
+  {
+    title: "ルネサンスの文化と芸術",
+    category: quiz_cat_renaissance,
+    image_url: "/quiz_images/renaissance.jpg",
+    questions: [
+      { body: "ルネサンスが最初に始まったイタリアの都市はどこか？", choices: [ [ "フィレンツェ", true ], [ "ローマ", false ], [ "ヴェネツィア", false ], [ "ミラノ", false ] ] },
+      { body: "『モナ・リザ』を描いた画家は誰か？", choices: [ [ "ミケランジェロ", false ], [ "ラファエロ", false ], [ "レオナルド・ダ・ヴィンチ", true ], [ "ボッティチェリ", false ] ] },
+      { body: "システィーナ礼拝堂の天井画を描いた芸術家は？", choices: [ [ "ミケランジェロ", true ], [ "ドナテッロ", false ], [ "ブルネレスキ", false ], [ "ジョット", false ] ] }
+    ]
+  },
+  {
+    title: "古代ギリシアの民主政",
+    category: quiz_cat_greek,
+    image_url: "/quiz_images/greek.jpg",
+    questions: [
+      { body: "古代アテネで民主政を完成させた政治家は？", choices: [ [ "ソロン", false ], [ "ペリクレス", true ], [ "クレイステネス", false ], [ "ドラコン", false ] ] },
+      { body: "古代ギリシアの哲学者ソクラテスの弟子は？", choices: [ [ "アリストテレス", false ], [ "プラトン", true ], [ "ピタゴラス", false ], [ "タレス", false ] ] }
+    ]
+  },
+  {
+    title: "バロック音楽の巨匠たち",
+    category: quiz_cat_baroque,
+    image_url: "/quiz_images/baroque.jpg",
+    questions: [
+      { body: "「音楽の父」と呼ばれる作曲家は？", choices: [ [ "モーツァルト", false ], [ "ヘンデル", false ], [ "バッハ", true ], [ "ヴィヴァルディ", false ] ] },
+      { body: "『四季』を作曲したイタリアの作曲家は？", choices: [ [ "ヴィヴァルディ", true ], [ "コレッリ", false ], [ "スカルラッティ", false ], [ "モンテヴェルディ", false ] ] }
+    ]
+  },
+  {
+    title: "ロマン主義の絵画",
+    category: quiz_cat_romanticism,
+    image_url: "/quiz_images/romanticism.jpg",
+    questions: [
+      { body: "『民衆を導く自由の女神』を描いた画家は？", choices: [ [ "ダヴィッド", false ], [ "アングル", false ], [ "ドラクロワ", true ], [ "クールベ", false ] ] }
+    ]
+  }
+]
+
+quiz_data.each do |data|
+  quiz = Quiz.find_or_initialize_by(title: data[:title])
+  quiz.update!(quiz_category: data[:category], image_url: data[:image_url])
+
+  data[:questions].each do |q_data|
+    next if quiz.questions.exists?(body: q_data[:body])
+
+    question = quiz.questions.create!(body: q_data[:body])
+    q_data[:choices].each do |body, correct|
+      question.choices.create!(body: body, correct_answer: correct)
+    end
+  end
+end
+
+# === 受験結果サンプル（状態確認用） ===
+sample_user = User.first
+if sample_user
+  completed_quiz = Quiz.find_by(title: "古代ギリシアの民主政")
+  if completed_quiz
+    result = QuizResult.find_or_initialize_by(user: sample_user, quiz: completed_quiz)
+    result.update!(
+      status: :completed,
+      score: 100,
+      correct_count: completed_quiz.questions.count,
+      total_correct: completed_quiz.questions.count,
+      test_date: Date.current
+    )
+  end
+end
+
 puts "Seed data created successfully!"
 puts "Events: #{Event.count}, Characters: #{Character.count}, EventCharacters: #{EventCharacter.count}"
+puts "QuizCategories: #{QuizCategory.count}, Quizzes: #{Quiz.count}, Questions: #{Question.count}, Choices: #{Choice.count}"
