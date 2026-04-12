@@ -1,0 +1,137 @@
+<%
+  message = quiz_result_message(@quiz_result.score)
+  color = quiz_result_color(@quiz_result.score)
+  circumference = 2 * Math::PI * 85
+  progress = circumference * (@quiz_result.score / 100.0)
+  answers_by_question = @quiz_result.question_answers.index_by(&:question_id)
+%>
+<div class="max-w-[896px] mx-auto px-4 py-8">
+  <%# サマリーカード %>
+  <div class="bg-white border border-[#e2e8f0] rounded-xl shadow-sm p-8 mb-8">
+    <div class="text-center mb-6">
+      <h1 class="text-2xl font-bold text-[#0f172a]">
+        テスト結果 <span class="text-[#64748b]">(Quiz Results)</span>
+      </h1>
+      <p class="text-sm text-[#64748b] mt-2"><%= @quiz.title %></p>
+    </div>
+
+    <%# 円形プログレス %>
+    <div class="flex justify-center mb-6">
+      <div class="relative w-48 h-48">
+        <svg viewBox="0 0 192 192" class="w-full h-full -rotate-90">
+          <circle cx="96" cy="96" r="85" stroke="#e2e8f0" stroke-width="16" fill="none"/>
+          <circle cx="96" cy="96" r="85"
+                  stroke="<%= color %>" stroke-width="16" fill="none"
+                  stroke-dasharray="<%= circumference %>"
+                  stroke-dashoffset="<%= circumference - progress %>"
+                  stroke-linecap="round"/>
+        </svg>
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+          <span class="text-4xl font-bold" style="color: <%= color %>;"><%= @quiz_result.score %>%</span>
+          <span class="text-sm text-[#64748b] mt-1"><%= @quiz_result.correct_count %> / <%= @quiz_result.total_correct %> 正解</span>
+        </div>
+      </div>
+    </div>
+
+    <%# メッセージ %>
+    <div class="text-center">
+      <h2 class="text-2xl font-bold text-[#0f172a] mb-2">
+        <%= message[:title] %> <span class="text-[#64748b]"><%= message[:subtitle] %></span>
+      </h2>
+      <p class="text-base text-[#475569] max-w-[448px] mx-auto leading-6">
+        <%= message[:body] %>
+      </p>
+    </div>
+  </div>
+
+  <%# 解説と振り返り %>
+  <div class="mb-8">
+    <div class="flex items-center gap-2 px-2 mb-4">
+      <svg class="w-5 h-4 text-[#0f172a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+      </svg>
+      <h2 class="text-xl font-bold text-[#0f172a]">解説と振り返り <span class="text-[#64748b]">(Review)</span></h2>
+    </div>
+
+    <div class="space-y-4">
+      <% @quiz.questions.each_with_index do |question, i| %>
+        <% answer = answers_by_question[question.id] %>
+        <% correct_choice = question.choices.find(&:correct_answer) %>
+        <% user_choice = answer&.choice %>
+        <% is_correct = answer&.is_correct %>
+        <% border_color = is_correct ? "border-[#22c55e]" : "border-[#ef4444]" %>
+        <div class="bg-white border-l-4 <%= border_color %> rounded-xl shadow-sm p-5">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1">
+              <%# Q番号と正誤バッジ %>
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-sm text-[#94a3b8]">第 <%= i + 1 %> 問</span>
+                <% if is_correct %>
+                  <span class="bg-[#dcfce7] text-[#15803d] text-xs font-medium px-2 py-0.5 rounded-full">正解</span>
+                <% else %>
+                  <span class="bg-[#fee2e2] text-[#b91c1c] text-xs font-medium px-2 py-0.5 rounded-full">不正解</span>
+                <% end %>
+              </div>
+
+              <%# 問題文 %>
+              <p class="text-lg text-[#0f172a] leading-7 mb-3"><%= question.body %></p>
+
+              <%# 解答比較 %>
+              <div class="grid grid-cols-2 gap-3 mb-4">
+                <div class="<%= is_correct ? 'bg-[#f8fafc]' : 'bg-[#fef2f2] border border-[#fee2e2]' %> rounded-lg p-3">
+                  <div class="text-xs <%= is_correct ? 'text-[#64748b]' : 'text-[#dc2626]' %> mb-1">あなたの回答</div>
+                  <div class="text-base <%= is_correct ? 'text-[#0f172a]' : 'text-[#b91c1c] line-through' %>">
+                    <%= user_choice&.body %>
+                  </div>
+                </div>
+                <div class="bg-[#f0fdf4] border border-[#dcfce7] rounded-lg p-3">
+                  <div class="text-xs text-[#16a34a] mb-1">正解</div>
+                  <div class="text-base text-[#15803d]"><%= correct_choice&.body %></div>
+                </div>
+              </div>
+
+              <%# 解説 %>
+              <% if question.explanation.present? %>
+                <div class="bg-[rgba(236,91,19,0.05)] rounded-lg px-4 py-4">
+                  <div class="text-sm text-[#ec5b13] mb-1">解説:</div>
+                  <p class="text-sm text-[#334155] leading-6"><%= question.explanation %></p>
+                </div>
+              <% end %>
+            </div>
+
+            <%# アイコン %>
+            <div class="shrink-0">
+              <% if is_correct %>
+                <svg class="w-6 h-6 text-[#22c55e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              <% else %>
+                <svg class="w-6 h-6 text-[#ef4444]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <%# アクションボタン %>
+  <div class="flex gap-4 items-center justify-center pt-4">
+    <%= link_to quiz_path(@quiz),
+        class: "bg-[#ec5b13] text-white rounded-xl px-8 py-4 text-base font-medium hover:bg-[#d14d0a] shadow-[0px_10px_15px_-3px_rgba(236,91,19,0.2)] flex items-center gap-2" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+      </svg>
+      もう一度挑戦する
+    <% end %>
+    <%= link_to quizzes_path,
+        class: "bg-[#e2e8f0] text-[#334155] rounded-xl px-8 py-4 text-base font-medium hover:bg-[#cbd5e1] flex items-center gap-2" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+      小テスト一覧に戻る
+    <% end %>
+  </div>
+</div>

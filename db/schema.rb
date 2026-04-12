@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_11_023122) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_12_102024) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -33,6 +33,15 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_11_023122) do
     t.index ["period_id"], name: "index_characters_on_period_id"
     t.index ["region_id"], name: "index_characters_on_region_id"
     t.index ["study_unit_id"], name: "index_characters_on_study_unit_id"
+  end
+
+  create_table "choices", force: :cascade do |t|
+    t.bigint "question_id", null: false
+    t.string "body", null: false
+    t.boolean "correct_answer", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_choices_on_question_id"
   end
 
   create_table "event_characters", force: :cascade do |t|
@@ -72,6 +81,61 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_11_023122) do
 
   create_table "periods", force: :cascade do |t|
     t.string "name"
+  end
+
+  create_table "question_answers", force: :cascade do |t|
+    t.bigint "quiz_result_id", null: false
+    t.bigint "question_id", null: false
+    t.bigint "choice_id", null: false
+    t.boolean "is_correct", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["choice_id"], name: "index_question_answers_on_choice_id"
+    t.index ["question_id"], name: "index_question_answers_on_question_id"
+    t.index ["quiz_result_id", "question_id"], name: "index_question_answers_on_quiz_result_id_and_question_id", unique: true
+    t.index ["quiz_result_id"], name: "index_question_answers_on_quiz_result_id"
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.bigint "quiz_id", null: false
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "explanation"
+    t.string "image_url"
+    t.string "image_credit"
+    t.index ["quiz_id"], name: "index_questions_on_quiz_id"
+  end
+
+  create_table "quiz_categories", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_quiz_categories_on_name", unique: true
+  end
+
+  create_table "quiz_results", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "quiz_id", null: false
+    t.integer "status", default: 0, null: false
+    t.integer "score"
+    t.integer "correct_count"
+    t.integer "total_correct"
+    t.date "test_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["quiz_id"], name: "index_quiz_results_on_quiz_id"
+    t.index ["user_id", "quiz_id"], name: "index_quiz_results_on_user_id_and_quiz_id", unique: true
+    t.index ["user_id"], name: "index_quiz_results_on_user_id"
+  end
+
+  create_table "quizzes", force: :cascade do |t|
+    t.string "title", null: false
+    t.bigint "quiz_category_id", null: false
+    t.string "image_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["quiz_category_id"], name: "index_quizzes_on_quiz_category_id"
   end
 
   create_table "regions", force: :cascade do |t|
@@ -122,6 +186,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_11_023122) do
   add_foreign_key "characters", "periods"
   add_foreign_key "characters", "regions"
   add_foreign_key "characters", "study_units"
+  add_foreign_key "choices", "questions"
   add_foreign_key "event_characters", "characters"
   add_foreign_key "event_characters", "events"
   add_foreign_key "events", "categories"
@@ -129,6 +194,13 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_11_023122) do
   add_foreign_key "events", "regions"
   add_foreign_key "events", "study_units"
   add_foreign_key "favorites", "users"
+  add_foreign_key "question_answers", "choices"
+  add_foreign_key "question_answers", "questions"
+  add_foreign_key "question_answers", "quiz_results"
+  add_foreign_key "questions", "quizzes"
+  add_foreign_key "quiz_results", "quizzes"
+  add_foreign_key "quiz_results", "users"
+  add_foreign_key "quizzes", "quiz_categories"
   add_foreign_key "schedules", "users"
   add_foreign_key "study_unit_schedules", "schedules"
   add_foreign_key "study_unit_schedules", "study_units"

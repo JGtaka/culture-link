@@ -1,0 +1,44 @@
+<%
+  question_count = quiz.questions.size
+  badge = quiz_status_badge(quiz, current_user)
+  button = quiz_button_for(quiz, current_user)
+%>
+<div class="bg-white border border-[#f1f5f9] rounded-xl overflow-hidden shadow-sm flex flex-col">
+  <%# カバー画像 %>
+  <div class="relative h-48 bg-[#e2e8f0]">
+    <% if quiz.image_url.present? %>
+      <%= image_tag quiz.image_url, class: "w-full h-full object-cover", alt: quiz.title %>
+    <% end %>
+    <%# カテゴリタグ %>
+    <div class="absolute top-4 left-4 bg-[#ec5b13] text-white text-xs font-medium px-2 py-1 rounded">
+      <%= quiz.quiz_category.name %>
+    </div>
+  </div>
+
+  <%# コンテンツ %>
+  <div class="p-6 flex flex-col flex-1">
+    <div class="flex items-start justify-between gap-2 mb-3">
+      <h2 class="text-xl font-medium text-[#0f172a] leading-tight"><%= quiz.title %></h2>
+      <% if badge %>
+        <span class="<%= badge[:class] %> text-xs font-medium px-2 py-1 rounded shrink-0">
+          <%= badge[:label] %>
+        </span>
+      <% end %>
+    </div>
+
+    <%# 問題数 %>
+    <div class="flex items-center gap-2 mb-6">
+      <svg class="size-3.5 text-[#64748b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+      </svg>
+      <span class="text-sm text-[#64748b]"><%= question_count %>問</span>
+    </div>
+
+    <%# アクションボタン %>
+    <div class="mt-auto">
+      <%= link_to button[:label], quiz_path(quiz),
+          class: "block w-full py-3 rounded-lg text-base font-medium text-center transition-colors #{button[:class]}" %>
+    </div>
+  </div>
+</div>
