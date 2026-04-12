@@ -21,3 +21,6 @@ application.register("unit-select", UnitSelectController)
 
 import SchedulePaginationController from "./schedule_pagination_controller"
 application.register("schedule-pagination", SchedulePaginationController)
+
+import QuizRunnerController from "./quiz_runner_controller"
+application.register("quiz-runner", QuizRunnerController)

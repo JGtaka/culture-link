@@ -114,4 +114,48 @@ RSpec.describe "Quizzes", type: :request do
       end
     end
   end
+
+  describe "GET /quizzes/:id" do
+    let(:quiz) { create(:quiz, title: "ルネサンスの文化と芸術") }
+    let!(:question) { create(:question, body: "ルネサンス発祥の地は？", quiz: quiz) }
+    let!(:choice_correct) { create(:choice, body: "フィレンツェ", correct_answer: true, question: question) }
+    let!(:choice_wrong) { create(:choice, body: "ローマ", correct_answer: false, question: question) }
+
+    context "未ログインの場合" do
+      it "ログインページにリダイレクトされる" do
+        get quiz_path(quiz)
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    context "ログイン済みの場合" do
+      before { sign_in user }
+
+      it "正常にレスポンスを返す" do
+        get quiz_path(quiz)
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "クイズのタイトルが表示される" do
+        get quiz_path(quiz)
+        expect(response.body).to include("ルネサンスの文化と芸術")
+      end
+
+      it "問題文が表示される" do
+        get quiz_path(quiz)
+        expect(response.body).to include("ルネサンス発祥の地は？")
+      end
+
+      it "選択肢が表示される" do
+        get quiz_path(quiz)
+        expect(response.body).to include("フィレンツェ")
+        expect(response.body).to include("ローマ")
+      end
+
+      it "存在しないクイズは404を返す" do
+        get quiz_path(id: 0)
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
 end

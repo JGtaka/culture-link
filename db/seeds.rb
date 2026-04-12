@@ -234,9 +234,27 @@ quiz_data = [
     category: quiz_cat_renaissance,
     image_url: "/quiz_images/renaissance.jpg",
     questions: [
-      { body: "ルネサンスが最初に始まったイタリアの都市はどこか？", choices: [ [ "フィレンツェ", true ], [ "ローマ", false ], [ "ヴェネツィア", false ], [ "ミラノ", false ] ] },
-      { body: "『モナ・リザ』を描いた画家は誰か？", choices: [ [ "ミケランジェロ", false ], [ "ラファエロ", false ], [ "レオナルド・ダ・ヴィンチ", true ], [ "ボッティチェリ", false ] ] },
-      { body: "システィーナ礼拝堂の天井画を描いた芸術家は？", choices: [ [ "ミケランジェロ", true ], [ "ドナテッロ", false ], [ "ブルネレスキ", false ], [ "ジョット", false ] ] }
+      {
+        body: "ルネサンスが最初に始まったイタリアの都市はどこか？",
+        explanation: "ルネサンスは14世紀のフィレンツェで始まりました。メディチ家などの富裕な商人がパトロンとなり、芸術家や学者を支援したことで文化的な大変革が起こりました。",
+        image_url: "/renaissance.jpg",
+        image_credit: "https://commons.wikimedia.org/wiki/File:Sandro_Botticelli_046.jpg",
+        choices: [ [ "フィレンツェ", true ], [ "ローマ", false ], [ "ヴェネツィア", false ], [ "ミラノ", false ] ]
+      },
+      {
+        body: "『モナ・リザ』を描いた画家は誰か？",
+        explanation: "『モナ・リザ』はレオナルド・ダ・ヴィンチが1503年頃から制作した油彩画です。輪郭線を用いずに立体感を出す「スフマート技法」が特徴で、世界で最も有名な絵画の一つです。",
+        image_url: "/mona_lisa.jpg",
+        image_credit: "https://commons.wikimedia.org/wiki/File:Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg",
+        choices: [ [ "ミケランジェロ", false ], [ "ラファエロ", false ], [ "レオナルド・ダ・ヴィンチ", true ], [ "ボッティチェリ", false ] ]
+      },
+      {
+        body: "システィーナ礼拝堂の天井画を描いた芸術家は？",
+        explanation: "ミケランジェロが1508年から約4年をかけて描きました。『アダムの創造』をはじめ、旧約聖書の物語が9つの場面で描かれています。",
+        image_url: "/sistine_chapel.jpg",
+        image_credit: "https://commons.wikimedia.org/wiki/File:Sistine_Chapel_ceiling_03.jpg,-著者： Antoine Taveneaux-, -リサイズ-,-ライセンス：CC BY-SA 3.0-",
+        choices: [ [ "ミケランジェロ", true ], [ "ドナテッロ", false ], [ "ブルネレスキ", false ], [ "ジョット", false ] ]
+      }
     ]
   },
   {
@@ -244,8 +262,16 @@ quiz_data = [
     category: quiz_cat_greek,
     image_url: "/quiz_images/greek.jpg",
     questions: [
-      { body: "古代アテネで民主政を完成させた政治家は？", choices: [ [ "ソロン", false ], [ "ペリクレス", true ], [ "クレイステネス", false ], [ "ドラコン", false ] ] },
-      { body: "古代ギリシアの哲学者ソクラテスの弟子は？", choices: [ [ "アリストテレス", false ], [ "プラトン", true ], [ "ピタゴラス", false ], [ "タレス", false ] ] }
+      {
+        body: "古代アテネで民主政を完成させた政治家は？",
+        explanation: "ペリクレスは紀元前5世紀のアテネで民主政を完成させた政治家です。彼の時代にアテネ民主政は最盛期を迎え、パルテノン神殿の建設も進められました。",
+        choices: [ [ "ソロン", false ], [ "ペリクレス", true ], [ "クレイステネス", false ], [ "ドラコン", false ] ]
+      },
+      {
+        body: "古代ギリシアの哲学者ソクラテスの弟子は？",
+        explanation: "プラトンはソクラテスの弟子であり、後にアリストテレスの師となりました。『国家』などの著作で知られ、西洋哲学の基礎を築きました。",
+        choices: [ [ "アリストテレス", false ], [ "プラトン", true ], [ "ピタゴラス", false ], [ "タレス", false ] ]
+      }
     ]
   },
   {
@@ -253,8 +279,16 @@ quiz_data = [
     category: quiz_cat_baroque,
     image_url: "/quiz_images/baroque.jpg",
     questions: [
-      { body: "「音楽の父」と呼ばれる作曲家は？", choices: [ [ "モーツァルト", false ], [ "ヘンデル", false ], [ "バッハ", true ], [ "ヴィヴァルディ", false ] ] },
-      { body: "『四季』を作曲したイタリアの作曲家は？", choices: [ [ "ヴィヴァルディ", true ], [ "コレッリ", false ], [ "スカルラッティ", false ], [ "モンテヴェルディ", false ] ] }
+      {
+        body: "「音楽の父」と呼ばれる作曲家は？",
+        explanation: "ヨハン・セバスティアン・バッハはバロック音楽の集大成者として「音楽の父」と呼ばれています。対位法を極限まで高め、『マタイ受難曲』『平均律クラヴィーア曲集』など1,000曲以上を作曲しました。",
+        choices: [ [ "モーツァルト", false ], [ "ヘンデル", false ], [ "バッハ", true ], [ "ヴィヴァルディ", false ] ]
+      },
+      {
+        body: "『四季』を作曲したイタリアの作曲家は？",
+        explanation: "アントニオ・ヴィヴァルディはヴェネツィア出身のバロック期の作曲家で、ヴァイオリン協奏曲『四季』で広く知られています。500曲以上の協奏曲を残しました。",
+        choices: [ [ "ヴィヴァルディ", true ], [ "コレッリ", false ], [ "スカルラッティ", false ], [ "モンテヴェルディ", false ] ]
+      }
     ]
   },
   {
@@ -262,7 +296,11 @@ quiz_data = [
     category: quiz_cat_romanticism,
     image_url: "/quiz_images/romanticism.jpg",
     questions: [
-      { body: "『民衆を導く自由の女神』を描いた画家は？", choices: [ [ "ダヴィッド", false ], [ "アングル", false ], [ "ドラクロワ", true ], [ "クールベ", false ] ] }
+      {
+        body: "『民衆を導く自由の女神』を描いた画家は？",
+        explanation: "ウジェーヌ・ドラクロワが1830年の七月革命を題材に描いたロマン主義の代表作です。フランスの象徴として、紙幣や切手のデザインにも使われました。",
+        choices: [ [ "ダヴィッド", false ], [ "アングル", false ], [ "ドラクロワ", true ], [ "クールベ", false ] ]
+      }
     ]
   }
 ]
@@ -272,10 +310,14 @@ quiz_data.each do |data|
   quiz.update!(quiz_category: data[:category], image_url: data[:image_url])
 
   data[:questions].each do |q_data|
-    next if quiz.questions.exists?(body: q_data[:body])
+    question = quiz.questions.find_or_initialize_by(body: q_data[:body])
+    question.explanation = q_data[:explanation]
+    question.image_url = q_data[:image_url]
+    question.image_credit = q_data[:image_credit]
+    question.save!
 
-    question = quiz.questions.create!(body: q_data[:body])
     q_data[:choices].each do |body, correct|
+      next if question.choices.exists?(body: body)
       question.choices.create!(body: body, correct_answer: correct)
     end
   end

@@ -9,4 +9,8 @@ class QuizzesController < ApplicationController
       .order(:id)
       .page(params[:page]).per(6)
   end
+
+  def show
+    @quiz = Quiz.includes(questions: :choices).find(params[:id])
+  end
 end
