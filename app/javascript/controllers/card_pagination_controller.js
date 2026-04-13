@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
-// スケジュールカードのページネーション
+// カードのページネーション
 export default class extends Controller {
   static targets = ["page", "prevBtn", "nextBtn", "indicator"]
 
