@@ -101,6 +101,29 @@ RSpec.describe "Characters", type: :request do
           }.not_to change { ArticleView.count }
         end
       end
+
+      context "Turboのprefetchリクエストの場合" do
+        let(:user) { create(:user) }
+        before { sign_in user }
+
+        it "X-Sec-Purpose: prefetch が付いていると記録されない" do
+          expect {
+            get character_path(character), headers: { "X-Sec-Purpose" => "prefetch" }
+          }.not_to change { ArticleView.count }
+        end
+
+        it "Sec-Purpose: prefetch が付いていると記録されない" do
+          expect {
+            get character_path(character), headers: { "Sec-Purpose" => "prefetch" }
+          }.not_to change { ArticleView.count }
+        end
+
+        it "Purpose: prefetch が付いていると記録されない" do
+          expect {
+            get character_path(character), headers: { "Purpose" => "prefetch" }
+          }.not_to change { ArticleView.count }
+        end
+      end
     end
   end
 end
