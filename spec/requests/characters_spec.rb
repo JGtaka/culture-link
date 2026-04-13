@@ -61,5 +61,69 @@ RSpec.describe "Characters", type: :request do
         expect(response).to have_http_status(:not_found)
       end
     end
+
+    context "閲覧履歴の記録" do
+      let(:user) { create(:user) }
+
+      context "ログイン中の場合" do
+        before { sign_in user }
+
+        it "閲覧するとarticle_viewが記録される" do
+          expect {
+            get character_path(character)
+          }.to change { ArticleView.count }.by(1)
+          view = ArticleView.last
+          expect(view.user).to eq(user)
+          expect(view.article).to eq(character)
+        end
+
+        it "同じ人物を複数回閲覧してもレコードは1件のまま" do
+          get character_path(character)
+          expect {
+            get character_path(character)
+          }.not_to change { ArticleView.count }
+        end
+
+        it "再閲覧時にupdated_atが更新される" do
+          get character_path(character)
+          first_updated_at = ArticleView.last.updated_at
+          travel_to 1.hour.from_now do
+            get character_path(character)
+          end
+          expect(ArticleView.last.updated_at).to be > first_updated_at
+        end
+      end
+
+      context "未ログインの場合" do
+        it "article_viewは記録されない" do
+          expect {
+            get character_path(character)
+          }.not_to change { ArticleView.count }
+        end
+      end
+
+      context "Turboのprefetchリクエストの場合" do
+        let(:user) { create(:user) }
+        before { sign_in user }
+
+        it "X-Sec-Purpose: prefetch が付いていると記録されない" do
+          expect {
+            get character_path(character), headers: { "X-Sec-Purpose" => "prefetch" }
+          }.not_to change { ArticleView.count }
+        end
+
+        it "Sec-Purpose: prefetch が付いていると記録されない" do
+          expect {
+            get character_path(character), headers: { "Sec-Purpose" => "prefetch" }
+          }.not_to change { ArticleView.count }
+        end
+
+        it "Purpose: prefetch が付いていると記録されない" do
+          expect {
+            get character_path(character), headers: { "Purpose" => "prefetch" }
+          }.not_to change { ArticleView.count }
+        end
+      end
+    end
   end
 end

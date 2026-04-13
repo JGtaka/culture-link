@@ -5,6 +5,7 @@ class Character < ApplicationRecord
   has_many :event_characters
   has_many :events, through: :event_characters
   has_many :favorites, as: :favorable, dependent: :destroy
+  has_many :article_views, as: :article, dependent: :destroy
 
   validates :name, presence: true
   validates :description, presence: true

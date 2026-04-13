@@ -6,6 +6,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%# Turboのリンク先読み(prefetch)を無効化: article_viewsの記録が実クリックと一致しないため %>
+    <meta name="turbo-prefetch" content="false">
+
 
     <%= yield :head %>
 

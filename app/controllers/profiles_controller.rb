@@ -8,5 +8,9 @@ class ProfilesController < ApplicationController
       .includes(:quiz)
       .order(updated_at: :desc)
     @quiz_result_pages = @quiz_results.each_slice(3).to_a
+    @recent_article_views = current_user.article_views
+      .includes(:article)
+      .order(updated_at: :desc)
+      .limit(4)
   end
 end

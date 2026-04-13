@@ -24,6 +24,61 @@ RSpec.describe "Profiles", type: :request do
         expect(response.body).to include("おかえりなさい")
       end
 
+      describe "最近チェックした項目" do
+        context "閲覧履歴がある場合" do
+          let!(:old_event) { create(:event, title: "古い出来事") }
+          let!(:new_event) { create(:event, title: "新しい出来事") }
+          let!(:character) { create(:character, name: "登場人物A") }
+
+          before do
+            create(:article_view, user: user, article: old_event, updated_at: 3.days.ago)
+            create(:article_view, user: user, article: new_event, updated_at: 1.hour.ago)
+            create(:article_view, user: user, article: character, updated_at: 1.day.ago)
+          end
+
+          it "閲覧したEventとCharacterが両方表示される" do
+            get profile_path
+            expect(response.body).to include("古い出来事")
+            expect(response.body).to include("新しい出来事")
+            expect(response.body).to include("登場人物A")
+          end
+
+          it "最新閲覧順(updated_at DESC)に並ぶ" do
+            get profile_path
+            new_pos = response.body.index("新しい出来事")
+            char_pos = response.body.index("登場人物A")
+            old_pos = response.body.index("古い出来事")
+            expect(new_pos).to be < char_pos
+            expect(char_pos).to be < old_pos
+          end
+
+          it "他ユーザーの閲覧履歴は表示されない" do
+            other_user = create(:user)
+            other_event = create(:event, title: "他人の出来事")
+            create(:article_view, user: other_user, article: other_event)
+            get profile_path
+            expect(response.body).not_to include("他人の出来事")
+          end
+
+          it "最大4件まで表示される" do
+            5.times do |i|
+              event = create(:event, title: "イベント#{i}")
+              create(:article_view, user: user, article: event, updated_at: (i + 10).hours.ago)
+            end
+            get profile_path
+            # 最古の1件(3日前の「古い出来事")は4件制限で切られる想定
+            expect(response.body).not_to include("古い出来事")
+          end
+        end
+
+        context "閲覧履歴がない場合" do
+          it "空状態メッセージが表示される" do
+            get profile_path
+            expect(response.body).to include("直近に確認した記事はありません")
+          end
+        end
+      end
+
       describe "学習履歴カード" do
         context "受験済みのクイズがある場合" do
           let!(:completed_quiz) { create(:quiz, title: "ルネサンスのクイズ") }
