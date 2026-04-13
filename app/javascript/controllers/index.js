@@ -19,8 +19,8 @@ application.register("weekday-toggle", WeekdayToggleController)
 import UnitSelectController from "./unit_select_controller"
 application.register("unit-select", UnitSelectController)
 
-import SchedulePaginationController from "./schedule_pagination_controller"
-application.register("schedule-pagination", SchedulePaginationController)
+import CardPaginationController from "./card_pagination_controller"
+application.register("card-pagination", CardPaginationController)
 
 import QuizRunnerController from "./quiz_runner_controller"
 application.register("quiz-runner", QuizRunnerController)

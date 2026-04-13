@@ -78,25 +78,25 @@
   <div class="grid grid-cols-3 gap-8">
     <%# 今後の学習スケジュール（2カラム分） %>
     <div class="col-span-2">
-      <div class="bg-white border border-[#e2e8f0] rounded-lg shadow-sm overflow-hidden" data-controller="schedule-pagination">
+      <div class="bg-white border border-[#e2e8f0] rounded-lg shadow-sm overflow-hidden" data-controller="card-pagination">
         <%# ヘッダー %>
         <div class="flex items-center justify-between px-6 py-6 border-b border-[#f1f5f9]">
           <h2 class="text-[18px] font-medium text-[#0f172a]">今後の学習スケジュール</h2>
           <% if @schedules.any? %>
             <div class="flex items-center gap-3">
               <button class="p-1 rounded hover:bg-[#f1f5f9] disabled:opacity-30"
-                data-action="click->schedule-pagination#prev"
-                data-schedule-pagination-target="prevBtn">
+                data-action="click->card-pagination#prev"
+                data-card-pagination-target="prevBtn">
                 <svg class="w-5 h-5 text-[#64748b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                 </svg>
               </button>
-              <span class="text-[14px] font-semibold text-[#1e293b]" data-schedule-pagination-target="indicator">
+              <span class="text-[14px] font-semibold text-[#1e293b]" data-card-pagination-target="indicator">
                 1 / <%= @schedules.size %>
               </span>
               <button class="p-1 rounded hover:bg-[#f1f5f9] disabled:opacity-30"
-                data-action="click->schedule-pagination#next"
-                data-schedule-pagination-target="nextBtn">
+                data-action="click->card-pagination#next"
+                data-card-pagination-target="nextBtn">
                 <svg class="w-5 h-5 text-[#64748b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                 </svg>
@@ -107,7 +107,7 @@
 
         <% if @schedules.any? %>
           <% @schedules.each_with_index do |schedule, i| %>
-            <div class="<%= 'hidden' unless i == 0 %>" data-schedule-pagination-target="page">
+            <div class="<%= 'hidden' unless i == 0 %>" data-card-pagination-target="page">
               <div class="flex flex-col gap-6 p-6">
                 <%# 学習期間 %>
                 <div class="flex items-center gap-3">
