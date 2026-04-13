@@ -6,6 +6,7 @@ class Event < ApplicationRecord
   has_many :event_characters
   has_many :characters, through: :event_characters
   has_many :favorites, as: :favorable, dependent: :destroy
+  has_many :article_views, as: :article, dependent: :destroy
 
   validates :title, presence: true
   validates :year, presence: true

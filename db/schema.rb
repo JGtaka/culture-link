@@ -10,9 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_12_102024) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_13_074322) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "article_views", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "article_type", null: false
+    t.bigint "article_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_type", "article_id"], name: "index_article_views_on_article"
+    t.index ["user_id", "article_type", "article_id"], name: "index_article_views_on_user_and_article", unique: true
+    t.index ["user_id", "updated_at"], name: "index_article_views_on_user_id_and_updated_at"
+    t.index ["user_id"], name: "index_article_views_on_user_id"
+  end
 
   create_table "categories", force: :cascade do |t|
     t.string "name"
@@ -183,6 +195,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_12_102024) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "article_views", "users"
   add_foreign_key "characters", "periods"
   add_foreign_key "characters", "regions"
   add_foreign_key "characters", "study_units"
