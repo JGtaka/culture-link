@@ -17,61 +17,67 @@
     <% end %>
   </div>
 
-  <%# 学習進捗カード %>
-  <div class="grid grid-cols-3 gap-6 mb-8">
-    <%# ルネサンス %>
-    <div class="bg-white border border-[#e2e8f0] rounded-lg shadow-sm p-6 flex items-center justify-between">
-      <div>
-        <p class="text-[14px] text-[#64748b] uppercase tracking-wider">ルネサンス</p>
-        <p class="text-[24px] font-bold text-[#0f172a] mt-1">75% 完了</p>
-        <p class="text-[12px] text-[#16a34a] mt-1">↑ 昨日より12%アップ</p>
-      </div>
-      <div class="relative size-[80px]">
-        <svg class="size-[80px] -rotate-90" viewBox="0 0 36 36">
-          <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                fill="none" stroke="#e2e8f0" stroke-width="3" />
-          <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                fill="none" stroke="#3713ec" stroke-width="3" stroke-dasharray="75, 100" />
-        </svg>
-        <span class="absolute inset-0 flex items-center justify-center text-[12px] font-bold text-[#1e293b]">75%</span>
-      </div>
+  <%# 学習履歴カード %>
+  <div class="mb-8" data-controller="card-pagination">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-[18px] font-medium text-[#0f172a]">学習履歴</h2>
+      <% if @quiz_result_pages.size > 1 %>
+        <div class="flex items-center gap-3">
+          <button class="p-1 rounded hover:bg-[#f1f5f9] disabled:opacity-30"
+            data-action="click->card-pagination#prev"
+            data-card-pagination-target="prevBtn">
+            <svg class="w-5 h-5 text-[#64748b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+          </button>
+          <span class="text-[14px] font-semibold text-[#1e293b]" data-card-pagination-target="indicator">
+            1 / <%= @quiz_result_pages.size %>
+          </span>
+          <button class="p-1 rounded hover:bg-[#f1f5f9] disabled:opacity-30"
+            data-action="click->card-pagination#next"
+            data-card-pagination-target="nextBtn">
+            <svg class="w-5 h-5 text-[#64748b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+      <% end %>
     </div>
 
-    <%# 中世キリスト教 %>
-    <div class="bg-white border border-[#e2e8f0] rounded-lg shadow-sm p-6 flex items-center justify-between">
-      <div>
-        <p class="text-[14px] text-[#64748b] uppercase tracking-wider">中世キリスト教</p>
-        <p class="text-[24px] font-bold text-[#0f172a] mt-1">42% 完了</p>
-        <p class="text-[12px] text-[#2563eb] mt-1">次：蒸気機関</p>
-      </div>
-      <div class="relative size-[80px]">
-        <svg class="size-[80px] -rotate-90" viewBox="0 0 36 36">
-          <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                fill="none" stroke="#e2e8f0" stroke-width="3" />
-          <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                fill="none" stroke="#3713ec" stroke-width="3" stroke-dasharray="42, 100" />
+    <% if @quiz_result_pages.any? %>
+      <% @quiz_result_pages.each_with_index do |page_results, page_index| %>
+        <div class="<%= 'hidden' unless page_index == 0 %> grid grid-cols-3 gap-6" data-card-pagination-target="page">
+          <% page_results.each do |result| %>
+            <% color = quiz_result_color(result.score) %>
+            <div class="bg-white border border-[#e2e8f0] rounded-lg shadow-sm p-6 flex items-center justify-between">
+              <div class="min-w-0 flex-1 mr-4">
+                <p class="text-[14px] text-[#64748b] uppercase tracking-wider truncate"><%= result.quiz.title %></p>
+                <p class="text-[24px] font-bold text-[#0f172a] mt-1"><%= result.score %>% 完了</p>
+              </div>
+              <div class="relative size-[80px] shrink-0">
+                <svg class="size-[80px] -rotate-90" viewBox="0 0 36 36">
+                  <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                        fill="none" stroke="#e2e8f0" stroke-width="3" />
+                  <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                        fill="none" stroke="<%= color %>" stroke-width="3" stroke-dasharray="<%= result.score %>, 100" />
+                </svg>
+                <span class="absolute inset-0 flex items-center justify-center text-[12px] font-bold" style="color: <%= color %>;"><%= result.score %>%</span>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="bg-white border border-[#e2e8f0] rounded-lg shadow-sm flex flex-col items-center justify-center py-16 px-6">
+        <svg class="w-12 h-12 text-[#cbd5e1] mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
         </svg>
-        <span class="absolute inset-0 flex items-center justify-center text-[12px] font-bold text-[#1e293b]">42%</span>
+        <p class="text-[16px] text-[#64748b] mb-6">まだ受験済みのクイズがありません</p>
+        <%= link_to quizzes_path, class: "bg-gradient-to-r from-[#3713ec] to-[#5b3ff0] text-white text-[14px] font-medium px-6 py-3 rounded-full shadow-[0px_8px_10px_-6px_rgba(55,19,236,0.2)] hover:opacity-90 transition" do %>
+          クイズを受ける
+        <% end %>
       </div>
-    </div>
-
-    <%# 近代ロマン主義 %>
-    <div class="bg-white border border-[#e2e8f0] rounded-lg shadow-sm p-6 flex items-center justify-between">
-      <div>
-        <p class="text-[14px] text-[#64748b] uppercase tracking-wider">近代ロマン主義</p>
-        <p class="text-[24px] font-bold text-[#0f172a] mt-1">18% 完了</p>
-        <p class="text-[12px] text-[#94a3b8] mt-1">開始したばかり</p>
-      </div>
-      <div class="relative size-[80px]">
-        <svg class="size-[80px] -rotate-90" viewBox="0 0 36 36">
-          <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                fill="none" stroke="#e2e8f0" stroke-width="3" />
-          <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                fill="none" stroke="#3713ec" stroke-width="3" stroke-dasharray="18, 100" />
-        </svg>
-        <span class="absolute inset-0 flex items-center justify-center text-[12px] font-bold text-[#1e293b]">18%</span>
-      </div>
-    </div>
+    <% end %>
   </div>
 
   <%# スケジュール＋最近チェックした項目 %>
