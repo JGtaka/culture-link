@@ -47,6 +47,7 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
   gem "rspec-rails"
   gem "factory_bot_rails"
+  gem "dotenv-rails"
 end
 
 group :development do
@@ -67,3 +68,5 @@ gem "ransack", "~> 4.0"
 gem "devise"
 gem "rails-i18n"
 gem "devise-i18n"
+gem "omniauth-google-oauth2"
+gem "omniauth-rails_csrf_protection"
