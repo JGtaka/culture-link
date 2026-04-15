@@ -14,9 +14,9 @@
       </div>
 
       <nav class="flex items-center gap-6">
-        <%= link_to "プライバシー", "#", class: "text-[14px] text-[#94a3b8] font-medium hover:text-white" %>
-        <%= link_to "利用規約", "#", class: "text-[14px] text-[#94a3b8] font-medium hover:text-white" %>
-        <%= link_to "お問い合わせ", "#", class: "text-[14px] text-[#94a3b8] font-medium hover:text-white" %>
+        <%= link_to "プライバシー", privacy_path, class: "text-[14px] text-[#94a3b8] font-medium hover:text-white" %>
+        <%= link_to "利用規約", terms_path, class: "text-[14px] text-[#94a3b8] font-medium hover:text-white" %>
+        <%= mail_to "supportculturelink@gmail.com", "お問い合わせ", class: "text-[14px] text-[#94a3b8] font-medium hover:text-white" %>
       </nav>
     </div>
 

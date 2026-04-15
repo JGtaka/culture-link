@@ -26,6 +26,14 @@
         <%= f.submit "ログイン",
             class: "w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition cursor-pointer font-medium" %>
       </div>
+
+      <p class="text-xs text-gray-500 text-center mb-2">
+        ログインすることで、
+        <%= link_to "利用規約", terms_path, class: "text-blue-600 hover:underline" %>
+        および
+        <%= link_to "プライバシーポリシー", privacy_path, class: "text-blue-600 hover:underline" %>
+        に同意したものとみなします。
+      </p>
     <% end %>
 
     <%= render "devise/shared/links" %>
