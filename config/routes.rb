@@ -9,6 +9,8 @@ Rails.application.routes.draw do
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
 
+  get "privacy", to: "static_pages#privacy"
+  get "terms", to: "static_pages#terms"
   get "profile", to: "profiles#show"
   resources :favorites, only: [ :index, :create, :destroy ]
   resources :schedules, only: [ :new, :create, :edit, :update, :destroy ]
