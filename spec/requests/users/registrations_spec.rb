@@ -46,4 +46,63 @@ RSpec.describe "Users::Registrations", type: :request do
       expect(user.reload.name).to eq("変更前")
     end
   end
+
+  describe "DELETE /users (退会 - 通常ユーザー)" do
+    it "現在のパスワードが正しければ退会できる" do
+      expect {
+        delete user_registration_path, params: { user: { current_password: "password123" } }
+      }.to change(User, :count).by(-1)
+    end
+
+    it "退会成功後はトップページにリダイレクトされる" do
+      delete user_registration_path, params: { user: { current_password: "password123" } }
+      expect(response).to redirect_to(root_path)
+    end
+
+    it "関連データも一緒に削除される" do
+      create(:favorite, user: user)
+      expect {
+        delete user_registration_path, params: { user: { current_password: "password123" } }
+      }.to change(Favorite, :count).by(-1)
+    end
+
+    it "現在のパスワードが間違っていれば退会できない" do
+      expect {
+        delete user_registration_path, params: { user: { current_password: "wrongpassword" } }
+      }.not_to change(User, :count)
+    end
+
+    it "現在のパスワードが間違っていればアカウント設定ページにリダイレクトされる" do
+      delete user_registration_path, params: { user: { current_password: "wrongpassword" } }
+      expect(response).to redirect_to(account_path)
+    end
+
+    it "現在のパスワードが空なら退会できない" do
+      expect {
+        delete user_registration_path, params: { user: { current_password: "" } }
+      }.not_to change(User, :count)
+    end
+  end
+
+  describe "DELETE /users (退会 - Google連携ユーザー)" do
+    let(:user) { create(:user, :google_user) }
+
+    it "確認テキストが『退会』なら退会できる" do
+      expect {
+        delete user_registration_path, params: { user: { deletion_confirmation: "退会" } }
+      }.to change(User, :count).by(-1)
+    end
+
+    it "確認テキストが一致しなければ退会できない" do
+      expect {
+        delete user_registration_path, params: { user: { deletion_confirmation: "違う" } }
+      }.not_to change(User, :count)
+    end
+
+    it "確認テキストが空なら退会できない" do
+      expect {
+        delete user_registration_path, params: { user: {} }
+      }.not_to change(User, :count)
+    end
+  end
 end

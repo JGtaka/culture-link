@@ -12,6 +12,10 @@ Rails.application.routes.draw do
   get "privacy", to: "static_pages#privacy"
   get "terms", to: "static_pages#terms"
   get "profile", to: "profiles#show"
+  get "account", to: "accounts#show"
+  namespace :account do
+    resource :password, only: [ :update ]
+  end
   resources :favorites, only: [ :index, :create, :destroy ]
   resources :schedules, only: [ :new, :create, :edit, :update, :destroy ]
 

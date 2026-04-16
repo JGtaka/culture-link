@@ -92,6 +92,18 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "#password_changeable?" do
+    it "通常ユーザーはtrueを返す" do
+      user = build(:user)
+      expect(user.password_changeable?).to be true
+    end
+
+    it "OAuth連携ユーザーはfalseを返す" do
+      user = build(:user, :google_user)
+      expect(user.password_changeable?).to be false
+    end
+  end
+
   describe "#password_required?" do
     context "OAuth経由のユーザー(providerあり)の場合" do
       it "パスワードなしでも保存できる" do
