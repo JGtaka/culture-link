@@ -1,0 +1,93 @@
+<div class="max-w-[720px] mx-auto px-8 py-12">
+  <div class="mb-8">
+    <h1 class="text-[30px] font-medium text-[#0f172a]">アカウント設定</h1>
+    <p class="text-[16px] text-[#64748b] mt-1">パスワードの変更や退会の手続きができます。</p>
+  </div>
+
+  <%# プロフィール編集への導線 %>
+  <div class="bg-white border border-[#e2e8f0] rounded-lg shadow-sm p-6 mb-6">
+    <h2 class="text-[18px] font-medium text-[#0f172a] mb-2">プロフィール情報</h2>
+    <p class="text-[14px] text-[#64748b] mb-4">ニックネームやメールアドレスを変更できます。</p>
+    <%= link_to edit_user_registration_path, class: "inline-flex items-center gap-2 bg-white border border-[#e2e8f0] text-[#475569] text-[14px] font-medium px-4 py-2 rounded-lg hover:bg-[#f8fafc] transition" do %>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+      </svg>
+      プロフィールを編集する
+    <% end %>
+  </div>
+
+  <%# パスワード変更（通常ユーザーのみ） %>
+  <% if current_user.password_changeable? %>
+    <div class="bg-white border border-[#e2e8f0] rounded-lg shadow-sm p-6 mb-6">
+      <h2 class="text-[18px] font-medium text-[#0f172a] mb-2">パスワード変更</h2>
+      <p class="text-[14px] text-[#64748b] mb-6">現在のパスワードを入力してから、新しいパスワードを設定してください。</p>
+
+      <%= form_with(model: current_user, url: account_password_path, method: :patch, scope: :user, html: { class: "flex flex-col gap-4" }) do |f| %>
+        <% if current_user.errors.any? %>
+          <div class="bg-[#fef2f2] border border-[#fecaca] text-[#991b1b] text-[14px] rounded-lg px-4 py-3">
+            <ul class="list-disc pl-5">
+              <% current_user.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="flex flex-col gap-1">
+          <%= f.label :current_password, "現在のパスワード", class: "text-[14px] font-medium text-[#0f172a]" %>
+          <%= f.password_field :current_password, autocomplete: "current-password", required: true,
+              class: "border border-[#e2e8f0] rounded-lg px-4 py-2 text-[14px] focus:outline-none focus:border-[#3713ec]" %>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <%= f.label :password, "新しいパスワード", class: "text-[14px] font-medium text-[#0f172a]" %>
+          <%= f.password_field :password, autocomplete: "new-password", required: true,
+              class: "border border-[#e2e8f0] rounded-lg px-4 py-2 text-[14px] focus:outline-none focus:border-[#3713ec]" %>
+          <p class="text-[12px] text-[#94a3b8]">6文字以上で入力してください。</p>
+        </div>
+
+        <div class="flex flex-col gap-1">
+          <%= f.label :password_confirmation, "新しいパスワード（確認）", class: "text-[14px] font-medium text-[#0f172a]" %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", required: true,
+              class: "border border-[#e2e8f0] rounded-lg px-4 py-2 text-[14px] focus:outline-none focus:border-[#3713ec]" %>
+        </div>
+
+        <div>
+          <%= f.submit "パスワードを変更する",
+              class: "bg-gradient-to-r from-[#3713ec] to-[#5b3ff0] text-white text-[14px] font-medium px-6 py-3 rounded-full shadow-[0px_8px_10px_-6px_rgba(55,19,236,0.2)] hover:opacity-90 transition cursor-pointer" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%# 退会 %>
+  <div class="bg-white border border-[#fecaca] rounded-lg shadow-sm p-6">
+    <h2 class="text-[18px] font-medium text-[#991b1b] mb-2">退会する</h2>
+    <p class="text-[14px] text-[#64748b] mb-6">
+      退会するとアカウントと関連データ（お気に入り、学習スケジュール、クイズ結果など）がすべて削除されます。この操作は取り消せません。
+    </p>
+
+    <%= form_with(url: user_registration_path, method: :delete, scope: :user, html: { class: "flex flex-col gap-4", data: { turbo_confirm: "本当に退会しますか？この操作は取り消せません。" } }) do |f| %>
+      <% if current_user.password_changeable? %>
+        <div class="flex flex-col gap-1">
+          <%= f.label :current_password, "現在のパスワード", class: "text-[14px] font-medium text-[#0f172a]" %>
+          <%= f.password_field :current_password, autocomplete: "current-password", required: true,
+              class: "border border-[#e2e8f0] rounded-lg px-4 py-2 text-[14px] focus:outline-none focus:border-[#ef4444]" %>
+          <p class="text-[12px] text-[#94a3b8]">確認のため、現在のパスワードを入力してください。</p>
+        </div>
+      <% else %>
+        <div class="flex flex-col gap-1">
+          <%= f.label :deletion_confirmation, "確認入力", class: "text-[14px] font-medium text-[#0f172a]" %>
+          <%= f.text_field :deletion_confirmation, required: true, placeholder: "退会",
+              class: "border border-[#e2e8f0] rounded-lg px-4 py-2 text-[14px] focus:outline-none focus:border-[#ef4444]" %>
+          <p class="text-[12px] text-[#94a3b8]">確認のため「退会」と入力してください。</p>
+        </div>
+      <% end %>
+
+      <div>
+        <%= f.submit "退会する",
+            class: "bg-[#ef4444] text-white text-[14px] font-medium px-6 py-3 rounded-full shadow-[0px_8px_10px_-6px_rgba(239,68,68,0.3)] hover:opacity-90 transition cursor-pointer" %>
+      </div>
+    <% end %>
+  </div>
+</div>
