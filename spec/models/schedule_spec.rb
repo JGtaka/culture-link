@@ -48,6 +48,23 @@ RSpec.describe Schedule, type: :model do
     end
   end
 
+  describe "#weekdays=" do
+    it "nilや空文字を除外して保存する" do
+      schedule = build(:schedule, weekdays: [ nil, "", "0", 1, 2 ])
+      expect(schedule.weekdays).to eq([ 0, 1, 2 ])
+    end
+
+    it "nilのみ渡された場合は空配列になる" do
+      schedule = build(:schedule, weekdays: [ nil, "" ])
+      expect(schedule.weekdays).to eq([])
+    end
+
+    it "nilが渡された場合は空配列になる" do
+      schedule = build(:schedule, weekdays: nil)
+      expect(schedule.weekdays).to eq([])
+    end
+  end
+
   describe "アソシエーション" do
     it "study_unitsを紐付けられる" do
       schedule = create(:schedule)

@@ -11,6 +11,7 @@ class SchedulesController < ApplicationController
     @schedule = current_user.schedules.build(schedule_params)
 
     if @schedule.save
+      ScheduleNotifier.new(@schedule).notify_registered
       redirect_to profile_path, notice: "スケジュールを作成しました"
     else
       @study_units = StudyUnit.all

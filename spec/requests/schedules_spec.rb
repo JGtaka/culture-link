@@ -58,6 +58,18 @@ RSpec.describe "Schedules", type: :request do
       post schedules_path, params: { schedule: { start_date: nil, end_date: nil, daily_study_hours: nil } }
       expect(response).to have_http_status(:unprocessable_entity)
     end
+
+    it "作成成功時に登録通知メールが送信される" do
+      expect {
+        post schedules_path, params: valid_params
+      }.to have_enqueued_mail(ScheduleMailer, :registered)
+    end
+
+    it "作成失敗時は登録通知メールが送信されない" do
+      expect {
+        post schedules_path, params: { schedule: { start_date: nil, end_date: nil, daily_study_hours: nil } }
+      }.not_to have_enqueued_mail(ScheduleMailer, :registered)
+    end
   end
 
   describe "GET /schedules/:id/edit" do

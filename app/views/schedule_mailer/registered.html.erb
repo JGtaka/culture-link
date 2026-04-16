@@ -1,0 +1,49 @@
+<% weekday_names = %w[月 火 水 木 金 土 日] %>
+<div style="font-family: 'Hiragino Sans', 'Meiryo', sans-serif; color: #0f172a; max-width: 600px;">
+  <p><%= @user.name %>さん</p>
+
+  <p>culture-linkをご利用いただきありがとうございます。<br>
+  以下の内容で学習予定を登録しました。</p>
+
+  <table style="border-collapse: collapse; margin: 16px 0;">
+    <tr>
+      <th style="text-align: left; padding: 8px 16px 8px 0; vertical-align: top; color: #64748b;">学習期間</th>
+      <td style="padding: 8px 0;"><%= l @schedule.start_date, format: :long %> 〜 <%= l @schedule.end_date, format: :long %></td>
+    </tr>
+    <tr>
+      <th style="text-align: left; padding: 8px 16px 8px 0; vertical-align: top; color: #64748b;">1日の目標学習時間</th>
+      <td style="padding: 8px 0;"><%= @schedule.daily_study_hours %>時間</td>
+    </tr>
+    <% if @schedule.weekdays.present? %>
+      <tr>
+        <th style="text-align: left; padding: 8px 16px 8px 0; vertical-align: top; color: #64748b;">学習曜日</th>
+        <td style="padding: 8px 0;"><%= @schedule.weekdays.compact.map { |i| weekday_names[i] }.join("、") %></td>
+      </tr>
+    <% end %>
+    <% if @study_units.any? %>
+      <tr>
+        <th style="text-align: left; padding: 8px 16px 8px 0; vertical-align: top; color: #64748b;">学習ユニット</th>
+        <td style="padding: 8px 0;"><%= @study_units.map(&:name).join("、") %></td>
+      </tr>
+    <% end %>
+    <% if @schedule.memo.present? %>
+      <tr>
+        <th style="text-align: left; padding: 8px 16px 8px 0; vertical-align: top; color: #64748b;">メモ・目標</th>
+        <td style="padding: 8px 0; white-space: pre-wrap;"><%= @schedule.memo %></td>
+      </tr>
+    <% end %>
+  </table>
+
+  <p>学習予定の確認や編集は、プロフィールページから行えます。</p>
+
+  <p>
+    <%= link_to "プロフィールページを開く", profile_url, style: "color: #3713ec;" %>
+  </p>
+
+  <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;">
+
+  <p style="font-size: 12px; color: #94a3b8;">
+    このメールはculture-linkのシステムから自動送信されています。<br>
+    お問い合わせ: supportculturelink@gmail.com
+  </p>
+</div>
