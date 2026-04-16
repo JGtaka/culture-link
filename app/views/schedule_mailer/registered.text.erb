@@ -1,0 +1,30 @@
+<% weekday_names = %w[月 火 水 木 金 土 日] %>
+<%= @user.name %>さん
+
+culture-linkをご利用いただきありがとうございます。
+以下の内容で学習予定を登録しました。
+
+■ 学習期間
+<%= l @schedule.start_date, format: :long %> 〜 <%= l @schedule.end_date, format: :long %>
+
+■ 1日の目標学習時間
+<%= @schedule.daily_study_hours %>時間
+<% if @schedule.weekdays.present? %>
+■ 学習曜日
+<%= @schedule.weekdays.compact.map { |i| weekday_names[i] }.join("、") %>
+<% end %>
+<% if @study_units.any? %>
+■ 学習ユニット
+<%= @study_units.map(&:name).join("、") %>
+<% end %>
+<% if @schedule.memo.present? %>
+■ メモ・目標
+<%= @schedule.memo %>
+<% end %>
+
+学習予定の確認や編集は、プロフィールページから行えます。
+<%= profile_url %>
+
+---
+このメールはculture-linkのシステムから自動送信されています。
+お問い合わせ: supportculturelink@gmail.com

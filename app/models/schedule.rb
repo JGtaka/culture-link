@@ -9,6 +9,10 @@ class Schedule < ApplicationRecord
     numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 12 }
   validate :end_date_after_start_date
 
+  def weekdays=(values)
+    super(Array(values).compact_blank)
+  end
+
   private
 
   def end_date_after_start_date

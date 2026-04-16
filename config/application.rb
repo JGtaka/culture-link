@@ -26,5 +26,7 @@ module Myapp
     # config.eager_load_paths << Rails.root.join("extras")
 
     config.action_view.field_error_proc = proc { |html_tag, _instance| html_tag }
+
+    config.x.mail_from = "culture-link <noreply@mail.culturelink.jp>".freeze
   end
 end
