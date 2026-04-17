@@ -8,6 +8,11 @@ class Event < ApplicationRecord
   has_many :favorites, as: :favorable, dependent: :destroy
   has_many :article_views, as: :article, dependent: :destroy
 
+  has_one_attached :image
+  validates :image, content_type: [ :png, :jpg, :jpeg, :webp ],
+                    size: { less_than: 5.megabytes },
+                    if: -> { image.attached? }
+
   validates :title, presence: true
   validates :year, presence: true
   validates :description, presence: true
