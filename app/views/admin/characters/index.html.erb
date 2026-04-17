@@ -1,0 +1,118 @@
+<%# パンくずリスト %>
+<div class="flex items-center gap-2 mb-4">
+  <span class="text-[11px] font-bold text-[rgba(66,71,84,0.6)] uppercase tracking-[1.1px]">
+    <%= link_to "ホーム", admin_root_path, class: "hover:text-[#424754]" %>
+  </span>
+  <span class="text-[11px] text-[#c2c6d6]">/</span>
+  <span class="text-[11px] font-bold text-[#424754] uppercase tracking-[1.1px]">人物</span>
+</div>
+
+<%# ヘッダー %>
+<div class="flex items-end justify-between mb-8">
+  <h1 class="text-4xl font-medium text-[#191c1e] tracking-[-0.9px]">人物一覧</h1>
+  <%= link_to new_admin_character_path, class: "flex gap-2 items-center bg-[#2563eb] text-white text-sm font-bold px-6 py-3 rounded-lg shadow-[0px_10px_15px_-3px_rgba(37,99,235,0.2)]  hover:opacity-90" do %>
+    <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+    </svg>
+    新規追加
+  <% end %>
+</div>
+
+<%# フィルター %>
+<div class="bg-white rounded-xl shadow-[0px_12px_32px_0px_rgba(25,28,30,0.04)] p-6 pb-6 flex gap-4 items-center mb-8">
+  <%= form_tag admin_characters_path, method: :get, class: "flex gap-4 items-center w-full" do %>
+    <div class="relative flex-1 min-w-[160px]">
+      <%= select_tag :period_id,
+        options_from_collection_for_select(@periods, :id, :name, params[:period_id]),
+        include_blank: "時代で絞り込み",
+        class: "bg-[#f2f4f6] w-full rounded-lg pl-4 pr-10 py-2.5 text-sm font-medium text-[#424754] appearance-none cursor-pointer",
+        onchange: "this.form.requestSubmit()" %>
+      <svg class="absolute right-3 top-1/2 -translate-y-1/2 size-3 text-[#424754] pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+      </svg>
+    </div>
+    <div class="relative flex-1 min-w-[160px]">
+      <%= select_tag :study_unit_id,
+        options_from_collection_for_select(@study_units, :id, :name, params[:study_unit_id]),
+        include_blank: "学習単位で絞り込み",
+        class: "bg-[#f2f4f6] w-full rounded-lg pl-4 pr-10 py-2.5 text-sm font-medium text-[#424754] appearance-none cursor-pointer",
+        onchange: "this.form.requestSubmit()" %>
+      <svg class="absolute right-3 top-1/2 -translate-y-1/2 size-3 text-[#424754] pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+      </svg>
+    </div>
+    <%= link_to "リセット", admin_characters_path, class: "bg-[#e6e8ea] text-[#586377] text-sm font-bold px-6 py-2.5 rounded-lg hover:opacity-80" %>
+  <% end %>
+</div>
+
+<%# テーブル %>
+<div class="bg-white rounded-xl shadow-[0px_12px_32px_0px_rgba(25,28,30,0.04)] overflow-clip">
+  <table class="w-full">
+    <thead>
+      <tr class="bg-[rgba(242,244,246,0.5)]">
+        <th class="text-left text-[11px] font-bold text-[rgba(66,71,84,0.7)] uppercase tracking-[1.1px] px-6 py-4 w-[80px]">画像</th>
+        <th class="text-left text-[11px] font-bold text-[rgba(66,71,84,0.7)] uppercase tracking-[1.1px] px-6 py-4">名前</th>
+        <th class="text-left text-[11px] font-bold text-[rgba(66,71,84,0.7)] uppercase tracking-[1.1px] px-6 py-4">時代</th>
+        <th class="text-left text-[11px] font-bold text-[rgba(66,71,84,0.7)] uppercase tracking-[1.1px] px-6 py-4">関連出来事</th>
+        <th class="text-left text-[11px] font-bold text-[rgba(66,71,84,0.7)] uppercase tracking-[1.1px] px-6 py-4">更新日</th>
+        <th class="text-right text-[11px] font-bold text-[rgba(66,71,84,0.7)] uppercase tracking-[1.1px] px-6 py-4">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @characters.each do |character| %>
+        <tr class="border-t border-[#f2f4f6] group hover:bg-[rgba(242,244,246,0.3)]">
+          <td class="px-6 py-4">
+            <% if character.image.attached? %>
+              <%= image_tag character.image, class: "size-12 rounded-full object-cover shadow-[0px_0px_0px_2px_white,0px_1px_2px_0px_rgba(0,0,0,0.05)]" %>
+            <% elsif character.image_url.present? %>
+              <%= image_tag character.image_url, class: "size-12 rounded-full object-cover shadow-[0px_0px_0px_2px_white,0px_1px_2px_0px_rgba(0,0,0,0.05)]" %>
+            <% else %>
+              <div class="size-12 rounded-full bg-[#f2f4f6] flex items-center justify-center">
+                <svg class="size-5 text-[#94a3b8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+                </svg>
+              </div>
+            <% end %>
+          </td>
+          <td class="px-6 py-4">
+            <span class="text-base font-bold text-[#191c1e]"><%= character.name %></span>
+          </td>
+          <td class="px-6 py-4">
+            <span class="bg-[#d8e2ff] text-[#001a42] text-xs font-bold px-3 py-1 rounded-full"><%= character.period.name %></span>
+          </td>
+          <td class="px-6 py-4">
+            <span class="text-base font-medium text-[#424754]"><%= character.events.size %>件</span>
+          </td>
+          <td class="px-6 py-4">
+            <span class="text-sm text-[#424754]"><%= character.updated_at.strftime("%Y/%m/%d") %></span>
+          </td>
+          <td class="px-6 py-4">
+            <div class="flex gap-2 justify-end">
+              <%= link_to edit_admin_character_path(character), class: "bg-[#f2f4f6] p-2 rounded-lg hover:bg-[#e2e4e6]" do %>
+                <svg class="size-3.5 text-[#424754]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
+                </svg>
+              <% end %>
+              <%= button_to admin_character_path(character), method: :delete, form: { data: { turbo_confirm: "「#{character.name}」を削除しますか？" } }, class: "bg-[#f2f4f6] p-2 rounded-lg hover:bg-red-100" do %>
+                <svg class="size-3.5 text-[#424754] hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
+                </svg>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%# ページネーション %>
+  <div class="flex items-center justify-between px-8 py-6 bg-[rgba(242,244,246,0.2)]">
+    <p class="text-sm font-medium text-[#424754]">
+      全 <span class="font-bold text-[#191c1e]"><%= @characters.total_count %></span> 件中
+      <span class="font-bold text-[#191c1e]"><%= @characters.offset_value + 1 %>〜<%= [@characters.offset_value + @characters.limit_value, @characters.total_count].min %></span> 件表示
+    </p>
+    <div class="flex gap-1 items-center">
+      <%= paginate @characters, theme: "admin" %>
+    </div>
+  </div>
+</div>
