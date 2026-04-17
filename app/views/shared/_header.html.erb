@@ -29,6 +29,9 @@
         </div>
       </div>
       <% if user_signed_in? %>
+        <% if current_user.admin? %>
+          <%= link_to "管理画面", admin_root_path, class: "text-[14px] text-white font-medium bg-[#0058be] px-4 py-1.5 rounded-lg hover:opacity-90" %>
+        <% end %>
         <%= link_to "小テスト", quizzes_path, class: "text-[14px] text-[#475569] font-medium hover:text-[#0f172a]" %>
         <%= link_to "スケジュール", new_schedule_path, class: "text-[14px] text-[#475569] font-medium hover:text-[#0f172a]" %>
         <%= link_to "お気に入り", favorites_path, class: "text-[14px] text-[#475569] font-medium hover:text-[#0f172a]" %>
