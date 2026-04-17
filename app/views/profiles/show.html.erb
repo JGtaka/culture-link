@@ -246,7 +246,9 @@
               <% if article.is_a?(Event) %>
                 <%= link_to event_path(article), class: "flex gap-4 hover:opacity-80 transition" do %>
                   <div class="size-[64px] rounded-lg bg-[#e2e8f0] shrink-0 overflow-hidden flex items-center justify-center">
-                    <% if article.image_url.present? %>
+                    <% if article.image.attached? %>
+                      <%= image_tag article.image, class: "w-full h-full object-cover", alt: article.title %>
+                    <% elsif article.image_url.present? %>
                       <%= image_tag article.image_url, class: "w-full h-full object-cover", alt: article.title %>
                     <% else %>
                       <svg class="w-6 h-6 text-[#64748b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -263,7 +265,9 @@
               <% elsif article.is_a?(Character) %>
                 <%= link_to character_path(article), class: "flex gap-4 hover:opacity-80 transition" do %>
                   <div class="size-[64px] rounded-lg bg-[#e2e8f0] shrink-0 overflow-hidden flex items-center justify-center">
-                    <% if article.image_url.present? %>
+                    <% if article.image.attached? %>
+                      <%= image_tag article.image, class: "w-full h-full object-cover", alt: article.name %>
+                    <% elsif article.image_url.present? %>
                       <%= image_tag article.image_url, class: "w-full h-full object-cover", alt: article.name %>
                     <% else %>
                       <svg class="w-6 h-6 text-[#64748b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">

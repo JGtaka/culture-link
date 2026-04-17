@@ -24,3 +24,6 @@ application.register("card-pagination", CardPaginationController)
 
 import QuizRunnerController from "./quiz_runner_controller"
 application.register("quiz-runner", QuizRunnerController)
+
+import ImagePreviewController from "./image_preview_controller"
+application.register("image-preview", ImagePreviewController)

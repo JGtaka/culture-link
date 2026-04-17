@@ -22,12 +22,11 @@ class ArticlesController < ApplicationController
   def sort_articles(articles)
     case params[:sort]
     when "year_desc"
-      articles.sort_by { |a| -(a.year || 0) }
+      articles.sort_by { |a| -(a.year.to_i) }
     when "name_asc"
       articles.sort_by { |a| a.is_a?(Event) ? a.title.to_s : a.name.to_s }
     else
-      # デフォルト: 年代（古い順）
-      articles.sort_by { |a| a.year || 0 }
+      articles.sort_by { |a| a.year.to_i }
     end
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_17_074231) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_17_075329) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -66,7 +66,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_17_074231) do
     t.text "achievement"
     t.bigint "study_unit_id", null: false
     t.string "image_url"
-    t.integer "year"
+    t.string "year"
     t.bigint "period_id"
     t.bigint "region_id"
     t.string "image_credit"
