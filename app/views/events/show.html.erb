@@ -1,6 +1,10 @@
 <%# Hero Section %>
 <section class="relative overflow-hidden bg-[#142283]">
-  <% if @event.image_url.present? %>
+  <% if @event.image.attached? %>
+    <div class="absolute inset-0">
+      <%= image_tag @event.image, class: "w-full h-full object-cover mix-blend-overlay", alt: @event.title %>
+    </div>
+  <% elsif @event.image_url.present? %>
     <div class="absolute inset-0">
       <%= image_tag @event.image_url, class: "w-full h-full object-cover mix-blend-overlay", alt: @event.title %>
     </div>
@@ -66,7 +70,11 @@
             <% @event.characters.each do |character| %>
               <%= link_to character_path(character), class: "block" do %>
                 <div class="bg-[#f3f4f5] rounded-xl p-6 flex gap-6 items-start hover:shadow-md transition-shadow">
-                  <% if character.image_url.present? %>
+                  <% if character.image.attached? %>
+                    <div class="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
+                      <%= image_tag character.image, class: "w-full h-full object-cover", alt: character.name %>
+                    </div>
+                  <% elsif character.image_url.present? %>
                     <div class="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
                       <%= image_tag character.image_url, class: "w-full h-full object-cover", alt: character.name %>
                     </div>

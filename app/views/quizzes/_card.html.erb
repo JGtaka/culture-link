@@ -6,7 +6,9 @@
 <div class="bg-white border border-[#f1f5f9] rounded-xl overflow-hidden shadow-sm flex flex-col">
   <%# カバー画像 %>
   <div class="relative h-48 bg-[#e2e8f0]">
-    <% if quiz.image_url.present? %>
+    <% if quiz.image.attached? %>
+      <%= image_tag quiz.image, class: "w-full h-full object-cover", alt: quiz.title %>
+    <% elsif quiz.image_url.present? %>
       <%= image_tag quiz.image_url, class: "w-full h-full object-cover", alt: quiz.title %>
     <% end %>
     <%# カテゴリタグ %>

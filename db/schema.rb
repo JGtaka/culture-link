@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_17_055244) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_17_075329) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -66,10 +66,12 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_17_055244) do
     t.text "achievement"
     t.bigint "study_unit_id", null: false
     t.string "image_url"
-    t.integer "year"
+    t.string "year"
     t.bigint "period_id"
     t.bigint "region_id"
     t.string "image_credit"
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["period_id"], name: "index_characters_on_period_id"
     t.index ["region_id"], name: "index_characters_on_region_id"
     t.index ["study_unit_id"], name: "index_characters_on_study_unit_id"
@@ -87,6 +89,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_17_055244) do
   create_table "event_characters", force: :cascade do |t|
     t.bigint "event_id", null: false
     t.bigint "character_id", null: false
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["character_id"], name: "index_event_characters_on_character_id"
     t.index ["event_id", "character_id"], name: "index_event_characters_on_event_id_and_character_id", unique: true
     t.index ["event_id"], name: "index_event_characters_on_event_id"
@@ -102,6 +106,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_17_055244) do
     t.string "image_url"
     t.bigint "region_id"
     t.string "image_credit"
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.index ["category_id"], name: "index_events_on_category_id"
     t.index ["period_id"], name: "index_events_on_period_id"
     t.index ["region_id"], name: "index_events_on_region_id"
@@ -121,6 +127,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_17_055244) do
 
   create_table "periods", force: :cascade do |t|
     t.string "name"
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
   create_table "question_answers", force: :cascade do |t|
@@ -208,6 +216,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_17_055244) do
 
   create_table "study_units", force: :cascade do |t|
     t.string "name"
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
   create_table "users", force: :cascade do |t|

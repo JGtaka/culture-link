@@ -1,6 +1,10 @@
 <%# Hero Section %>
 <section class="relative overflow-hidden bg-[#142283]">
-  <% if @character.image_url.present? %>
+  <% if @character.image.attached? %>
+    <div class="absolute inset-0">
+      <%= image_tag @character.image, class: "w-full h-full object-cover mix-blend-overlay", alt: @character.name %>
+    </div>
+  <% elsif @character.image_url.present? %>
     <div class="absolute inset-0">
       <%= image_tag @character.image_url, class: "w-full h-full object-cover mix-blend-overlay", alt: @character.name %>
     </div>
@@ -68,7 +72,11 @@
                 <div class="pt-2">
                   <p class="text-base text-[#454652] leading-[26px]"><%= event.description %></p>
                 </div>
-                <% if event.image_url.present? %>
+                <% if event.image.attached? %>
+                  <div class="h-52 rounded-lg overflow-hidden opacity-90 mt-2">
+                    <%= image_tag event.image, class: "w-full h-full object-cover", alt: event.title %>
+                  </div>
+                <% elsif event.image_url.present? %>
                   <div class="h-52 rounded-lg overflow-hidden opacity-90 mt-2">
                     <%= image_tag event.image_url, class: "w-full h-full object-cover", alt: event.title %>
                   </div>
@@ -87,7 +95,9 @@
                   </div>
                 </div>
                 <div class="aspect-square h-full bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <% if event.image_url.present? %>
+                  <% if event.image.attached? %>
+                    <%= image_tag event.image, class: "w-full h-full object-cover rounded-lg", alt: event.title %>
+                  <% elsif event.image_url.present? %>
                     <%= image_tag event.image_url, class: "w-full h-full object-cover rounded-lg", alt: event.title %>
                   <% else %>
                     <svg class="w-7 h-11 text-white/50" fill="currentColor" viewBox="0 0 24 24">
