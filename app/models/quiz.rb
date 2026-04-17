@@ -3,6 +3,11 @@ class Quiz < ApplicationRecord
   has_many :questions, -> { order(:id) }, dependent: :destroy
   has_many :quiz_results, dependent: :destroy
 
+  has_one_attached :image
+  validates :image, content_type: [ :png, :jpg, :jpeg, :webp ],
+                    size: { less_than: 5.megabytes },
+                    if: -> { image.attached? }
+
   validates :title, presence: true
 
   scope :by_category, ->(category_id) { where(quiz_category_id: category_id) if category_id.present? }
