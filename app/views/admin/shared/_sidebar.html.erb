@@ -1,0 +1,49 @@
+<aside class="fixed top-0 left-0 w-[256px] h-screen bg-[#0f172a] flex flex-col justify-between py-6 shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.2)] z-50">
+  <%# ロゴ %>
+  <div class="pb-10">
+    <%= link_to admin_root_path, class: "flex gap-3 items-center px-6" do %>
+      <div class="bg-[#0058be] flex items-center justify-center rounded-xl size-10">
+        <svg width="24" height="23" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8.66602 8.66675L6.66602 6.66675V4.00008L12.666 6.66675M12.666 6.66675C12.666 9.97824 9.97751 12.6667 6.66602 12.6667C3.35453 12.6667 0.666016 9.97824 0.666016 6.66675C0.666016 3.35526 3.35453 0.666748 6.66602 0.666748C9.97751 0.666748 12.666 3.35526 12.666 6.66675Z" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div>
+        <p class="font-extrabold text-lg text-white leading-7" style="font-family: 'Manrope', sans-serif;">Culture Link</p>
+        <p class="text-[#94a3b8] text-xs">Administrative Portal</p>
+      </div>
+    <% end %>
+  </div>
+
+  <%# ナビゲーション %>
+  <nav class="flex-1 px-4 space-y-1">
+    <% admin_nav_items.each do |item| %>
+      <% if current_page?(item[:path]) %>
+        <%= link_to item[:path], class: "flex gap-3 items-center px-4 py-3 bg-[#2563eb] rounded-xl text-white text-sm font-medium shadow-[0px_10px_15px_-3px_rgba(30,58,138,0.2)]" do %>
+          <%= render item[:icon] %>
+          <%= item[:label] %>
+        <% end %>
+      <% else %>
+        <%= link_to item[:path], class: "flex gap-3 items-center px-4 py-3 text-[#94a3b8] text-sm hover:text-white rounded-xl" do %>
+          <%= render item[:icon] %>
+          <%= item[:label] %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </nav>
+
+  <%# フッターリンク %>
+  <div class="border-t border-[rgba(30,41,59,0.5)] pt-6 px-3 space-y-1">
+    <%= link_to root_path, class: "flex gap-3 items-center px-4 py-3 text-[#94a3b8] text-sm hover:text-white" do %>
+      <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
+      </svg>
+      サイトに戻る
+    <% end %>
+    <%= button_to destroy_user_session_path, method: :delete, class: "flex gap-3 items-center px-4 py-3 text-[#94a3b8] text-sm hover:text-white w-full" do %>
+      <svg class="size-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"/>
+      </svg>
+      ログアウト
+    <% end %>
+  </div>
+</aside>
