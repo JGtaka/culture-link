@@ -17,6 +17,10 @@ class Event < ApplicationRecord
   validates :year, presence: true
   validates :description, presence: true
 
+  scope :by_period, ->(id) { where(period_id: id) if id.present? }
+  scope :by_region, ->(id) { where(region_id: id) if id.present? }
+  scope :by_category, ->(id) { where(category_id: id) if id.present? }
+
   def self.ransackable_attributes(auth_object = nil)
     %w[title description]
   end

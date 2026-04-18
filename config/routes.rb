@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   namespace :admin do
     root "dashboard#index"
     resources :characters
+    resources :events, only: %i[index destroy]
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
