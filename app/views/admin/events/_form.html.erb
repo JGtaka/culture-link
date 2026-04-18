@@ -1,0 +1,167 @@
+<%= form_with(model: [:admin, event], class: "grid grid-cols-3 gap-8 pt-2 pb-28") do |f| %>
+  <%# 左カラム: メインフォーム (2/3) %>
+  <div class="col-span-2 space-y-8">
+    <%# 基本情報カード %>
+    <div class="bg-white rounded-xl shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] p-8">
+      <div class="border-l-4 border-[#0058be] pl-5 mb-6">
+        <h3 class="text-lg font-bold text-[#191c1e] leading-7">基本情報</h3>
+      </div>
+
+      <div class="grid grid-cols-2 gap-6">
+        <%# タイトル %>
+        <div class="col-span-2">
+          <%= f.label :title, "タイトル *", class: "block text-xs font-bold text-[#424754] mb-2" %>
+          <%= f.text_field :title, placeholder: "例: 源氏物語の成立", class: "bg-[#f7f9fb] w-full rounded-lg px-4 py-3 text-base text-[#191c1e] placeholder-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#2563eb]" %>
+          <% if event.errors[:title].any? %>
+            <p class="text-red-500 text-xs mt-1"><%= event.errors[:title].first %></p>
+          <% end %>
+        </div>
+
+        <%# 発生年 %>
+        <div>
+          <%= f.label :year, "発生年 (西暦) *", class: "block text-xs font-bold text-[#424754] mb-2" %>
+          <%= f.number_field :year, placeholder: "例: 1008", class: "bg-[#f7f9fb] w-full rounded-lg px-4 py-3 text-base text-[#191c1e] placeholder-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#2563eb]" %>
+          <% if event.errors[:year].any? %>
+            <p class="text-red-500 text-xs mt-1"><%= event.errors[:year].first %></p>
+          <% end %>
+        </div>
+
+        <%# 時代区分 %>
+        <div>
+          <%= f.label :period_id, "時代区分 *", class: "block text-xs font-bold text-[#424754] mb-2" %>
+          <%= f.collection_select :period_id, @periods, :id, :name, { include_blank: "選択してください" }, class: "bg-[#f7f9fb] w-full rounded-lg px-4 py-3 text-base text-[#191c1e] appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#2563eb]" %>
+          <% if event.errors[:period].any? %>
+            <p class="text-red-500 text-xs mt-1"><%= event.errors[:period].first %></p>
+          <% end %>
+        </div>
+
+        <%# 地域 %>
+        <div>
+          <%= f.label :region_id, "地域 *", class: "block text-xs font-bold text-[#424754] mb-2" %>
+          <%= f.collection_select :region_id, @regions, :id, :name, { include_blank: "選択してください" }, class: "bg-[#f7f9fb] w-full rounded-lg px-4 py-3 text-base text-[#191c1e] appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#2563eb]" %>
+          <% if event.errors[:region].any? %>
+            <p class="text-red-500 text-xs mt-1"><%= event.errors[:region].first %></p>
+          <% end %>
+        </div>
+
+        <%# カテゴリー %>
+        <div>
+          <%= f.label :category_id, "カテゴリー *", class: "block text-xs font-bold text-[#424754] mb-2" %>
+          <%= f.collection_select :category_id, @categories, :id, :name, { include_blank: "選択してください" }, class: "bg-[#f7f9fb] w-full rounded-lg px-4 py-3 text-base text-[#191c1e] appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#2563eb]" %>
+          <% if event.errors[:category].any? %>
+            <p class="text-red-500 text-xs mt-1"><%= event.errors[:category].first %></p>
+          <% end %>
+        </div>
+
+        <%# 学習単位 %>
+        <div class="col-span-2">
+          <%= f.label :study_unit_id, "学習単位 *", class: "block text-xs font-bold text-[#424754] mb-2" %>
+          <%= f.collection_select :study_unit_id, @study_units, :id, :name, { include_blank: "選択してください" }, class: "bg-[#f7f9fb] w-full rounded-lg px-4 py-3 text-base text-[#191c1e] appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#2563eb]" %>
+          <% if event.errors[:study_unit].any? %>
+            <p class="text-red-500 text-xs mt-1"><%= event.errors[:study_unit].first %></p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <%# 関連人物カード %>
+    <div class="bg-white rounded-xl shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] p-8">
+      <div class="border-l-4 border-[#0058be] pl-5 mb-6">
+        <h3 class="text-lg font-bold text-[#191c1e] leading-7">関連人物</h3>
+      </div>
+
+      <% if @characters.any? %>
+        <div class="relative"
+             data-controller="character-picker"
+             data-character-picker-characters-value="<%= @characters.map { |c| { id: c.id, name: c.name } }.to_json %>">
+          <%# 初期選択を data 属性で渡す %>
+          <% event.character_ids.each do |id| %>
+            <span class="hidden" data-initial-selected="<%= id %>"></span>
+          <% end %>
+
+          <div class="bg-[#f7f9fb] rounded-lg p-3 flex flex-wrap gap-2 items-center min-h-[56px]">
+            <div data-character-picker-target="selected" class="contents"></div>
+            <input type="text"
+                   placeholder="人物を追加..."
+                   autocomplete="off"
+                   data-character-picker-target="input"
+                   data-action="input->character-picker#search keydown->character-picker#preventSubmit"
+                   class="flex-1 min-w-[140px] bg-transparent text-sm text-[#191c1e] placeholder-[#6b7280] focus:outline-none px-2 py-1">
+          </div>
+
+          <div data-character-picker-target="suggestions"
+               class="hidden absolute z-20 left-0 right-0 mt-1 bg-white rounded-lg border border-[#c2c6d6] shadow-lg max-h-60 overflow-y-auto"></div>
+
+          <div data-character-picker-target="hiddenFields"></div>
+        </div>
+        <p class="text-xs text-[#586377] mt-2">名前で検索して候補から追加、× で削除できます</p>
+      <% else %>
+        <p class="text-sm text-[#586377]">登録済みの人物がいません。</p>
+      <% end %>
+    </div>
+
+    <%# 本文カード %>
+    <div class="bg-white rounded-xl shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] p-8">
+      <div class="border-l-4 border-[#0058be] pl-5 mb-6">
+        <h3 class="text-lg font-bold text-[#191c1e] leading-7">本文 *</h3>
+      </div>
+      <%= f.text_area :description, placeholder: "詳細な解説を記述してください...", rows: 12, class: "bg-[#f7f9fb] w-full rounded-lg px-6 py-6 text-base text-[#191c1e] placeholder-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#2563eb] resize-y leading-7" %>
+      <% if event.errors[:description].any? %>
+        <p class="text-red-500 text-xs mt-1"><%= event.errors[:description].first %></p>
+      <% end %>
+    </div>
+  </div>
+
+  <%# 右カラム: サイドバー (1/3) %>
+  <div class="col-span-1 space-y-8">
+    <%# 画像カード %>
+    <div class="bg-white rounded-xl shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] p-8">
+      <div class="border-l-4 border-[#0058be] pl-5 mb-6">
+        <h3 class="text-lg font-bold text-[#191c1e] leading-7">画像</h3>
+      </div>
+
+      <div data-controller="image-preview">
+        <%# 既存画像またはプレビュー %>
+        <div class="mb-4 rounded-xl overflow-hidden">
+          <% if event.image.attached? %>
+            <img data-image-preview-target="preview" src="<%= url_for(event.image) %>" class="w-full h-auto object-cover">
+          <% elsif event.image_url.present? %>
+            <img data-image-preview-target="preview" src="<%= event.image_url %>" class="w-full h-auto object-cover">
+          <% else %>
+            <img data-image-preview-target="preview" src="" class="w-full h-auto object-cover hidden">
+          <% end %>
+        </div>
+
+        <%= f.file_field :image, id: "event_image_input", class: "hidden", accept: "image/png,image/jpeg,image/webp", data: { image_preview_target: "input", action: "change->image-preview#select" } %>
+
+        <label for="event_image_input" data-image-preview-target="placeholder dropzone" data-action="dragover->image-preview#dragover dragleave->image-preview#dragleave drop->image-preview#drop" class="block bg-[#f7f9fb] border-2 border-dashed border-[#c2c6d6] rounded-xl p-8 text-center cursor-pointer hover:border-[#2563eb] transition-colors <%= 'hidden' if event.image.attached? || event.image_url.present? %>">
+          <svg class="size-8 text-[#94a3b8] mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
+          </svg>
+          <p class="text-sm font-bold text-[#191c1e]">クリックまたはドラッグ&ドロップ</p>
+          <p class="text-xs text-[#424754] mt-1">JPG, PNG, WebP (最大 5MB)</p>
+        </label>
+
+        <label for="event_image_input" class="block mt-3 bg-[#f7f9fb] text-[#424754] text-xs font-bold text-center px-4 py-2 rounded-lg cursor-pointer hover:bg-[#e6e8ea]">
+          画像を変更する
+        </label>
+        <p data-image-preview-target="filename" class="hidden text-xs text-[#0058be] font-medium mt-2 text-center truncate"></p>
+      </div>
+
+      <% if event.errors[:image].any? %>
+        <p class="text-red-500 text-xs mt-2"><%= event.errors[:image].first %></p>
+      <% end %>
+
+      <div class="mt-4">
+        <%= f.label :image_credit, "画像クレジット", class: "block text-xs font-bold text-[#424754] mb-2" %>
+        <%= f.text_field :image_credit, placeholder: "例: Photo by ...", class: "bg-[#f7f9fb] w-full rounded-lg px-4 py-3 text-sm text-[#191c1e] placeholder-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#2563eb]" %>
+      </div>
+    </div>
+  </div>
+
+  <%# 下部固定バー %>
+  <div class="col-span-3 fixed bottom-0 left-[256px] right-0 h-20 bg-[rgba(255,255,255,0.8)] backdrop-blur-xl border-t border-[rgba(194,198,214,0.1)] flex items-center justify-between px-8 z-30">
+    <%= link_to "キャンセル", admin_events_path, class: "text-sm font-bold text-[#424754] px-6 py-3 hover:text-[#191c1e]" %>
+    <%= f.submit event.persisted? ? "更新する" : "作成する", class: "bg-gradient-to-br from-[#0058be] to-[#2170e4] text-white text-sm font-bold px-10 py-3 rounded-lg shadow-[0px_10px_15px_-3px_rgba(0,88,190,0.2)] cursor-pointer hover:opacity-90" %>
+  </div>
+<% end %>
