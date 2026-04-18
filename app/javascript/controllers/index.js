@@ -27,3 +27,6 @@ application.register("quiz-runner", QuizRunnerController)
 
 import ImagePreviewController from "./image_preview_controller"
 application.register("image-preview", ImagePreviewController)
+
+import CharacterPickerController from "./character_picker_controller"
+application.register("character-picker", CharacterPickerController)

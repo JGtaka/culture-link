@@ -1,0 +1,16 @@
+<%# パンくずリスト %>
+<div class="flex items-center gap-2 mb-4">
+  <%= link_to "ホーム", admin_root_path, class: "text-sm font-medium text-[#424754] hover:text-[#191c1e]" %>
+  <span class="text-sm text-[#c2c6d6]">/</span>
+  <%= link_to "出来事", admin_events_path, class: "text-sm font-medium text-[#424754] hover:text-[#191c1e]" %>
+  <span class="text-sm text-[#c2c6d6]">/</span>
+  <span class="text-sm font-medium text-[#191c1e]">新規作成</span>
+</div>
+
+<%# ヘッダー %>
+<div class="mb-2">
+  <h1 class="text-3xl font-bold text-[#191c1e] tracking-[-0.75px]">出来事の登録</h1>
+  <p class="text-base text-[#424754] mt-2">歴史的な出来事や文化的な節目をデータベースに登録します。</p>
+</div>
+
+<%= render "form", event: @event %>
