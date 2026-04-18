@@ -202,6 +202,16 @@ RSpec.describe "Admin::Events", type: :request do
           expect(event.reload.title).to eq("更新前")
           expect(response).to have_http_status(:unprocessable_entity)
         end
+
+        it "画像を添付してバリデーション失敗しても500にならず422を返すこと" do
+          patch admin_event_path(event), params: {
+            event: {
+              title: "",
+              image: fixture_file_upload("test.png", "image/png")
+            }
+          }
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
       end
     end
 

@@ -121,9 +121,9 @@
       </div>
 
       <div data-controller="image-preview">
-        <%# 既存画像またはプレビュー %>
+        <%# 既存画像またはプレビュー (validation失敗時は未保存blobなのでurl_forしない) %>
         <div class="mb-4 rounded-xl overflow-hidden">
-          <% if event.image.attached? %>
+          <% if event.image.attached? && event.image.blob&.persisted? %>
             <img data-image-preview-target="preview" src="<%= url_for(event.image) %>" class="w-full h-auto object-cover">
           <% elsif event.image_url.present? %>
             <img data-image-preview-target="preview" src="<%= event.image_url %>" class="w-full h-auto object-cover">
@@ -134,7 +134,7 @@
 
         <%= f.file_field :image, id: "event_image_input", class: "hidden", accept: "image/png,image/jpeg,image/webp", data: { image_preview_target: "input", action: "change->image-preview#select" } %>
 
-        <label for="event_image_input" data-image-preview-target="placeholder dropzone" data-action="dragover->image-preview#dragover dragleave->image-preview#dragleave drop->image-preview#drop" class="block bg-[#f7f9fb] border-2 border-dashed border-[#c2c6d6] rounded-xl p-8 text-center cursor-pointer hover:border-[#2563eb] transition-colors <%= 'hidden' if event.image.attached? || event.image_url.present? %>">
+        <label for="event_image_input" data-image-preview-target="placeholder dropzone" data-action="dragover->image-preview#dragover dragleave->image-preview#dragleave drop->image-preview#drop" class="block bg-[#f7f9fb] border-2 border-dashed border-[#c2c6d6] rounded-xl p-8 text-center cursor-pointer hover:border-[#2563eb] transition-colors <%= 'hidden' if (event.image.attached? && event.image.blob&.persisted?) || event.image_url.present? %>">
           <svg class="size-8 text-[#94a3b8] mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
           </svg>
