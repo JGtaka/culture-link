@@ -11,6 +11,6 @@ class StudyUnit < ApplicationRecord
   private
 
   def strip_name
-    self.name = name.strip if name.is_a?(String)
+    self.name = name.gsub(/\A\p{Space}+|\p{Space}+\z/, "") if name.is_a?(String)
   end
 end

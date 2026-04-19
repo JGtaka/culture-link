@@ -23,14 +23,19 @@ RSpec.describe StudyUnit, type: :model do
       expect(study_unit).not_to be_valid
     end
 
-    it 'nameの前後空白が自動除去されること' do
+    it 'nameの前後半角空白が自動除去されること' do
       study_unit = create(:study_unit, name: '  古代日本の文化  ')
+      expect(study_unit.name).to eq('古代日本の文化')
+    end
+
+    it 'nameの前後全角空白が自動除去されること' do
+      study_unit = create(:study_unit, name: '　古代日本の文化　')
       expect(study_unit.name).to eq('古代日本の文化')
     end
 
     it '前後空白違いで重複登録できないこと' do
       create(:study_unit, name: '古代日本の文化')
-      study_unit = build(:study_unit, name: ' 古代日本の文化 ')
+      study_unit = build(:study_unit, name: '　古代日本の文化 ')
       expect(study_unit).not_to be_valid
     end
   end
