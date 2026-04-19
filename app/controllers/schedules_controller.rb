@@ -4,7 +4,7 @@ class SchedulesController < ApplicationController
 
   def new
     @schedule = current_user.schedules.build
-    @study_units = StudyUnit.all
+    @study_units = StudyUnit.ordered
   end
 
   def create
@@ -14,20 +14,20 @@ class SchedulesController < ApplicationController
       ScheduleNotifier.new(@schedule).notify_registered
       redirect_to profile_path, notice: "スケジュールを作成しました"
     else
-      @study_units = StudyUnit.all
+      @study_units = StudyUnit.ordered
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
-    @study_units = StudyUnit.all
+    @study_units = StudyUnit.ordered
   end
 
   def update
     if @schedule.update(schedule_params)
       redirect_to profile_path, notice: "スケジュールを更新しました"
     else
-      @study_units = StudyUnit.all
+      @study_units = StudyUnit.ordered
       render :edit, status: :unprocessable_entity
     end
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_17_075329) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_19_081414) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -129,6 +129,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_17_075329) do
     t.string "name"
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.integer "display_order", null: false
+    t.index ["display_order"], name: "index_periods_on_display_order"
   end
 
   create_table "question_answers", force: :cascade do |t|
@@ -190,6 +192,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_17_075329) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "display_order", null: false
+    t.index ["display_order"], name: "index_regions_on_display_order"
   end
 
   create_table "schedules", force: :cascade do |t|
@@ -218,6 +222,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_17_075329) do
     t.string "name"
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.integer "display_order", null: false
+    t.index ["display_order"], name: "index_study_units_on_display_order"
   end
 
   create_table "users", force: :cascade do |t|

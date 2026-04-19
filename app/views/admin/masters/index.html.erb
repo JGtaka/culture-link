@@ -1,0 +1,41 @@
+<%# パンくずリスト %>
+<div class="flex items-center gap-2 mb-4">
+  <span class="text-[11px] font-bold text-[rgba(66,71,84,0.6)] uppercase tracking-[1.1px]">
+    <%= link_to "ホーム", admin_root_path, class: "hover:text-[#424754]" %>
+  </span>
+  <span class="text-[11px] text-[#c2c6d6]">/</span>
+  <span class="text-[11px] font-bold text-[#424754] uppercase tracking-[1.1px]">マスター管理</span>
+</div>
+
+<%# ヘッダー %>
+<div class="mb-8">
+  <h1 class="text-4xl font-medium text-[#191c1e] tracking-[-0.9px]">マスター管理</h1>
+  <p class="text-sm text-[#545f73] mt-2">時代・地域・学習単元を一括で管理できます</p>
+</div>
+
+<%# 3カラムカード %>
+<div class="grid grid-cols-3 gap-6">
+  <%= render "card",
+        title: "時代",
+        items: @periods,
+        list_id: "periods_list",
+        new_frame_id: "new_period_form",
+        new_path: new_admin_period_path,
+        reorder_path: reorder_admin_periods_path %>
+
+  <%= render "card",
+        title: "地域",
+        items: @regions,
+        list_id: "regions_list",
+        new_frame_id: "new_region_form",
+        new_path: new_admin_region_path,
+        reorder_path: reorder_admin_regions_path %>
+
+  <%= render "card",
+        title: "学習単元",
+        items: @study_units,
+        list_id: "study_units_list",
+        new_frame_id: "new_study_unit_form",
+        new_path: new_admin_study_unit_path,
+        reorder_path: reorder_admin_study_units_path %>
+</div>

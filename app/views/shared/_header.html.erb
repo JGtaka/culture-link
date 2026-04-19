@@ -23,7 +23,7 @@
           </svg>
         </button>
         <div data-dropdown-target="menu" class="hidden absolute top-full right-0 mt-2 w-48 bg-white border border-[#e2e8f0] rounded-lg shadow-lg py-2 z-50">
-          <% StudyUnit.all.each do |unit| %>
+          <% StudyUnit.ordered.each do |unit| %>
             <%= link_to unit.name, timeline_path(unit), class: "block px-4 py-2 text-sm text-[#475569] hover:bg-[#f8fafc] hover:text-[#0f172a]" %>
           <% end %>
         </div>
