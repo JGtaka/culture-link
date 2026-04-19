@@ -1,6 +1,10 @@
 class Admin::RegionsController < Admin::BaseController
   before_action :set_region, only: %i[edit update destroy]
 
+  def index
+    redirect_to admin_masters_path
+  end
+
   def new
     @region = Region.new
   end

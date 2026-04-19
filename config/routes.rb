@@ -31,9 +31,9 @@ Rails.application.routes.draw do
     resources :characters
     resources :events
     resources :masters, only: [ :index ]
-    resources :periods,     except: [ :index, :show ]
-    resources :regions,     except: [ :index, :show ]
-    resources :study_units, except: [ :index, :show ]
+    resources :periods,     except: [ :show ]
+    resources :regions,     except: [ :show ]
+    resources :study_units, except: [ :show ]
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

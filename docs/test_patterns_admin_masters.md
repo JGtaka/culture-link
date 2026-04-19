@@ -161,6 +161,12 @@
 ### 7-3. 存在しないID
 - [ ] `/admin/periods/999999/edit` にアクセス → 404 になること（`ActiveRecord::RecordNotFound`）
 
+### 7-4. リソースルートへの直接アクセス（indexリダイレクト）
+- [ ] `/admin/periods` に直接アクセス → `/admin/masters` にリダイレクトされること
+- [ ] `/admin/regions` / `/admin/study_units` でも同様にリダイレクトされること
+- [ ] 未ログインで `/admin/periods` にアクセス → ログインページへリダイレクトされること
+- [ ] 一般ユーザーで `/admin/periods` にアクセス → ルートへリダイレクトされること
+
 ---
 
 ## 8. エッジケース・追加確認

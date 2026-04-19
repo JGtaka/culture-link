@@ -1,6 +1,10 @@
 class Admin::StudyUnitsController < Admin::BaseController
   before_action :set_study_unit, only: %i[edit update destroy]
 
+  def index
+    redirect_to admin_masters_path
+  end
+
   def new
     @study_unit = StudyUnit.new
   end

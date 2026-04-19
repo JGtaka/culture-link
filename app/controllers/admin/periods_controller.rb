@@ -1,6 +1,10 @@
 class Admin::PeriodsController < Admin::BaseController
   before_action :set_period, only: %i[edit update destroy]
 
+  def index
+    redirect_to admin_masters_path
+  end
+
   def new
     @period = Period.new
   end

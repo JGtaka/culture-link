@@ -6,6 +6,11 @@ RSpec.describe "Admin::StudyUnits", type: :request do
 
   describe "認可" do
     context "未ログインの場合" do
+      it "indexはログインページへリダイレクトされる" do
+        get admin_study_units_path
+        expect(response).to redirect_to(new_user_session_path)
+      end
+
       it "createはログインページへリダイレクトされる" do
         post admin_study_units_path, params: { study_unit: { name: "test" } }
         expect(response).to redirect_to(new_user_session_path)
@@ -14,6 +19,11 @@ RSpec.describe "Admin::StudyUnits", type: :request do
 
     context "一般ユーザーでログインしている場合" do
       before { sign_in general_user }
+
+      it "indexはroot_pathへリダイレクトされる" do
+        get admin_study_units_path
+        expect(response).to redirect_to(root_path)
+      end
 
       it "createは実行できずリダイレクトされる" do
         expect {
@@ -26,6 +36,13 @@ RSpec.describe "Admin::StudyUnits", type: :request do
 
   describe "管理者でログインしている場合" do
     before { sign_in admin }
+
+    describe "GET /admin/study_units" do
+      it "admin_masters_pathへリダイレクトすること" do
+        get admin_study_units_path
+        expect(response).to redirect_to(admin_masters_path)
+      end
+    end
 
     describe "GET /admin/study_units/new" do
       it "200を返すこと" do
