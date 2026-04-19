@@ -126,6 +126,15 @@ RSpec.describe "Admin::StudyUnits", type: :request do
           expect(response).to redirect_to(admin_masters_path)
           expect(flash[:alert]).to be_present
         end
+
+        it "ユーザーのscheduleに紐付いていれば削除されずアラートが出ること" do
+          create(:study_unit_schedule, study_unit: study_unit)
+          expect {
+            delete admin_study_unit_path(study_unit)
+          }.not_to change { StudyUnit.count }
+          expect(response).to redirect_to(admin_masters_path)
+          expect(flash[:alert]).to be_present
+        end
       end
     end
   end

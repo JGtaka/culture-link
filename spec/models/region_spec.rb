@@ -22,6 +22,17 @@ RSpec.describe Region, type: :model do
       region = build(:region, name: 'ヨーロッパ')
       expect(region).not_to be_valid
     end
+
+    it 'nameの前後空白が自動除去されること' do
+      region = create(:region, name: '  近畿  ')
+      expect(region.name).to eq('近畿')
+    end
+
+    it '前後空白違いで重複登録できないこと' do
+      create(:region, name: '近畿')
+      region = build(:region, name: ' 近畿 ')
+      expect(region).not_to be_valid
+    end
   end
 
   describe 'アソシエーション' do

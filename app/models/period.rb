@@ -2,5 +2,13 @@ class Period < ApplicationRecord
   has_many :events, dependent: :restrict_with_error
   has_many :characters, dependent: :restrict_with_error
 
+  before_validation :strip_name
+
   validates :name, presence: true, uniqueness: true
+
+  private
+
+  def strip_name
+    self.name = name.strip if name.is_a?(String)
+  end
 end

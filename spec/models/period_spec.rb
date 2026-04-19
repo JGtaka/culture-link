@@ -22,6 +22,17 @@ RSpec.describe Period, type: :model do
       period = build(:period, name: 'ルネサンス')
       expect(period).not_to be_valid
     end
+
+    it 'nameの前後空白が自動除去されること' do
+      period = create(:period, name: '  縄文時代  ')
+      expect(period.name).to eq('縄文時代')
+    end
+
+    it '前後空白違いで重複登録できないこと' do
+      create(:period, name: '縄文時代')
+      period = build(:period, name: ' 縄文時代 ')
+      expect(period).not_to be_valid
+    end
   end
 
   describe 'アソシエーション' do
