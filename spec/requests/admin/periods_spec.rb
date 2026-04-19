@@ -15,6 +15,11 @@ RSpec.describe "Admin::Periods", type: :request do
         post admin_periods_path, params: { period: { name: "test" } }
         expect(response).to redirect_to(new_user_session_path)
       end
+
+      it "reorderはログインページへリダイレクトされる" do
+        patch reorder_admin_periods_path, params: { ids: [] }
+        expect(response).to redirect_to(new_user_session_path)
+      end
     end
 
     context "一般ユーザーでログインしている場合" do
@@ -30,6 +35,14 @@ RSpec.describe "Admin::Periods", type: :request do
           post admin_periods_path, params: { period: { name: "test" } }
         }.not_to change { Period.count }
         expect(response).to redirect_to(root_path)
+      end
+
+      it "reorderはroot_pathへリダイレクトされる" do
+        period = create(:period, display_order: 1)
+        original = period.display_order
+        patch reorder_admin_periods_path, params: { ids: [ period.id ] }
+        expect(response).to redirect_to(root_path)
+        expect(period.reload.display_order).to eq(original)
       end
     end
   end
@@ -106,6 +119,25 @@ RSpec.describe "Admin::Periods", type: :request do
           expect(period.reload.name).to eq("更新前")
           expect(response).to have_http_status(:unprocessable_entity)
         end
+      end
+    end
+
+    describe "PATCH /admin/periods/reorder" do
+      let!(:p1) { create(:period, display_order: 1) }
+      let!(:p2) { create(:period, display_order: 2) }
+      let!(:p3) { create(:period, display_order: 3) }
+
+      it "指定した順に display_order が 1..N で採番されること" do
+        patch reorder_admin_periods_path, params: { ids: [ p3.id, p1.id, p2.id ] }, as: :json
+        expect(response).to have_http_status(:ok)
+        expect(p3.reload.display_order).to eq(1)
+        expect(p1.reload.display_order).to eq(2)
+        expect(p2.reload.display_order).to eq(3)
+      end
+
+      it "空配列でも200を返すこと" do
+        patch reorder_admin_periods_path, params: { ids: [] }, as: :json
+        expect(response).to have_http_status(:ok)
       end
     end
 

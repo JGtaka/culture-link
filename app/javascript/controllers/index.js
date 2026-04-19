@@ -30,3 +30,6 @@ application.register("image-preview", ImagePreviewController)
 
 import CharacterPickerController from "./character_picker_controller"
 application.register("character-picker", CharacterPickerController)
+
+import SortableController from "./sortable_controller"
+application.register("sortable", SortableController)

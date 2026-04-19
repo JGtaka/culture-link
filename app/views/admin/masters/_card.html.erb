@@ -8,13 +8,18 @@
   </div>
 
   <%# 一覧 %>
-  <div id="<%= list_id %>" class="divide-y divide-[#f2f4f6] flex-1 min-h-[60px]">
-    <% if items.any? %>
+  <% if items.any? %>
+    <div id="<%= list_id %>"
+         class="divide-y divide-[#f2f4f6] flex-1 min-h-[60px]"
+         data-controller="sortable"
+         data-sortable-url-value="<%= reorder_path %>">
       <%= render items %>
-    <% else %>
+    </div>
+  <% else %>
+    <div class="flex-1 min-h-[60px]">
       <p class="px-6 py-8 text-center text-sm text-[#727785]">まだ登録されていません</p>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 
   <%# 新規追加フレーム %>
   <%= turbo_frame_tag new_frame_id, class: "block border-t border-[#f2f4f6]" do %>

@@ -1,1 +1,11 @@
 @import "tailwindcss";
+
+/* SortableJS: ドラッグ中の視覚フィードバック */
+.sortable-ghost {
+  opacity: 0.4;
+  background: #eef2ff;
+}
+
+.sortable-chosen {
+  background: #f7f9fb;
+}

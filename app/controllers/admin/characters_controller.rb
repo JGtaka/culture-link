@@ -7,8 +7,8 @@ class Admin::CharactersController < Admin::BaseController
     @characters = @characters.where(period_id: params[:period_id]) if params[:period_id].present?
     @characters = @characters.where(study_unit_id: params[:study_unit_id]) if params[:study_unit_id].present?
     @characters = @characters.order(updated_at: :desc).page(params[:page]).per(20)
-    @periods = Period.all
-    @study_units = StudyUnit.all
+    @periods = Period.ordered
+    @study_units = StudyUnit.ordered
   end
 
   def new
@@ -46,9 +46,9 @@ class Admin::CharactersController < Admin::BaseController
   end
 
   def set_form_options
-    @periods = Period.all
-    @study_units = StudyUnit.all
-    @regions = Region.all
+    @periods = Period.ordered
+    @study_units = StudyUnit.ordered
+    @regions = Region.ordered
   end
 
   def character_params

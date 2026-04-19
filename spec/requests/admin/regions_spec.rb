@@ -109,6 +109,20 @@ RSpec.describe "Admin::Regions", type: :request do
       end
     end
 
+    describe "PATCH /admin/regions/reorder" do
+      let!(:r1) { create(:region, display_order: 1) }
+      let!(:r2) { create(:region, display_order: 2) }
+      let!(:r3) { create(:region, display_order: 3) }
+
+      it "指定した順に display_order が 1..N で採番されること" do
+        patch reorder_admin_regions_path, params: { ids: [ r2.id, r3.id, r1.id ] }, as: :json
+        expect(response).to have_http_status(:ok)
+        expect(r2.reload.display_order).to eq(1)
+        expect(r3.reload.display_order).to eq(2)
+        expect(r1.reload.display_order).to eq(3)
+      end
+    end
+
     describe "DELETE /admin/regions/:id" do
       let!(:region) { create(:region) }
 

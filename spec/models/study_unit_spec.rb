@@ -40,6 +40,21 @@ RSpec.describe StudyUnit, type: :model do
     end
   end
 
+  describe '並び順' do
+    it 'display_orderが未設定なら末尾に自動採番されること' do
+      a = create(:study_unit)
+      b = create(:study_unit)
+      expect(b.display_order).to eq(a.display_order + 1)
+    end
+
+    it 'ordered scopeがdisplay_order昇順で返すこと' do
+      s3 = create(:study_unit, display_order: 30)
+      s1 = create(:study_unit, display_order: 10)
+      s2 = create(:study_unit, display_order: 20)
+      expect(StudyUnit.ordered.pluck(:id)).to eq([ s1.id, s2.id, s3.id ])
+    end
+  end
+
   describe 'アソシエーション' do
     it '複数のeventsを持つこと' do
       association = described_class.reflect_on_association(:events)

@@ -47,16 +47,16 @@ class Admin::EventsController < Admin::BaseController
   end
 
   def set_filter_options
-    @periods = Period.all
-    @regions = Region.all
+    @periods = Period.ordered
+    @regions = Region.ordered
     @categories = Category.all
   end
 
   def set_form_options
-    @periods = Period.all
-    @regions = Region.all
+    @periods = Period.ordered
+    @regions = Region.ordered
     @categories = Category.all
-    @study_units = StudyUnit.all
+    @study_units = StudyUnit.ordered
     @characters = Character.order(:name)
   end
 

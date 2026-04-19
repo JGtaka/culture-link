@@ -1,6 +1,11 @@
-<%= turbo_frame_tag dom_id(region) do %>
-  <div class="flex items-center justify-between px-6 py-3 hover:bg-[rgba(242,244,246,0.3)] group">
-    <span class="text-sm font-medium text-[#191c1e] truncate"><%= region.name %></span>
+<%= turbo_frame_tag dom_id(region), data: { id: region.id } do %>
+  <div class="flex items-center gap-2 px-4 py-3 hover:bg-[rgba(242,244,246,0.3)] group">
+    <span class="drag-handle cursor-grab active:cursor-grabbing text-[#c2c6d6] hover:text-[#586377] select-none px-1" aria-label="並び替え">
+      <svg class="size-4" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M8 6h2v2H8V6zm6 0h2v2h-2V6zM8 11h2v2H8v-2zm6 0h2v2h-2v-2zM8 16h2v2H8v-2zm6 0h2v2h-2v-2z"/>
+      </svg>
+    </span>
+    <span class="flex-1 text-sm font-medium text-[#191c1e] truncate"><%= region.name %></span>
     <div class="flex gap-1 items-center opacity-0 group-hover:opacity-100 transition-opacity">
       <%= link_to edit_admin_region_path(region), class: "bg-[#f2f4f6] p-1.5 rounded-md hover:bg-[#e2e4e6]" do %>
         <svg class="size-3.5 text-[#424754]" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -37,6 +37,16 @@ class Admin::StudyUnitsController < Admin::BaseController
     end
   end
 
+  def reorder
+    ids = Array(params[:ids]).map(&:to_i)
+    StudyUnit.transaction do
+      ids.each_with_index do |id, idx|
+        StudyUnit.where(id: id).update_all(display_order: idx + 1)
+      end
+    end
+    head :ok
+  end
+
   private
 
   def set_study_unit

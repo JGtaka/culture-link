@@ -45,6 +45,27 @@ RSpec.describe Period, type: :model do
     end
   end
 
+  describe '並び順' do
+    it 'display_orderが未設定なら末尾に自動採番されること' do
+      a = create(:period)
+      b = create(:period)
+      c = create(:period)
+      expect([ a.display_order, b.display_order, c.display_order ]).to eq([ a.display_order, a.display_order + 1, a.display_order + 2 ])
+    end
+
+    it 'display_orderを指定すれば優先されること' do
+      period = create(:period, display_order: 99)
+      expect(period.display_order).to eq(99)
+    end
+
+    it 'ordered scopeがdisplay_order昇順で返すこと' do
+      p3 = create(:period, display_order: 30)
+      p1 = create(:period, display_order: 10)
+      p2 = create(:period, display_order: 20)
+      expect(Period.ordered.pluck(:id)).to eq([ p1.id, p2.id, p3.id ])
+    end
+  end
+
   describe 'アソシエーション' do
     it '複数のeventsを持つこと' do
       association = described_class.reflect_on_association(:events)

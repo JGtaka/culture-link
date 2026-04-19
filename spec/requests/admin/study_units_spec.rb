@@ -109,6 +109,20 @@ RSpec.describe "Admin::StudyUnits", type: :request do
       end
     end
 
+    describe "PATCH /admin/study_units/reorder" do
+      let!(:s1) { create(:study_unit, display_order: 1) }
+      let!(:s2) { create(:study_unit, display_order: 2) }
+      let!(:s3) { create(:study_unit, display_order: 3) }
+
+      it "指定した順に display_order が 1..N で採番されること" do
+        patch reorder_admin_study_units_path, params: { ids: [ s3.id, s2.id, s1.id ] }, as: :json
+        expect(response).to have_http_status(:ok)
+        expect(s3.reload.display_order).to eq(1)
+        expect(s2.reload.display_order).to eq(2)
+        expect(s1.reload.display_order).to eq(3)
+      end
+    end
+
     describe "DELETE /admin/study_units/:id" do
       let!(:study_unit) { create(:study_unit) }
 

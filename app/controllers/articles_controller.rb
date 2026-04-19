@@ -12,9 +12,9 @@ class ArticlesController < ApplicationController
     all_articles = sort_articles(events + characters)
     @articles = Kaminari.paginate_array(all_articles).page(params[:page]).per(6)
 
-    @periods = Period.all
-    @study_units = StudyUnit.all
-    @regions = Region.all
+    @periods = Period.ordered
+    @study_units = StudyUnit.ordered
+    @regions = Region.ordered
   end
 
   private
