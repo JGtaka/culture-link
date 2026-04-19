@@ -1,0 +1,18 @@
+<%= form_with(model: [ :admin, period ],
+      data: { turbo_frame: "_top" },
+      class: "px-6 py-3 bg-[#f7f9fb]") do |f| %>
+  <div class="flex items-center gap-2">
+    <%= f.text_field :name,
+          placeholder: "名前を入力",
+          autofocus: true,
+          class: "flex-1 bg-white rounded-md px-3 py-2 text-sm text-[#191c1e] placeholder-[#94a3b8] focus:outline-none focus:ring-2 focus:ring-[#2563eb]" %>
+    <%= f.submit period.persisted? ? "更新" : "追加",
+          class: "bg-[#2563eb] text-white text-xs font-bold px-4 py-2 rounded-md cursor-pointer hover:opacity-90" %>
+    <%= link_to "キャンセル", admin_masters_path,
+          data: { turbo_frame: "_top" },
+          class: "text-xs font-bold text-[#586377] px-3 py-2 hover:text-[#191c1e]" %>
+  </div>
+  <% if period.errors[:name].any? %>
+    <p class="text-red-500 text-xs mt-2"><%= period.errors[:name].first %></p>
+  <% end %>
+<% end %>

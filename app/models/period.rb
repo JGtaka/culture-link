@@ -1,6 +1,6 @@
 class Period < ApplicationRecord
-  has_many :events
-  has_many :characters
+  has_many :events, dependent: :restrict_with_error
+  has_many :characters, dependent: :restrict_with_error
 
   validates :name, presence: true, uniqueness: true
 end

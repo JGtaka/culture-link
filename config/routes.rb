@@ -30,6 +30,10 @@ Rails.application.routes.draw do
     root "dashboard#index"
     resources :characters
     resources :events
+    resources :masters, only: [ :index ]
+    resources :periods,     except: [ :index, :show ]
+    resources :regions,     except: [ :index, :show ]
+    resources :study_units, except: [ :index, :show ]
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
