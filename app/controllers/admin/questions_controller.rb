@@ -43,7 +43,7 @@ class Admin::QuestionsController < Admin::BaseController
 
   def question_params
     params.require(:question).permit(
-      :body, :explanation, :correct_choice_index,
+      :body, :explanation, :correct_choice_index, :image_credit,
       images: [],
       choices_attributes: [ :id, :body ]
     )

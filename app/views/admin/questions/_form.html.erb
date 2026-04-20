@@ -76,6 +76,11 @@
       <% if question.errors[:images].any? %>
         <p class="text-red-500 text-xs mt-2"><%= question.errors[:images].first %></p>
       <% end %>
+
+      <div class="mt-4">
+        <%= f.label :image_credit, "画像クレジット", class: "block text-xs font-bold text-[#424754] mb-2" %>
+        <%= f.text_field :image_credit, placeholder: "例: Photo by ...", class: "bg-[#f7f9fb] w-full rounded-lg px-4 py-3 text-sm text-[#191c1e] placeholder-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#2563eb]" %>
+      </div>
     </div>
   </div>
 

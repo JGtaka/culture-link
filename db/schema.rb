@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_20_014820) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_20_072341) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -188,6 +188,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_20_014820) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "published_at"
+    t.string "image_credit"
     t.index ["published_at"], name: "index_quizzes_on_published_at"
     t.index ["quiz_category_id"], name: "index_quizzes_on_quiz_category_id"
   end

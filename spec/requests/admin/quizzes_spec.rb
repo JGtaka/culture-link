@@ -73,6 +73,13 @@ RSpec.describe "Admin::Quizzes", type: :request do
           expect(response).to redirect_to(admin_quiz_path(Quiz.last))
           expect(flash[:notice]).to include("新テスト")
         end
+
+        it "image_creditも保存できること" do
+          post admin_quizzes_path, params: {
+            quiz: { title: "クレジット付き", quiz_category_id: category.id, image_credit: "Photo by 先生" }
+          }
+          expect(Quiz.last.image_credit).to eq("Photo by 先生")
+        end
       end
 
       context "異常系" do
@@ -112,6 +119,13 @@ RSpec.describe "Admin::Quizzes", type: :request do
           patch admin_quiz_path(quiz), params: { quiz: { title: "更新後", quiz_category_id: category.id } }
           expect(quiz.reload.title).to eq("更新後")
           expect(response).to redirect_to(admin_quiz_path(quiz))
+        end
+
+        it "image_creditが更新されること" do
+          patch admin_quiz_path(quiz), params: {
+            quiz: { title: quiz.title, quiz_category_id: category.id, image_credit: "出典: Wikipedia" }
+          }
+          expect(quiz.reload.image_credit).to eq("出典: Wikipedia")
         end
       end
 

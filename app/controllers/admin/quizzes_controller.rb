@@ -70,6 +70,6 @@ class Admin::QuizzesController < Admin::BaseController
   end
 
   def quiz_params
-    params.require(:quiz).permit(:title, :quiz_category_id, :image, :image_url)
+    params.require(:quiz).permit(:title, :quiz_category_id, :image, :image_url, :image_credit)
   end
 end
