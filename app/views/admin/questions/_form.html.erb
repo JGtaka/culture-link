@@ -1,0 +1,87 @@
+<%= form_with(model: [ :admin, quiz, question ], class: "grid grid-cols-3 gap-8 pt-2 pb-28") do |f| %>
+  <%# 左カラム %>
+  <div class="col-span-2 space-y-8">
+    <%# 本文カード %>
+    <div class="bg-white rounded-xl shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] p-8">
+      <div class="border-l-4 border-[#0058be] pl-5 mb-6">
+        <h3 class="text-lg font-bold text-[#191c1e] leading-7">問題文 *</h3>
+      </div>
+      <%= f.text_area :body, placeholder: "例: ルネサンス発祥の地はどこか？", rows: 5, class: "bg-[#f7f9fb] w-full rounded-lg px-4 py-3 text-base text-[#191c1e] placeholder-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#2563eb] resize-y leading-7" %>
+      <% if question.errors[:body].any? %>
+        <p class="text-red-500 text-xs mt-1"><%= question.errors[:body].first %></p>
+      <% end %>
+    </div>
+
+    <%# 選択肢カード %>
+    <div class="bg-white rounded-xl shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] p-8">
+      <div class="border-l-4 border-[#0058be] pl-5 mb-6">
+        <h3 class="text-lg font-bold text-[#191c1e] leading-7">選択肢 (4択) *</h3>
+        <p class="text-xs text-[#586377] mt-1">正解にしたい選択肢のラジオボタンを1つ選択してください</p>
+      </div>
+
+      <div class="space-y-3">
+        <% question.choices.each_with_index do |choice, idx| %>
+          <%= f.fields_for :choices, choice do |cf| %>
+            <div class="flex items-center gap-3 bg-[#f7f9fb] rounded-lg px-4 py-3">
+              <%= f.radio_button :correct_choice_index, idx.to_s,
+                    checked: question.correct_choice_index.to_s == idx.to_s || (question.correct_choice_index.blank? && choice.correct_answer),
+                    class: "size-5 text-[#10b981] focus:ring-[#10b981] cursor-pointer" %>
+              <span class="text-xs font-bold text-[#424754] w-6"><%= (idx + 65).chr %></span>
+              <%= cf.hidden_field :id if choice.persisted? %>
+              <%= cf.text_field :body, placeholder: "選択肢#{idx + 1}", class: "flex-1 bg-white rounded-md px-3 py-2 text-sm text-[#191c1e] placeholder-[#94a3b8] focus:outline-none focus:ring-2 focus:ring-[#2563eb]" %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+
+      <% if question.errors[:correct_choice_index].any? %>
+        <p class="text-red-500 text-xs mt-3"><%= question.errors[:correct_choice_index].first %></p>
+      <% end %>
+      <% if question.errors[:choices].any? %>
+        <p class="text-red-500 text-xs mt-3"><%= question.errors[:choices].first %></p>
+      <% end %>
+    </div>
+
+    <%# 解説カード %>
+    <div class="bg-white rounded-xl shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] p-8">
+      <div class="border-l-4 border-[#c2c6d6] pl-5 mb-6">
+        <h3 class="text-lg font-bold text-[#191c1e] leading-7">解説 (任意)</h3>
+      </div>
+      <%= f.text_area :explanation, placeholder: "問題の解説・補足", rows: 4, class: "bg-[#f7f9fb] w-full rounded-lg px-4 py-3 text-base text-[#191c1e] placeholder-[#6b7280] focus:outline-none focus:ring-2 focus:ring-[#2563eb] resize-y leading-7" %>
+    </div>
+  </div>
+
+  <%# 右カラム: 画像 %>
+  <div class="col-span-1 space-y-8">
+    <div class="bg-white rounded-xl shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] p-8">
+      <div class="border-l-4 border-[#0058be] pl-5 mb-6">
+        <h3 class="text-lg font-bold text-[#191c1e] leading-7">画像 (任意)</h3>
+        <p class="text-xs text-[#586377] mt-1">複数選択可</p>
+      </div>
+
+      <% persisted_images = question.images.select { |img| img.blob&.persisted? } %>
+      <% if persisted_images.any? %>
+        <div class="grid grid-cols-2 gap-3 mb-4">
+          <% persisted_images.each do |img| %>
+            <div class="rounded-lg overflow-hidden border border-[#e2e4e6]">
+              <%= image_tag url_for(img), class: "w-full h-24 object-cover" %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <%= f.file_field :images, multiple: true, accept: "image/png,image/jpeg,image/webp", class: "text-sm text-[#424754] file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[#f2f4f6] file:text-[#424754] file:font-bold file:cursor-pointer" %>
+      <p class="text-xs text-[#586377] mt-2">JPG, PNG, WebP (最大 5MB/枚)</p>
+
+      <% if question.errors[:images].any? %>
+        <p class="text-red-500 text-xs mt-2"><%= question.errors[:images].first %></p>
+      <% end %>
+    </div>
+  </div>
+
+  <%# 下部固定バー %>
+  <div class="col-span-3 fixed bottom-0 left-[256px] right-0 h-20 bg-[rgba(255,255,255,0.8)] backdrop-blur-xl border-t border-[rgba(194,198,214,0.1)] flex items-center justify-between px-8 z-30">
+    <%= link_to "キャンセル", admin_quiz_path(quiz), class: "text-sm font-bold text-[#424754] px-6 py-3 hover:text-[#191c1e]" %>
+    <%= f.submit question.persisted? ? "更新する" : "作成する", class: "bg-gradient-to-br from-[#0058be] to-[#2170e4] text-white text-sm font-bold px-10 py-3 rounded-lg shadow-[0px_10px_15px_-3px_rgba(0,88,190,0.2)] cursor-pointer hover:opacity-90" %>
+  </div>
+<% end %>

@@ -9,12 +9,18 @@
 
   <%# 一覧 %>
   <% if items.any? %>
-    <div id="<%= list_id %>"
-         class="divide-y divide-[#f2f4f6] flex-1 min-h-[60px]"
-         data-controller="sortable"
-         data-sortable-url-value="<%= reorder_path %>">
-      <%= render items %>
-    </div>
+    <% if local_assigns[:reorder_path].present? %>
+      <div id="<%= list_id %>"
+           class="divide-y divide-[#f2f4f6] flex-1 min-h-[60px]"
+           data-controller="sortable"
+           data-sortable-url-value="<%= reorder_path %>">
+        <%= render items %>
+      </div>
+    <% else %>
+      <div id="<%= list_id %>" class="divide-y divide-[#f2f4f6] flex-1 min-h-[60px]">
+        <%= render items %>
+      </div>
+    <% end %>
   <% else %>
     <div class="flex-1 min-h-[60px]">
       <p class="px-6 py-8 text-center text-sm text-[#727785]">まだ登録されていません</p>

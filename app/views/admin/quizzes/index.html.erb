@@ -1,0 +1,130 @@
+<%# パンくずリスト %>
+<div class="flex items-center gap-2 mb-4">
+  <span class="text-[11px] font-bold text-[rgba(66,71,84,0.6)] uppercase tracking-[1.1px]">
+    <%= link_to "ホーム", admin_root_path, class: "hover:text-[#424754]" %>
+  </span>
+  <span class="text-[11px] text-[#c2c6d6]">/</span>
+  <span class="text-[11px] font-bold text-[rgba(66,71,84,0.6)] uppercase tracking-[1.1px]">コンテンツ</span>
+  <span class="text-[11px] text-[#c2c6d6]">/</span>
+  <span class="text-[11px] font-bold text-[#424754] uppercase tracking-[1.1px]">小テスト</span>
+</div>
+
+<%# ヘッダー %>
+<div class="flex items-end justify-between mb-8">
+  <div class="flex items-end gap-4">
+    <div>
+      <h1 class="text-4xl font-bold text-[#191c1e] tracking-[-0.9px]">小テスト一覧</h1>
+      <p class="text-base text-[#424754] mt-1">学習確認用の小テストの管理</p>
+    </div>
+    <span class="bg-[#d8e2ff] text-[#001a42] text-xs font-bold px-3 py-1 rounded-full mb-2">
+      全 <%= @quizzes.total_count %> 件
+    </span>
+  </div>
+  <%= link_to new_admin_quiz_path, class: "flex gap-2 items-center bg-[#2563eb] text-white text-sm font-bold px-6 py-3 rounded-lg shadow-[0px_10px_15px_-3px_rgba(37,99,235,0.2)] hover:opacity-90" do %>
+    <svg class="size-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+    </svg>
+    新規追加
+  <% end %>
+</div>
+
+<%# フィルター %>
+<div class="bg-white rounded-xl shadow-[0px_12px_32px_0px_rgba(25,28,30,0.04)] p-6 flex gap-4 items-center mb-8">
+  <%= form_tag admin_quizzes_path, method: :get, class: "flex gap-4 items-center w-full" do %>
+    <div class="relative flex-1 min-w-[200px]">
+      <%= select_tag :quiz_category_id,
+            options_from_collection_for_select(@quiz_categories, :id, :name, params[:quiz_category_id]),
+            include_blank: "カテゴリーで絞り込み",
+            class: "bg-[#f2f4f6] w-full rounded-lg pl-4 pr-10 py-2.5 text-sm font-medium text-[#424754] appearance-none cursor-pointer",
+            onchange: "this.form.requestSubmit()" %>
+      <svg class="absolute right-3 top-1/2 -translate-y-1/2 size-3 text-[#424754] pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+      </svg>
+    </div>
+    <%= link_to "リセット", admin_quizzes_path, class: "bg-[#e6e8ea] text-[#586377] text-sm font-bold px-6 py-2.5 rounded-lg hover:opacity-80" %>
+  <% end %>
+</div>
+
+<%# テーブル %>
+<div class="bg-white rounded-xl shadow-[0px_12px_32px_0px_rgba(25,28,30,0.04)] overflow-clip">
+  <table class="w-full table-fixed">
+    <colgroup>
+      <col class="w-[96px]" />
+      <col />
+      <col class="w-[160px]" />
+      <col class="w-[96px]" />
+      <col class="w-[120px]" />
+      <col class="w-[140px]" />
+    </colgroup>
+    <thead>
+      <tr class="bg-[rgba(242,244,246,0.5)]">
+        <th class="text-left text-[11px] font-bold text-[rgba(66,71,84,0.7)] uppercase tracking-[1.1px] px-6 py-4">画像</th>
+        <th class="text-left text-[11px] font-bold text-[rgba(66,71,84,0.7)] uppercase tracking-[1.1px] px-6 py-4">タイトル</th>
+        <th class="text-left text-[11px] font-bold text-[rgba(66,71,84,0.7)] uppercase tracking-[1.1px] px-6 py-4">カテゴリー</th>
+        <th class="text-left text-[11px] font-bold text-[rgba(66,71,84,0.7)] uppercase tracking-[1.1px] px-6 py-4">状態</th>
+        <th class="text-left text-[11px] font-bold text-[rgba(66,71,84,0.7)] uppercase tracking-[1.1px] px-6 py-4">更新日</th>
+        <th class="text-right text-[11px] font-bold text-[rgba(66,71,84,0.7)] uppercase tracking-[1.1px] px-6 py-4">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @quizzes.each_with_index do |quiz, i| %>
+        <tr class="border-t border-[#f2f4f6] <%= 'bg-[rgba(242,244,246,0.3)]' if i.odd? %> hover:bg-[rgba(242,244,246,0.5)]">
+          <td class="px-6 py-4">
+            <% if quiz.image.attached? %>
+              <%= image_tag quiz.image, class: "w-16 h-10 rounded object-cover shrink-0" %>
+            <% elsif quiz.image_url.present? %>
+              <%= image_tag quiz.image_url, class: "w-16 h-10 rounded object-cover shrink-0" %>
+            <% else %>
+              <div class="w-16 h-10 rounded bg-[#f2f4f6] flex items-center justify-center shrink-0">
+                <svg class="size-4 text-[#94a3b8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z"/>
+                </svg>
+              </div>
+            <% end %>
+          </td>
+          <td class="px-6 py-4">
+            <%= link_to quiz.title, admin_quiz_path(quiz), class: "text-sm font-bold text-[#191c1e] block truncate hover:text-[#2563eb]" %>
+          </td>
+          <td class="px-6 py-4">
+            <span class="bg-[#d8e3fb] text-[#111c2d] text-xs font-medium px-2 py-1 rounded"><%= quiz.quiz_category.name %></span>
+          </td>
+          <td class="px-6 py-4">
+            <% if quiz.published? %>
+              <span class="bg-[#d1fae5] text-[#065f46] text-xs font-bold px-2 py-1 rounded">公開中</span>
+            <% else %>
+              <span class="bg-[#f2f4f6] text-[#586377] text-xs font-bold px-2 py-1 rounded">下書き</span>
+            <% end %>
+          </td>
+          <td class="px-6 py-4">
+            <span class="text-sm text-[#727785]"><%= quiz.updated_at.strftime("%Y/%m/%d") %></span>
+          </td>
+          <td class="px-6 py-4">
+            <div class="flex gap-2 justify-end">
+              <%= link_to edit_admin_quiz_path(quiz), class: "bg-[#f2f4f6] p-2 rounded-lg hover:bg-[#e2e4e6]" do %>
+                <svg class="size-3.5 text-[#424754]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
+                </svg>
+              <% end %>
+              <%= button_to admin_quiz_path(quiz), method: :delete, form: { data: { turbo_confirm: "「#{quiz.title}」を削除しますか？" } }, class: "bg-[#f2f4f6] p-2 rounded-lg hover:bg-red-100" do %>
+                <svg class="size-3.5 text-[#424754] hover:text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
+                </svg>
+              <% end %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%# ページネーション %>
+  <div class="flex items-center justify-between px-8 py-6 bg-[rgba(242,244,246,0.2)]">
+    <p class="text-sm font-medium text-[#424754]">
+      全 <span class="font-bold text-[#191c1e]"><%= @quizzes.total_count %></span> 件中
+      <span class="font-bold text-[#191c1e]"><%= @quizzes.total_count.zero? ? 0 : @quizzes.offset_value + 1 %>〜<%= [@quizzes.offset_value + @quizzes.limit_value, @quizzes.total_count].min %></span> 件表示
+    </p>
+    <div class="flex gap-1 items-center">
+      <%= paginate @quizzes, theme: "admin" %>
+    </div>
+  </div>
+</div>

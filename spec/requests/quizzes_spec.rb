@@ -26,7 +26,7 @@ RSpec.describe "Quizzes", type: :request do
 
       context "一覧表示" do
         let!(:category) { create(:quiz_category, name: "ルネサンス") }
-        let!(:quiz) { create(:quiz, title: "ルネサンスの文化と芸術", quiz_category: category) }
+        let!(:quiz) { create(:quiz, :published, title: "ルネサンスの文化と芸術", quiz_category: category) }
 
         it "クイズのタイトルが表示される" do
           get quizzes_path
@@ -41,13 +41,19 @@ RSpec.describe "Quizzes", type: :request do
         it "問題数が表示される" do
           create_list(:question, 3, quiz: quiz)
           get quizzes_path
-          expect(response.body).to include("3問")
+          expect(response.body).to include("4問")
+        end
+
+        it "非公開クイズは一覧に表示されない" do
+          create(:quiz, title: "非公開クイズ", quiz_category: category)
+          get quizzes_path
+          expect(response.body).not_to include("非公開クイズ")
         end
       end
 
       context "ページネーション" do
         before do
-          create_list(:quiz, 8)
+          create_list(:quiz, 8, :published)
         end
 
         it "1ページあたり最大6件" do
@@ -67,7 +73,7 @@ RSpec.describe "Quizzes", type: :request do
       end
 
       context "データが少ない場合" do
-        before { create_list(:quiz, 3) }
+        before { create_list(:quiz, 3, :published) }
 
         it "ページネーションリンクが表示されない" do
           get quizzes_path
@@ -78,8 +84,8 @@ RSpec.describe "Quizzes", type: :request do
       context "カテゴリフィルター" do
         let!(:category_a) { create(:quiz_category, name: "ルネサンスA") }
         let!(:category_b) { create(:quiz_category, name: "バロックB") }
-        let!(:quiz_a) { create(:quiz, title: "クイズAAA", quiz_category: category_a) }
-        let!(:quiz_b) { create(:quiz, title: "クイズBBB", quiz_category: category_b) }
+        let!(:quiz_a) { create(:quiz, :published, title: "クイズAAA", quiz_category: category_a) }
+        let!(:quiz_b) { create(:quiz, :published, title: "クイズBBB", quiz_category: category_b) }
 
         it "カテゴリで絞り込みできる" do
           get quizzes_path, params: { quiz_category_id: category_a.id }
@@ -95,8 +101,8 @@ RSpec.describe "Quizzes", type: :request do
       end
 
       context "状態別ボタン表示" do
-        let!(:quiz_new) { create(:quiz, title: "新規クイズ") }
-        let!(:quiz_done) { create(:quiz, title: "完了クイズ") }
+        let!(:quiz_new) { create(:quiz, :published, title: "新規クイズ") }
+        let!(:quiz_done) { create(:quiz, :published, title: "完了クイズ") }
 
         before do
           create(:quiz_result, user: user, quiz: quiz_done, status: :completed)
@@ -116,7 +122,11 @@ RSpec.describe "Quizzes", type: :request do
   end
 
   describe "GET /quizzes/:id" do
-    let(:quiz) { create(:quiz, title: "ルネサンスの文化と芸術") }
+    let(:quiz) do
+      q = create(:quiz, title: "ルネサンスの文化と芸術")
+      q.update_column(:published_at, 1.day.ago)
+      q
+    end
     let!(:question) { create(:question, body: "ルネサンス発祥の地は？", quiz: quiz) }
     let!(:choice_correct) { create(:choice, body: "フィレンツェ", correct_answer: true, question: question) }
     let!(:choice_wrong) { create(:choice, body: "ローマ", correct_answer: false, question: question) }
@@ -154,6 +164,12 @@ RSpec.describe "Quizzes", type: :request do
 
       it "存在しないクイズは404を返す" do
         get quiz_path(id: 0)
+        expect(response).to have_http_status(:not_found)
+      end
+
+      it "非公開クイズは404を返す" do
+        draft = create(:quiz, title: "下書きクイズ")
+        get quiz_path(draft)
         expect(response).to have_http_status(:not_found)
       end
     end

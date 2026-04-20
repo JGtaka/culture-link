@@ -40,6 +40,16 @@ Rails.application.routes.draw do
     resources :study_units, except: [ :show ] do
       collection { patch :reorder }
     end
+    resources :quiz_categories, except: [ :show ] do
+      collection { patch :reorder }
+    end
+    resources :quizzes do
+      member do
+        patch :publish
+        patch :unpublish
+      end
+      resources :questions, only: %i[new create edit update destroy]
+    end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

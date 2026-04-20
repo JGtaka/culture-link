@@ -13,8 +13,8 @@
   <p class="text-sm text-[#545f73] mt-2">時代・地域・学習単元を一括で管理できます</p>
 </div>
 
-<%# 3カラムカード %>
-<div class="grid grid-cols-3 gap-6">
+<%# マスターカード %>
+<div class="grid grid-cols-2 gap-6">
   <%= render "card",
         title: "時代",
         items: @periods,
@@ -38,4 +38,12 @@
         new_frame_id: "new_study_unit_form",
         new_path: new_admin_study_unit_path,
         reorder_path: reorder_admin_study_units_path %>
+
+  <%= render "card",
+        title: "小テストカテゴリー",
+        items: @quiz_categories,
+        list_id: "quiz_categories_list",
+        new_frame_id: "new_quiz_category_form",
+        new_path: new_admin_quiz_category_path,
+        reorder_path: reorder_admin_quiz_categories_path %>
 </div>
