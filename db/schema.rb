@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_19_081414) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_20_014820) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -161,6 +161,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_19_081414) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "display_order", null: false
+    t.index ["display_order"], name: "index_quiz_categories_on_display_order"
     t.index ["name"], name: "index_quiz_categories_on_name", unique: true
   end
 
@@ -185,6 +187,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_19_081414) do
     t.string "image_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "published_at"
+    t.index ["published_at"], name: "index_quizzes_on_published_at"
     t.index ["quiz_category_id"], name: "index_quizzes_on_quiz_category_id"
   end
 

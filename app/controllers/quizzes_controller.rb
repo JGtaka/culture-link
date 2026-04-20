@@ -3,7 +3,7 @@ class QuizzesController < ApplicationController
 
   def index
     @quiz_categories = QuizCategory.order(:id)
-    @quizzes = Quiz
+    @quizzes = Quiz.published
       .by_category(params[:quiz_category_id])
       .includes(:quiz_category, :questions, :quiz_results)
       .order(:id)
@@ -11,6 +11,6 @@ class QuizzesController < ApplicationController
   end
 
   def show
-    @quiz = Quiz.includes(questions: :choices).find(params[:id])
+    @quiz = Quiz.published.includes(questions: :choices).find(params[:id])
   end
 end

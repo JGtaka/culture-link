@@ -50,6 +50,46 @@ RSpec.describe Quiz, type: :model do
     end
   end
 
+  describe '.published' do
+    let!(:published_quiz) do
+      quiz = create(:quiz)
+      create(:question, quiz: quiz)
+      quiz.update!(published_at: 1.day.ago)
+      quiz
+    end
+    let!(:draft_quiz) { create(:quiz, published_at: nil) }
+
+    it '公開中の小テストのみ返すこと' do
+      expect(Quiz.published).to contain_exactly(published_quiz)
+    end
+  end
+
+  describe '#published?' do
+    it 'published_atが設定されていればtrueを返すこと' do
+      expect(build(:quiz, published_at: Time.current).published?).to be true
+    end
+
+    it 'published_atがnilならfalseを返すこと' do
+      expect(build(:quiz, published_at: nil).published?).to be false
+    end
+  end
+
+  describe '公開バリデーション' do
+    it '問題が1件もない状態では公開できないこと' do
+      quiz = create(:quiz)
+      quiz.published_at = Time.current
+      expect(quiz).not_to be_valid
+      expect(quiz.errors[:base]).to include(/問題が1問もない/)
+    end
+
+    it '問題が1件以上あれば公開できること' do
+      quiz = create(:quiz)
+      create(:question, quiz: quiz)
+      quiz.published_at = Time.current
+      expect(quiz).to be_valid
+    end
+  end
+
   describe '#status_for' do
     let(:user) { create(:user) }
     let(:quiz) { create(:quiz) }

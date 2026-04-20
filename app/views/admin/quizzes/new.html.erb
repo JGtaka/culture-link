@@ -1,0 +1,17 @@
+<div class="flex items-center gap-2 mb-4">
+  <span class="text-[11px] font-bold text-[rgba(66,71,84,0.6)] uppercase tracking-[1.1px]">
+    <%= link_to "ホーム", admin_root_path, class: "hover:text-[#424754]" %>
+  </span>
+  <span class="text-[11px] text-[#c2c6d6]">/</span>
+  <span class="text-[11px] font-bold text-[rgba(66,71,84,0.6)] uppercase tracking-[1.1px]">
+    <%= link_to "小テスト", admin_quizzes_path, class: "hover:text-[#424754]" %>
+  </span>
+  <span class="text-[11px] text-[#c2c6d6]">/</span>
+  <span class="text-[11px] font-bold text-[#424754] uppercase tracking-[1.1px]">新規追加</span>
+</div>
+
+<div class="mb-8">
+  <h1 class="text-4xl font-medium text-[#191c1e] tracking-[-0.9px]">小テストの新規追加</h1>
+</div>
+
+<%= render "form", quiz: @quiz %>

@@ -25,4 +25,21 @@ RSpec.describe QuizCategory, type: :model do
       expect(association.macro).to eq :has_many
     end
   end
+
+  describe '.ordered' do
+    it 'display_order順に返すこと' do
+      c1 = create(:quiz_category, name: "A", display_order: 3)
+      c2 = create(:quiz_category, name: "B", display_order: 1)
+      c3 = create(:quiz_category, name: "C", display_order: 2)
+      expect(QuizCategory.ordered).to eq([ c2, c3, c1 ])
+    end
+  end
+
+  describe 'display_order自動採番' do
+    it '新規作成時にdisplay_orderが自動でセットされること' do
+      create(:quiz_category, name: "A")
+      c2 = create(:quiz_category, name: "B")
+      expect(c2.display_order).to be > 0
+    end
+  end
 end
