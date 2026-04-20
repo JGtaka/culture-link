@@ -78,6 +78,13 @@ RSpec.describe "Admin::Questions", type: :request do
           post admin_quiz_questions_path(quiz), params: valid_params
           expect(response).to redirect_to(admin_quiz_path(quiz))
         end
+
+        it "image_creditも保存できること" do
+          params = valid_params
+          params[:question][:image_credit] = "出典: 国立図書館"
+          post admin_quiz_questions_path(quiz), params: params
+          expect(Question.last.image_credit).to eq("出典: 国立図書館")
+        end
       end
 
       context "異常系" do
