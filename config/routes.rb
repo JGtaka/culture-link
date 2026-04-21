@@ -30,7 +30,12 @@ Rails.application.routes.draw do
     root "dashboard#index"
     resources :characters
     resources :events
-    resources :users, only: [ :index ]
+    resources :users, only: [ :index, :show ] do
+      member do
+        patch :suspend
+        patch :resume
+      end
+    end
     resources :masters, only: [ :index ]
     resources :periods, except: [ :show ] do
       collection { patch :reorder }

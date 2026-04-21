@@ -1,5 +1,8 @@
 class Admin::UsersController < Admin::BaseController
   PER_PAGE = 20
+  TABS = %w[quiz_results favorites].freeze
+
+  before_action :set_user, only: %i[show suspend resume]
 
   def index
     @users = filtered_users.order(created_at: :desc).page(params[:page]).per(PER_PAGE)
@@ -11,7 +14,40 @@ class Admin::UsersController < Admin::BaseController
     @prev_month_diff = calc_prev_month_diff
   end
 
+  def show
+    @tab = TABS.include?(params[:tab]) ? params[:tab] : "quiz_results"
+
+    case @tab
+    when "quiz_results"
+      @quiz_results = @user.quiz_results.includes(:quiz).order(created_at: :desc).page(params[:page]).per(PER_PAGE)
+    when "favorites"
+      @favorites = @user.favorites.includes(:favorable).order(created_at: :desc).page(params[:page]).per(PER_PAGE)
+    end
+  end
+
+  def suspend
+    if @user == current_user
+      redirect_to admin_user_path(@user), alert: "自分自身を停止することはできません"
+    elsif @user.update(suspended_at: Time.current)
+      redirect_to admin_user_path(@user), notice: "「#{@user.name}」を停止しました"
+    else
+      redirect_to admin_user_path(@user), alert: "停止に失敗しました: #{@user.errors.full_messages.join(', ')}"
+    end
+  end
+
+  def resume
+    if @user.update(suspended_at: nil)
+      redirect_to admin_user_path(@user), notice: "「#{@user.name}」の停止を解除しました"
+    else
+      redirect_to admin_user_path(@user), alert: "解除に失敗しました: #{@user.errors.full_messages.join(', ')}"
+    end
+  end
+
   private
+
+  def set_user
+    @user = User.find(params[:id])
+  end
 
   def filtered_users
     users = User.all
@@ -24,7 +60,8 @@ class Admin::UsersController < Admin::BaseController
   def apply_keyword(relation, keyword)
     return relation if keyword.blank?
 
-    relation.where("name ILIKE :kw OR email ILIKE :kw", kw: "%#{keyword}%")
+    escaped = ActiveRecord::Base.sanitize_sql_like(keyword)
+    relation.where("name ILIKE :kw OR email ILIKE :kw", kw: "%#{escaped}%")
   end
 
   def apply_status(relation, status)
@@ -40,6 +77,7 @@ class Admin::UsersController < Admin::BaseController
     relation = relation.where(created_at: ..Date.parse(to).end_of_day)         if to.present?
     relation
   rescue ArgumentError
+    flash.now[:alert] = "日付の形式が正しくありません"
     relation
   end
 

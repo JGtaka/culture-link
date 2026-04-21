@@ -1,0 +1,53 @@
+<div class="bg-white border border-[rgba(194,198,214,0.15)] rounded-xl shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] overflow-hidden">
+  <table class="w-full">
+    <thead class="bg-[rgba(248,250,252,0.5)] border-b border-[#f1f5f9]">
+      <tr>
+        <th class="px-6 py-[18px] text-left text-[10px] font-bold text-[#94a3b8] uppercase tracking-[1px]">追加日</th>
+        <th class="px-6 py-[18px] text-left text-[10px] font-bold text-[#94a3b8] uppercase tracking-[1px]">対象</th>
+        <th class="px-6 py-[18px] text-left text-[10px] font-bold text-[#94a3b8] uppercase tracking-[1px]">種別</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @favorites.any? %>
+        <% @favorites.each do |fav| %>
+          <tr class="border-t border-[#f8fafc]">
+            <td class="px-6 py-5 text-sm text-[#475569]"><%= fav.created_at.strftime("%Y/%m/%d") %></td>
+            <td class="px-6 py-5 text-sm font-bold text-[#0f172a]">
+              <% if fav.favorable.is_a?(Character) %>
+                <%= fav.favorable.name %>
+              <% elsif fav.favorable.is_a?(Event) %>
+                <%= fav.favorable.title %>
+              <% else %>
+                —
+              <% end %>
+            </td>
+            <td class="px-6 py-5">
+              <% if fav.favorable.is_a?(Character) %>
+                <span class="inline-flex items-center bg-[#dbeafe] text-[#1d4ed8] text-[10px] font-bold rounded-full px-[10px] pt-1 pb-[3px]">人物</span>
+              <% elsif fav.favorable.is_a?(Event) %>
+                <span class="inline-flex items-center bg-[#fef3c7] text-[#b45309] text-[10px] font-bold rounded-full px-[10px] pt-1 pb-[3px]">出来事</span>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td colspan="3" class="px-6 py-10 text-center text-sm text-[#64748b]">お気に入りがありません</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <% if @favorites.any? %>
+    <div class="bg-[rgba(248,250,252,0.3)] flex items-center justify-between px-6 py-4">
+      <p class="text-xs font-medium text-[#64748b]">
+        全
+        <span class="font-semibold text-[#0f172a]"><%= @favorites.total_count %></span>
+        件中
+        <span class="font-semibold text-[#0f172a]"><%= @favorites.offset_value + 1 %>〜<%= @favorites.offset_value + @favorites.size %></span>
+        件表示
+      </p>
+      <%= paginate @favorites, params: { tab: @tab } %>
+    </div>
+  <% end %>
+</div>

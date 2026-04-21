@@ -12,11 +12,19 @@ class User < ApplicationRecord
   has_many :quiz_results, dependent: :destroy
   has_many :article_views, dependent: :destroy
 
-  scope :active_users,    -> { where(suspended_at: nil) }
-  scope :suspended,       -> { where.not(suspended_at: nil) }
-  scope :recently_active, -> { where(current_sign_in_at: 30.days.ago..) }
+  scope :active_users, -> { where(suspended_at: nil) }
+  scope :suspended,    -> { where.not(suspended_at: nil) }
+
+  # lambdaだと評価タイミングが誤解されやすいため、意図を明示するクラスメソッドとして定義
+  def self.recently_active
+    where(current_sign_in_at: 30.days.ago..)
+  end
 
   validates :name, presence: true
+
+  # IPアドレスを記録しない（セッターで値を破棄）
+  def current_sign_in_ip=(_value); end
+  def last_sign_in_ip=(_value); end
 
   def self.from_omniauth(auth)
     return nil unless auth.info.email_verified
@@ -47,11 +55,12 @@ class User < ApplicationRecord
     suspended_at.present?
   end
 
-  # IPアドレスを記録しないためオーバーライド（IPカラムは未作成）
-  def update_tracked_fields(_request)
-    old_current, new_current = current_sign_in_at, Time.current
-    self.last_sign_in_at    = old_current || new_current
-    self.current_sign_in_at = new_current
-    self.sign_in_count      = (sign_in_count || 0) + 1
+  # Devise: 停止中ユーザーは認証不可にする
+  def active_for_authentication?
+    super && !suspended?
+  end
+
+  def inactive_message
+    suspended? ? :suspended : super
   end
 end

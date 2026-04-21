@@ -33,3 +33,6 @@ application.register("character-picker", CharacterPickerController)
 
 import SortableController from "./sortable_controller"
 application.register("sortable", SortableController)
+
+import AdminUsersConfirmModalController from "./admin_users/confirm_modal_controller"
+application.register("admin-users--confirm-modal", AdminUsersConfirmModalController)

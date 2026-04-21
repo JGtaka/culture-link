@@ -1,0 +1,4 @@
+ja:
+  devise:
+    failure:
+      suspended: "このアカウントは停止されています。管理者にお問い合わせください。"

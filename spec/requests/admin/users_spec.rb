@@ -47,6 +47,12 @@ RSpec.describe "Admin::Users", type: :request do
         expect(response.body).to include("ボブ")
         expect(response.body).not_to include("アリス</")
       end
+
+      it "LIKEメタ文字(%)がエスケープされ、ワイルドカード扱いされないこと" do
+        get admin_users_path, params: { q: "%" }
+        expect(response.body).not_to include("アリス</")
+        expect(response.body).not_to include("ボブ</")
+      end
     end
 
     describe "ステータスフィルタ" do
@@ -116,6 +122,111 @@ RSpec.describe "Admin::Users", type: :request do
         get admin_users_path
         expect(response.body).to include("data-testid=\"pagination-total\"")
         expect(response.body).to include((User.count).to_s)
+      end
+    end
+
+    describe "GET /admin/users/:id" do
+      let(:target) { create(:user, name: "対象ユーザー", email: "target@example.com") }
+
+      it "200を返し、パンくず・プロフィール情報を表示すること" do
+        get admin_user_path(target)
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("対象ユーザー")
+        expect(response.body).to include("target@example.com")
+        expect(response.body).to include("ユーザー管理")
+      end
+
+      context "停止中ユーザー" do
+        let(:target) { create(:user, suspended_at: 1.day.ago) }
+
+        it "停止バッジと「停止解除」ボタンが表示されること" do
+          get admin_user_path(target)
+          expect(response.body).to include("停止")
+          expect(response.body).to include("停止解除")
+        end
+      end
+
+      context "稼働中ユーザー" do
+        it "正常バッジと「アカウント停止」ボタンが表示されること" do
+          get admin_user_path(target)
+          expect(response.body).to include("正常")
+          expect(response.body).to include("アカウント停止")
+        end
+      end
+
+      describe "タブ切替" do
+        let!(:quiz_result) { create(:quiz_result, user: target) }
+        let!(:favorite)    { create(:favorite, user: target) }
+
+        it "デフォルトではクイズ結果タブがアクティブになること" do
+          get admin_user_path(target)
+          expect(response.body).to include("data-testid=\"tab-quiz_results-active\"")
+        end
+
+        it "tab=favoritesでお気に入りタブがアクティブになること" do
+          get admin_user_path(target, tab: "favorites")
+          expect(response.body).to include("data-testid=\"tab-favorites-active\"")
+        end
+      end
+    end
+
+    describe "PATCH /admin/users/:id/suspend" do
+      let(:target) { create(:user, name: "停止対象") }
+
+      it "suspended_atが設定され、詳細ページへリダイレクトされること" do
+        expect {
+          patch suspend_admin_user_path(target)
+        }.to change { target.reload.suspended_at }.from(nil)
+        expect(response).to redirect_to(admin_user_path(target))
+      end
+
+      it "自分自身を停止できないこと" do
+        expect {
+          patch suspend_admin_user_path(admin)
+        }.not_to change { admin.reload.suspended_at }
+        expect(flash[:alert]).to be_present
+      end
+    end
+
+    describe "PATCH /admin/users/:id/resume" do
+      let(:target) { create(:user, suspended_at: 1.day.ago) }
+
+      it "suspended_atがnilに戻り、詳細ページへリダイレクトされること" do
+        patch resume_admin_user_path(target)
+        expect(target.reload.suspended_at).to be_nil
+        expect(response).to redirect_to(admin_user_path(target))
+      end
+    end
+  end
+
+  describe "詳細画面の認可" do
+    let(:target) { create(:user) }
+
+    context "未ログイン" do
+      it "showはログインページへリダイレクト" do
+        get admin_user_path(target)
+        expect(response).to redirect_to(new_user_session_path)
+      end
+
+      it "suspendはログインページへリダイレクト" do
+        patch suspend_admin_user_path(target)
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    context "一般ユーザー" do
+      before { sign_in general_user }
+
+      it "showはroot_pathへリダイレクト" do
+        get admin_user_path(target)
+        expect(response).to redirect_to(root_path)
+      end
+
+      it "suspendは実行できない" do
+        expect {
+          patch suspend_admin_user_path(target)
+        }.not_to change { target.reload.suspended_at }
+        expect(response).to redirect_to(root_path)
       end
     end
   end
