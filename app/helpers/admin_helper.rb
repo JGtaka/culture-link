@@ -6,7 +6,7 @@ module AdminHelper
       { label: "出来事記事", path: admin_events_path, icon: "admin/shared/icons/events" },
       { label: "マスター管理", path: admin_masters_path, icon: "admin/shared/icons/master" },
       { label: "小テスト管理", path: admin_quizzes_path, icon: "admin/shared/icons/quiz" },
-      { label: "ユーザー管理", path: admin_root_path, icon: "admin/shared/icons/users" }
+      { label: "ユーザー管理", path: admin_users_path, icon: "admin/shared/icons/users" }
     ]
   end
 end

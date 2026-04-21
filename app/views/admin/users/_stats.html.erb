@@ -1,0 +1,61 @@
+<div class="grid grid-cols-4 gap-6 mb-6">
+  <%# 全ユーザー数 %>
+  <div class="bg-white border border-[rgba(194,198,214,0.15)] rounded-xl shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] p-6">
+    <p class="text-xs font-bold text-[#64748b] uppercase tracking-[0.6px]">全ユーザー数</p>
+    <div class="flex items-end justify-between mt-2">
+      <p class="text-2xl font-extrabold text-[#0f172a] leading-8" style="font-family: 'Manrope', sans-serif;" data-testid="stat-total"><%= number_with_delimiter(@total_count) %></p>
+      <div class="bg-[rgba(37,99,235,0.1)] rounded-full size-10 flex items-center justify-center">
+        <svg class="size-5 text-[#2563eb]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <%# 今月新規 %>
+  <div class="bg-white border border-[rgba(194,198,214,0.15)] rounded-xl shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] p-6">
+    <p class="text-xs font-bold text-[#64748b] uppercase tracking-[0.6px]">今月新規</p>
+    <div class="flex items-end justify-between mt-2">
+      <div class="flex items-baseline gap-1">
+        <p class="text-2xl font-extrabold text-[#0f172a] leading-8" style="font-family: 'Manrope', sans-serif;" data-testid="stat-monthly">+<%= @monthly_count %></p>
+        <% if @prev_month_diff %>
+          <% positive = @prev_month_diff >= 0 %>
+          <span class="text-[10px] font-semibold <%= positive ? 'text-[#059669]' : 'text-[#dc2626]' %>">
+            <%= positive ? "▲" : "▼" %> <%= @prev_month_diff.abs %>%
+          </span>
+        <% end %>
+      </div>
+      <div class="bg-[rgba(5,150,105,0.1)] rounded-full size-10 flex items-center justify-center">
+        <svg class="size-5 text-[#059669]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <%# アクティブ(30日) %>
+  <div class="bg-white border border-[rgba(194,198,214,0.15)] rounded-xl shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] p-6">
+    <p class="text-xs font-bold text-[#64748b] uppercase tracking-[0.6px]">アクティブ(30日)</p>
+    <div class="flex items-end justify-between mt-2">
+      <p class="text-2xl font-extrabold text-[#0f172a] leading-8" style="font-family: 'Manrope', sans-serif;" data-testid="stat-active"><%= number_with_delimiter(@active_count) %></p>
+      <div class="bg-[rgba(234,179,8,0.1)] rounded-full size-10 flex items-center justify-center">
+        <svg class="size-5 text-[#eab308]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <%# 停止中 %>
+  <div class="bg-white border border-[rgba(194,198,214,0.15)] rounded-xl shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] p-6">
+    <p class="text-xs font-bold text-[#64748b] uppercase tracking-[0.6px]">停止中</p>
+    <div class="flex items-end justify-between mt-2">
+      <p class="text-2xl font-extrabold text-[#0f172a] leading-8" style="font-family: 'Manrope', sans-serif;" data-testid="stat-suspended"><%= @suspended_count %></p>
+      <div class="bg-[rgba(225,29,72,0.1)] rounded-full size-10 flex items-center justify-center">
+        <svg class="size-5 text-[#e11d48]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>

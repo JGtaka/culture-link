@@ -125,4 +125,74 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe "#suspended?" do
+    it "suspended_atがnilならfalseを返す" do
+      user = build(:user, suspended_at: nil)
+      expect(user.suspended?).to be false
+    end
+
+    it "suspended_atが設定されていればtrueを返す" do
+      user = build(:user, suspended_at: Time.current)
+      expect(user.suspended?).to be true
+    end
+  end
+
+  describe "スコープ" do
+    let!(:active_user)    { create(:user, suspended_at: nil) }
+    let!(:suspended_user) { create(:user, suspended_at: 1.day.ago) }
+
+    describe ".active_users" do
+      it "停止されていないユーザーのみを返す" do
+        expect(User.active_users).to include(active_user)
+        expect(User.active_users).not_to include(suspended_user)
+      end
+    end
+
+    describe ".suspended" do
+      it "停止されているユーザーのみを返す" do
+        expect(User.suspended).to include(suspended_user)
+        expect(User.suspended).not_to include(active_user)
+      end
+    end
+
+    describe ".recently_active" do
+      let!(:recent_user)  { create(:user, current_sign_in_at: 5.days.ago) }
+      let!(:stale_user)   { create(:user, current_sign_in_at: 40.days.ago) }
+      let!(:no_login_user) { create(:user, current_sign_in_at: nil) }
+
+      it "30日以内にログインしたユーザーのみを返す" do
+        expect(User.recently_active).to include(recent_user)
+        expect(User.recently_active).not_to include(stale_user, no_login_user)
+      end
+    end
+  end
+
+  describe "#update_tracked_fields" do
+    let(:user) { create(:user) }
+    let(:request) { instance_double("ActionDispatch::Request", remote_ip: "127.0.0.1") }
+
+    it "current_sign_in_at / last_sign_in_at / sign_in_countを更新する" do
+      freeze_time do
+        user.update_tracked_fields(request)
+        expect(user.current_sign_in_at).to eq(Time.current)
+        expect(user.last_sign_in_at).to eq(Time.current)
+        expect(user.sign_in_count).to eq(1)
+      end
+    end
+
+    it "2回目のログインでlast_sign_in_atが前回のcurrentに移る" do
+      first_time = 2.days.ago
+      user.update!(current_sign_in_at: first_time, sign_in_count: 1)
+
+      user.update_tracked_fields(request)
+      expect(user.last_sign_in_at).to be_within(1.second).of(first_time)
+      expect(user.sign_in_count).to eq(2)
+    end
+
+    it "IPアドレス関連カラムに値を書き込まない (IPは取得しない)" do
+      expect(user).not_to respond_to(:current_sign_in_ip=)
+      expect(user).not_to respond_to(:last_sign_in_ip=)
+    end
+  end
 end

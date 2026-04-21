@@ -1,0 +1,47 @@
+<tr class="border-t border-[#f8fafc]">
+  <%# ID %>
+  <td class="px-6 py-6">
+    <span class="text-xs font-semibold text-[#94a3b8]" style="font-family: 'Inter', sans-serif;">#<%= format("%05d", user.id) %></span>
+  </td>
+
+  <%# ユーザー(アバター+名前+メール) %>
+  <td class="px-6 py-6">
+    <div class="flex items-center gap-3">
+      <%= render "avatar", user: user %>
+      <div>
+        <p class="text-sm font-bold text-[#0f172a] leading-5"><%= user.name %></p>
+        <p class="text-[11px] text-[#64748b]"><%= user.email %></p>
+      </div>
+    </div>
+  </td>
+
+  <%# 登録日 %>
+  <td class="px-6 py-6">
+    <span class="text-sm text-[#475569]"><%= user.created_at.strftime("%Y/%m/%d") %></span>
+  </td>
+
+  <%# 最終ログイン %>
+  <td class="px-6 py-6">
+    <span class="text-sm text-[#475569]">
+      <% if user.current_sign_in_at %>
+        <%= time_ago_in_words(user.current_sign_in_at) %>前
+      <% else %>
+        -
+      <% end %>
+    </span>
+  </td>
+
+  <%# ステータス %>
+  <td class="px-6 py-6">
+    <% if user.suspended? %>
+      <span class="inline-flex items-center bg-[#fff1f2] text-[#be123c] text-[10px] font-bold rounded-full px-[10px] pt-1 pb-[3px] ring-1 ring-[rgba(225,29,72,0.2)]">停止</span>
+    <% else %>
+      <span class="inline-flex items-center bg-[#ecfdf5] text-[#047857] text-[10px] font-bold rounded-full px-[10px] pt-1 pb-[3px] ring-1 ring-[rgba(5,150,105,0.2)]">正常</span>
+    <% end %>
+  </td>
+
+  <%# アクション %>
+  <td class="px-6 py-6 text-right">
+    <span class="inline-block text-[#94a3b8] text-xs font-bold cursor-not-allowed" title="詳細画面は次のリリースで実装予定">詳細</span>
+  </td>
+</tr>

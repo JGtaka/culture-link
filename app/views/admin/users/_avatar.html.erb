@@ -1,0 +1,7 @@
+<%# イニシャル表示アバター %>
+<% initial = user.name.to_s.strip.first.to_s.upcase %>
+<% palette = %w[#0ea5e9 #8b5cf6 #ec4899 #f59e0b #10b981 #2563eb #ef4444] %>
+<% bg = palette[user.id % palette.size] %>
+<div class="size-9 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0" style="background-color: <%= bg %>;">
+  <%= initial %>
+</div>
