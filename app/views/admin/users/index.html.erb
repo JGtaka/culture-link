@@ -1,0 +1,18 @@
+<%# パンくずリスト %>
+<div class="flex items-center gap-2 mb-6">
+  <%= link_to "ホーム", admin_root_path, class: "text-xs font-medium text-[#64748b] hover:text-[#0f172a]" %>
+  <svg class="w-[4px] h-[11px] text-[#cbd5e1]" viewBox="0 0 4 11" fill="currentColor"><path d="M0 0l4 5.5L0 11V0z"/></svg>
+  <span class="text-xs font-medium text-[#0f172a]">ユーザー管理</span>
+</div>
+
+<%# ページタイトル %>
+<h1 class="text-[30px] font-bold text-[#0f172a] tracking-[-0.75px] leading-9 mb-6">ユーザー一覧</h1>
+
+<%# 統計カード %>
+<%= render "stats" %>
+
+<%# フィルター %>
+<%= render "filter" %>
+
+<%# ユーザーテーブル %>
+<%= render "table" %>

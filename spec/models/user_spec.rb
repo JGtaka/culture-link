@@ -125,4 +125,91 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe "#active_for_authentication?" do
+    it "通常ユーザーはtrueを返す" do
+      expect(build(:user).active_for_authentication?).to be true
+    end
+
+    it "停止中ユーザーはfalseを返す" do
+      expect(build(:user, suspended_at: 1.day.ago).active_for_authentication?).to be false
+    end
+  end
+
+  describe "#inactive_message" do
+    it "停止中は:suspendedを返す" do
+      expect(build(:user, suspended_at: 1.day.ago).inactive_message).to eq(:suspended)
+    end
+
+    it "通常は親の値を返す" do
+      expect(build(:user).inactive_message).to eq(:inactive)
+    end
+  end
+
+  describe "#suspended?" do
+    it "suspended_atがnilならfalseを返す" do
+      user = build(:user, suspended_at: nil)
+      expect(user.suspended?).to be false
+    end
+
+    it "suspended_atが設定されていればtrueを返す" do
+      user = build(:user, suspended_at: Time.current)
+      expect(user.suspended?).to be true
+    end
+  end
+
+  describe "スコープ" do
+    let!(:active_user)    { create(:user, suspended_at: nil) }
+    let!(:suspended_user) { create(:user, suspended_at: 1.day.ago) }
+
+    describe ".active_users" do
+      it "停止されていないユーザーのみを返す" do
+        expect(User.active_users).to include(active_user)
+        expect(User.active_users).not_to include(suspended_user)
+      end
+    end
+
+    describe ".suspended" do
+      it "停止されているユーザーのみを返す" do
+        expect(User.suspended).to include(suspended_user)
+        expect(User.suspended).not_to include(active_user)
+      end
+    end
+
+    describe ".recently_active" do
+      let!(:recent_user)  { create(:user, current_sign_in_at: 5.days.ago) }
+      let!(:stale_user)   { create(:user, current_sign_in_at: 40.days.ago) }
+      let!(:no_login_user) { create(:user, current_sign_in_at: nil) }
+
+      it "30日以内にログインしたユーザーのみを返す" do
+        expect(User.recently_active).to include(recent_user)
+        expect(User.recently_active).not_to include(stale_user, no_login_user)
+      end
+    end
+  end
+
+  describe "IPアドレスのセッター (IPは保存しない)" do
+    let(:user) { create(:user) }
+
+    it "current_sign_in_ip= を呼んでもDBに値が残らない" do
+      user.current_sign_in_ip = "192.168.1.1"
+      user.save!
+      expect(user.reload.current_sign_in_ip).to be_nil
+    end
+
+    it "last_sign_in_ip= を呼んでもDBに値が残らない" do
+      user.last_sign_in_ip = "10.0.0.1"
+      user.save!
+      expect(user.reload.last_sign_in_ip).to be_nil
+    end
+
+    it "Deviseのtrackable経由でログインしてもIPが保存されない" do
+      request = instance_double("ActionDispatch::Request", remote_ip: "203.0.113.1")
+      user.update_tracked_fields!(request)
+      expect(user.reload.current_sign_in_ip).to be_nil
+      expect(user.reload.last_sign_in_ip).to be_nil
+      expect(user.reload.sign_in_count).to eq(1)
+      expect(user.reload.current_sign_in_at).to be_present
+    end
+  end
 end

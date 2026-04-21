@@ -1,0 +1,14 @@
+<div class="border-b border-[rgba(194,198,214,0.15)] flex gap-8 mb-8">
+  <% tabs = [
+       [ "quiz_results", "クイズ結果" ],
+       [ "favorites",    "お気に入り" ]
+     ] %>
+  <% tabs.each do |key, label| %>
+    <% active = (@tab == key) %>
+    <%= link_to admin_user_path(@user, tab: key),
+          class: "pb-4 text-sm font-bold #{active ? 'text-[#0058be] border-b-2 border-[#0058be] -mb-px' : 'text-[#424754] hover:text-[#0058be]'}",
+          data: active ? { testid: "tab-#{key}-active" } : {} do %>
+      <%= label %>
+    <% end %>
+  <% end %>
+</div>

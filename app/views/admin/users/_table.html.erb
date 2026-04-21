@@ -1,0 +1,44 @@
+<div class="bg-white border border-[rgba(194,198,214,0.15)] rounded-xl shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] overflow-hidden">
+  <table class="w-full">
+    <thead class="bg-[rgba(248,250,252,0.5)] border-b border-[#f1f5f9]">
+      <tr>
+        <th class="px-6 py-[18px] text-left text-[10px] font-bold text-[#94a3b8] uppercase tracking-[1px]">ID</th>
+        <th class="px-6 py-[18px] text-left text-[10px] font-bold text-[#94a3b8] uppercase tracking-[1px]">ユーザー</th>
+        <th class="px-6 py-[18px] text-left text-[10px] font-bold text-[#94a3b8] uppercase tracking-[1px]">登録日</th>
+        <th class="px-6 py-[18px] text-left text-[10px] font-bold text-[#94a3b8] uppercase tracking-[1px]">最終ログイン</th>
+        <th class="px-6 py-[18px] text-left text-[10px] font-bold text-[#94a3b8] uppercase tracking-[1px]">ステータス</th>
+        <th class="px-6 py-[18px] text-right text-[10px] font-bold text-[#94a3b8] uppercase tracking-[1px]">アクション</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @users.any? %>
+        <% @users.each do |user| %>
+          <%= render "row", user: user %>
+        <% end %>
+      <% else %>
+        <tr>
+          <td colspan="6" class="px-6 py-10 text-center text-sm text-[#64748b]">
+            該当するユーザーが見つかりませんでした
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%# ページネーション %>
+  <div class="bg-[rgba(248,250,252,0.3)] flex items-center justify-between px-6 py-4">
+    <p class="text-xs font-medium text-[#64748b]" data-testid="pagination-total">
+      全
+      <span class="font-semibold text-[#0f172a]"><%= @users.total_count %></span>
+      件中
+      <% if @users.total_count.zero? %>
+        <span class="font-semibold text-[#0f172a]">0</span>
+      <% else %>
+        <span class="font-semibold text-[#0f172a]"><%= @users.offset_value + 1 %>〜<%= @users.offset_value + @users.size %></span>
+      <% end %>
+      件表示
+    </p>
+
+    <%= paginate @users %>
+  </div>
+</div>

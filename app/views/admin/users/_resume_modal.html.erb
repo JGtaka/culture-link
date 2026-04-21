@@ -1,0 +1,28 @@
+<dialog data-admin-users--confirm-modal-target="dialog"
+        class="rounded-xl p-0 backdrop:bg-black/40 w-[440px] max-w-[90vw]">
+  <div class="p-6">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="size-10 bg-[#ecfdf5] rounded-full flex items-center justify-center">
+        <svg class="size-5 text-[#059669]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+      <h2 class="text-lg font-bold text-[#191c1e]">停止を解除しますか？</h2>
+    </div>
+    <p class="text-sm text-[#475569] mb-6">
+      「<span class="font-bold text-[#191c1e]"><%= @user.name %></span>」さんの停止を解除します。<br>
+      解除後は再度ログイン可能になります。
+    </p>
+    <div class="flex justify-end gap-2">
+      <button type="button"
+              class="px-4 py-2 text-sm font-medium text-[#64748b] hover:text-[#0f172a]"
+              data-action="click->admin-users--confirm-modal#close">
+        キャンセル
+      </button>
+      <%= button_to "解除する", resume_admin_user_path(@user),
+            method: :patch,
+            form: { class: "inline" },
+            class: "bg-[#059669] text-white text-sm font-bold rounded-lg px-4 py-2 hover:bg-[#047857] cursor-pointer" %>
+    </div>
+  </div>
+</dialog>

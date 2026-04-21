@@ -1,0 +1,49 @@
+<div class="bg-white border border-[rgba(194,198,214,0.15)] rounded-xl shadow-[0px_1px_2px_0px_rgba(0,0,0,0.05)] overflow-hidden">
+  <table class="w-full">
+    <thead class="bg-[rgba(248,250,252,0.5)] border-b border-[#f1f5f9]">
+      <tr>
+        <th class="px-6 py-[18px] text-left text-[10px] font-bold text-[#94a3b8] uppercase tracking-[1px]">受験日</th>
+        <th class="px-6 py-[18px] text-left text-[10px] font-bold text-[#94a3b8] uppercase tracking-[1px]">クイズ</th>
+        <th class="px-6 py-[18px] text-left text-[10px] font-bold text-[#94a3b8] uppercase tracking-[1px]">状態</th>
+        <th class="px-6 py-[18px] text-right text-[10px] font-bold text-[#94a3b8] uppercase tracking-[1px]">スコア</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @quiz_results.any? %>
+        <% @quiz_results.each do |result| %>
+          <tr class="border-t border-[#f8fafc]">
+            <td class="px-6 py-5 text-sm text-[#475569]"><%= (result.test_date || result.created_at).strftime("%Y/%m/%d") %></td>
+            <td class="px-6 py-5 text-sm font-bold text-[#0f172a]"><%= result.quiz.title %></td>
+            <td class="px-6 py-5">
+              <% if result.completed? %>
+                <span class="inline-flex items-center bg-[#dcfce7] text-[#15803d] text-[10px] font-bold rounded-full px-[10px] pt-1 pb-[3px]">完了</span>
+              <% else %>
+                <span class="inline-flex items-center bg-[#e6e8ea] text-[#424754] text-[10px] font-bold rounded-full px-[10px] pt-1 pb-[3px]">進行中</span>
+              <% end %>
+            </td>
+            <td class="px-6 py-5 text-right text-sm font-semibold text-[#0f172a]" style="font-family: 'Manrope', sans-serif;">
+              <%= result.score || "-" %>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
+        <tr>
+          <td colspan="4" class="px-6 py-10 text-center text-sm text-[#64748b]">クイズ結果がありません</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <% if @quiz_results.any? %>
+    <div class="bg-[rgba(248,250,252,0.3)] flex items-center justify-between px-6 py-4">
+      <p class="text-xs font-medium text-[#64748b]">
+        全
+        <span class="font-semibold text-[#0f172a]"><%= @quiz_results.total_count %></span>
+        件中
+        <span class="font-semibold text-[#0f172a]"><%= @quiz_results.offset_value + 1 %>〜<%= @quiz_results.offset_value + @quiz_results.size %></span>
+        件表示
+      </p>
+      <%= paginate @quiz_results, params: { tab: @tab } %>
+    </div>
+  <% end %>
+</div>

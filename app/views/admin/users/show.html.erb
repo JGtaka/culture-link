@@ -1,0 +1,58 @@
+<%# パンくずリスト %>
+<div class="flex items-center gap-2 mb-6">
+  <%= link_to "ホーム", admin_root_path, class: "text-xs font-medium text-[#64748b] hover:text-[#0f172a]" %>
+  <svg class="w-[4px] h-[11px] text-[#cbd5e1]" viewBox="0 0 4 11" fill="currentColor"><path d="M0 0l4 5.5L0 11V0z"/></svg>
+  <%= link_to "ユーザー管理", admin_users_path, class: "text-xs font-medium text-[#64748b] hover:text-[#0f172a]" %>
+  <svg class="w-[4px] h-[11px] text-[#cbd5e1]" viewBox="0 0 4 11" fill="currentColor"><path d="M0 0l4 5.5L0 11V0z"/></svg>
+  <span class="text-xs font-medium text-[#0f172a]"><%= @user.name %></span>
+</div>
+
+<%# ページタイトル + アクション %>
+<div class="flex items-center justify-between mb-8">
+  <div>
+    <h1 class="text-[30px] font-bold text-[#191c1e] tracking-[-0.75px] leading-9"><%= @user.name %></h1>
+    <p class="text-base text-[#424754] mt-1">ユーザーアカウントの詳細情報と学習履歴を管理します。</p>
+  </div>
+
+  <div>
+    <% if @user.suspended? %>
+      <div data-controller="admin-users--confirm-modal">
+        <button type="button"
+                class="border-2 border-[#059669] rounded-lg px-[22px] py-3 text-sm font-bold text-[#059669] hover:bg-[#ecfdf5]"
+                data-action="click->admin-users--confirm-modal#open">
+          停止解除
+        </button>
+        <%= render "resume_modal" %>
+      </div>
+    <% elsif @user == current_user %>
+      <button type="button"
+              class="border-2 border-[#ba1a1a] rounded-lg px-[22px] py-3 text-sm font-bold text-[#ba1a1a] opacity-50 cursor-not-allowed"
+              disabled title="自分自身は停止できません">
+        アカウント停止
+      </button>
+    <% else %>
+      <div data-controller="admin-users--confirm-modal">
+        <button type="button"
+                class="border-2 border-[#ba1a1a] rounded-lg px-[22px] py-3 text-sm font-bold text-[#ba1a1a] hover:bg-[#fef2f2]"
+                data-action="click->admin-users--confirm-modal#open">
+          アカウント停止
+        </button>
+        <%= render "suspend_modal" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<%# プロフィールカード %>
+<%= render "profile_card" %>
+
+<%# タブナビゲーション %>
+<%= render "tab_nav" %>
+
+<%# タブコンテンツ %>
+<% case @tab %>
+<% when "quiz_results" %>
+  <%= render "tab_quiz_results" %>
+<% when "favorites" %>
+  <%= render "tab_favorites" %>
+<% end %>
