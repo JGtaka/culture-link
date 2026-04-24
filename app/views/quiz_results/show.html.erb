@@ -1,3 +1,4 @@
+<% provide(:title, "#{@quiz_result.quiz.title}の結果") %>
 <%
   message = quiz_result_message(@quiz_result.score)
   color = quiz_result_color(@quiz_result.score)

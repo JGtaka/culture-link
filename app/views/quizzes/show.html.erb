@@ -1,3 +1,5 @@
+<% provide(:title, @quiz.title) %>
+
 <div class="max-w-[768px] mx-auto px-4 py-8">
   <%= form_with url: quiz_results_path, method: :post, local: true,
         data: { controller: "quiz-runner", quiz_runner_total_value: @quiz.questions.size } do %>
