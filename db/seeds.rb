@@ -18,8 +18,6 @@ region_south_asia = Region.find_or_create_by!(name: "南アジア")
 
 # 学習単元
 unit_renaissance = StudyUnit.find_or_create_by!(name: "ルネサンス")
-unit_greek = StudyUnit.find_or_create_by!(name: "古代ギリシャ文化")
-unit_baroque = StudyUnit.find_or_create_by!(name: "バロック")
 unit_romanticism = StudyUnit.find_or_create_by!(name: "ロマン主義")
 
 # === ルネサンス関連の出来事 ===
@@ -110,26 +108,6 @@ event10.update!(
 
 # === その他の出来事 ===
 
-event2 = Event.find_or_initialize_by(title: "パルテノン神殿の建設")
-event2.update!(
-  year: -447,
-  description: "アテネのアクロポリスに建てられた古代ギリシャの神殿。ペリクレスの命により建築家イクティノスとカリクラテスが設計し、彫刻家フェイディアスが装飾を担当した。ドーリア式建築の最高傑作とされ、女神アテナに捧げられた。柱のエンタシス（膨らみ）や基壇の微妙な湾曲など、視覚的な錯覚を補正する高度な建築技術が用いられている。",
-  period: period_ancient,
-  category: category_art,
-  study_unit: unit_greek,
-  region: region_europe
-)
-
-event5 = Event.find_or_initialize_by(title: "バロック音楽の隆盛")
-event5.update!(
-  year: 1600,
-  description: "17世紀初頭から18世紀半ばにかけて発展した音楽様式。装飾的で劇的な表現、通奏低音の使用、対位法の高度な発展が特徴。イタリアでオペラが誕生し、ヴィヴァルディの協奏曲、バッハのフーガ、ヘンデルのオラトリオなど多彩なジャンルが花開いた。宮廷や教会を中心に発展し、絶対王政の権威を示す手段としても重要な役割を果たした。",
-  period: period_early_modern,
-  category: category_music,
-  study_unit: unit_baroque,
-  region: region_europe
-)
-
 event6 = Event.find_or_initialize_by(title: "フランス革命と芸術")
 event6.update!(
   year: 1789,
@@ -180,26 +158,6 @@ char5.update!(
 
 # === その他の人物 ===
 
-char3 = Character.find_or_initialize_by(name: "ソクラテス")
-char3.update!(
-  description: "古代ギリシャの哲学者。西洋哲学の基礎を築いた人物。自らは著作を残さなかったが、弟子のプラトンの対話篇を通じてその思想が伝えられている。",
-  achievement: "対話法（問答法）を確立し、「無知の知」の概念を提唱。プラトンやアリストテレスに多大な影響を与え、西洋哲学の源流を作った。",
-  study_unit: unit_greek,
-  period: period_ancient,
-  region: region_europe,
-  year: -470
-)
-
-char4 = Character.find_or_initialize_by(name: "ヨハン・セバスティアン・バッハ")
-char4.update!(
-  description: "ドイツのバロック音楽の作曲家・オルガニスト。「音楽の父」と称され、バロック音楽を集大成した。生前はオルガン奏者・教会音楽家として知られたが、死後にその作品の価値が再評価された。",
-  achievement: "『マタイ受難曲』『平均律クラヴィーア曲集』『ブランデンブルク協奏曲』『ゴルトベルク変奏曲』など、1,000曲以上を作曲。対位法の技術を極限まで高め、西洋音楽の理論的・実践的基盤を築いた。",
-  study_unit: unit_baroque,
-  period: period_early_modern,
-  region: region_europe,
-  year: 1685
-)
-
 char6 = Character.find_or_initialize_by(name: "ウジェーヌ・ドラクロワ")
 char6.update!(
   description: "フランス・ロマン主義を代表する画家。色彩の魔術師と呼ばれ、力強い筆致と鮮烈な色使いで感情表現を追求した。",
@@ -218,14 +176,11 @@ EventCharacter.find_or_create_by!(event: event9, character: char1)
 EventCharacter.find_or_create_by!(event: event10, character: char1)
 EventCharacter.find_or_create_by!(event: event3, character: char2)
 EventCharacter.find_or_create_by!(event: event4, character: char1)
-EventCharacter.find_or_create_by!(event: event5, character: char4)
 EventCharacter.find_or_create_by!(event: event7, character: char5)
 EventCharacter.find_or_create_by!(event: event6, character: char6)
 
 # === 小テスト（クイズ） ===
 quiz_cat_renaissance = QuizCategory.find_or_create_by!(name: "ルネサンス")
-quiz_cat_greek = QuizCategory.find_or_create_by!(name: "古代ギリシャ文化")
-quiz_cat_baroque = QuizCategory.find_or_create_by!(name: "バロック")
 quiz_cat_romanticism = QuizCategory.find_or_create_by!(name: "ロマン主義")
 
 quiz_data = [
@@ -258,40 +213,6 @@ quiz_data = [
     ]
   },
   {
-    title: "古代ギリシアの民主政",
-    category: quiz_cat_greek,
-    image_url: "/quiz_images/greek.jpg",
-    questions: [
-      {
-        body: "古代アテネで民主政を完成させた政治家は？",
-        explanation: "ペリクレスは紀元前5世紀のアテネで民主政を完成させた政治家です。彼の時代にアテネ民主政は最盛期を迎え、パルテノン神殿の建設も進められました。",
-        choices: [ [ "ソロン", false ], [ "ペリクレス", true ], [ "クレイステネス", false ], [ "ドラコン", false ] ]
-      },
-      {
-        body: "古代ギリシアの哲学者ソクラテスの弟子は？",
-        explanation: "プラトンはソクラテスの弟子であり、後にアリストテレスの師となりました。『国家』などの著作で知られ、西洋哲学の基礎を築きました。",
-        choices: [ [ "アリストテレス", false ], [ "プラトン", true ], [ "ピタゴラス", false ], [ "タレス", false ] ]
-      }
-    ]
-  },
-  {
-    title: "バロック音楽の巨匠たち",
-    category: quiz_cat_baroque,
-    image_url: "/quiz_images/baroque.jpg",
-    questions: [
-      {
-        body: "「音楽の父」と呼ばれる作曲家は？",
-        explanation: "ヨハン・セバスティアン・バッハはバロック音楽の集大成者として「音楽の父」と呼ばれています。対位法を極限まで高め、『マタイ受難曲』『平均律クラヴィーア曲集』など1,000曲以上を作曲しました。",
-        choices: [ [ "モーツァルト", false ], [ "ヘンデル", false ], [ "バッハ", true ], [ "ヴィヴァルディ", false ] ]
-      },
-      {
-        body: "『四季』を作曲したイタリアの作曲家は？",
-        explanation: "アントニオ・ヴィヴァルディはヴェネツィア出身のバロック期の作曲家で、ヴァイオリン協奏曲『四季』で広く知られています。500曲以上の協奏曲を残しました。",
-        choices: [ [ "ヴィヴァルディ", true ], [ "コレッリ", false ], [ "スカルラッティ", false ], [ "モンテヴェルディ", false ] ]
-      }
-    ]
-  },
-  {
     title: "ロマン主義の絵画",
     category: quiz_cat_romanticism,
     image_url: "/quiz_images/romanticism.jpg",
@@ -320,22 +241,6 @@ quiz_data.each do |data|
       next if question.choices.exists?(body: body)
       question.choices.create!(body: body, correct_answer: correct)
     end
-  end
-end
-
-# === 受験結果サンプル（状態確認用） ===
-sample_user = User.first
-if sample_user
-  completed_quiz = Quiz.find_by(title: "古代ギリシアの民主政")
-  if completed_quiz
-    result = QuizResult.find_or_initialize_by(user: sample_user, quiz: completed_quiz)
-    result.update!(
-      status: :completed,
-      score: 100,
-      correct_count: completed_quiz.questions.count,
-      total_correct: completed_quiz.questions.count,
-      test_date: Date.current
-    )
   end
 end
 
