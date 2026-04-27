@@ -508,6 +508,7 @@ DEPENDENCIES
   kaminari
   letter_opener_web
   omniauth-google-oauth2
+  omniauth-oauth2
   omniauth-rails_csrf_protection
   pg (~> 1.1)
   puma (>= 5.0)

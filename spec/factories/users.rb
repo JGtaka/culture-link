@@ -10,6 +10,11 @@ FactoryBot.define do
       sequence(:uid) { |n| "google-uid-#{n}" }
     end
 
+    trait :line_user do
+      provider { "line" }
+      sequence(:uid) { |n| "line-uid-#{n}" }
+    end
+
     trait :admin do
       role { :admin }
     end

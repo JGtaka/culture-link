@@ -90,6 +90,86 @@ RSpec.describe User, type: :model do
         expect(@result).to be_nil
       end
     end
+
+    context "LINEログイン(provider: line)の場合" do
+      let(:line_auth) do
+        OmniAuth::AuthHash.new(
+          provider: "line",
+          uid: "U1234567890abcdef",
+          info: { email: "line_user@example.com", name: "LINEユーザー" }
+        )
+      end
+
+      context "メールアドレスが取得できているとき" do
+        it "email_verifiedフィールドが無くても新規ユーザーを作成する" do
+          expect { User.from_omniauth(line_auth) }.to change(User, :count).by(1)
+        end
+
+        it "providerとuidとemail/nameが正しく保存される" do
+          user = User.from_omniauth(line_auth)
+          expect(user).to be_persisted
+          expect(user.provider).to eq("line")
+          expect(user.uid).to eq("U1234567890abcdef")
+          expect(user.email).to eq("line_user@example.com")
+          expect(user.name).to eq("LINEユーザー")
+        end
+      end
+
+      context "メールアドレスがblankのとき" do
+        before { line_auth.info.email = nil }
+
+        it "ユーザーを作成せずnilを返す(コントローラ側で補完画面に飛ばす想定)" do
+          expect { @result = User.from_omniauth(line_auth) }.not_to change(User, :count)
+          expect(@result).to be_nil
+        end
+      end
+
+      context "同じメールアドレスの既存ユーザーがいるとき" do
+        before { create(:user, email: "line_user@example.com") }
+
+        it "別アカウント扱いで作成せずnilを返す" do
+          expect { @result = User.from_omniauth(line_auth) }.not_to change(User, :count)
+          expect(@result).to be_nil
+        end
+      end
+    end
+  end
+
+  describe ".create_from_omniauth_with_email" do
+    let(:auth) do
+      OmniAuth::AuthHash.new(
+        provider: "line",
+        uid: "U-line-001",
+        info: { email: nil, name: "LINEのなまえ" }
+      )
+    end
+
+    it "ユーザーが指定したメアドでLINE連携ユーザーを作成する" do
+      user = User.create_from_omniauth_with_email(auth, "supplied@example.com")
+      expect(user).to be_persisted
+      expect(user.email).to eq("supplied@example.com")
+      expect(user.provider).to eq("line")
+      expect(user.uid).to eq("U-line-001")
+      expect(user.name).to eq("LINEのなまえ")
+    end
+
+    it "メアドが空文字なら作成せずnilを返す" do
+      expect { @result = User.create_from_omniauth_with_email(auth, "") }.not_to change(User, :count)
+      expect(@result).to be_nil
+    end
+
+    it "既存ユーザーと同じメアドなら作成せずnilを返す" do
+      create(:user, email: "dup@example.com")
+      expect { @result = User.create_from_omniauth_with_email(auth, "dup@example.com") }.not_to change(User, :count)
+      expect(@result).to be_nil
+    end
+
+    it "info.nameが空のときはデフォルト名で作成される" do
+      auth.info.name = nil
+      user = User.create_from_omniauth_with_email(auth, "noname@example.com")
+      expect(user).to be_persisted
+      expect(user.name).to be_present
+    end
   end
 
   describe "#password_changeable?" do

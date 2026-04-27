@@ -3,7 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :omniauthable, :trackable,
-         omniauth_providers: [ :google_oauth2 ]
+         omniauth_providers: [ :google_oauth2, :line ]
 
   enum :role, { general: 0, admin: 1 }
 
@@ -27,7 +27,9 @@ class User < ApplicationRecord
   def last_sign_in_ip=(_value); end
 
   def self.from_omniauth(auth)
-    return nil unless auth.info.email_verified
+    # email_verifiedはGoogle固有のフィールド。LINEはverify APIで検証済みなので不要
+    return nil if auth.provider == "google_oauth2" && !auth.info.email_verified
+    return nil if auth.info.email.blank?
 
     user = find_by(provider: auth.provider, uid: auth.uid)
     return user if user
@@ -39,6 +41,21 @@ class User < ApplicationRecord
       u.uid = auth.uid
       u.email = auth.info.email
       u.name = auth.info.name
+      u.password = SecureRandom.hex(16)
+    end
+  end
+
+  # LINEログインでemailが取得できなかったときの補完用
+  # ユーザーが入力したメアドで新規作成する
+  def self.create_from_omniauth_with_email(auth, email)
+    return nil if email.blank?
+    return nil if exists?(email: email)
+
+    create do |u|
+      u.provider = auth.provider
+      u.uid = auth.uid
+      u.email = email
+      u.name = auth.info.name.presence || "ユーザー"
       u.password = SecureRandom.hex(16)
     end
   end
