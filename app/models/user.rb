@@ -68,6 +68,10 @@ class User < ApplicationRecord
     provider.blank?
   end
 
+  def line_provider?
+    provider == "line" && uid.present?
+  end
+
   def suspended?
     suspended_at.present?
   end

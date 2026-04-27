@@ -226,6 +226,28 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "#line_provider?" do
+    it "provider:line かつ uidあり ならtrueを返す" do
+      user = build(:user, :line_user)
+      expect(user.line_provider?).to be true
+    end
+
+    it "provider:google_oauth2 ならfalseを返す" do
+      user = build(:user, :google_user)
+      expect(user.line_provider?).to be false
+    end
+
+    it "providerが nil ならfalseを返す" do
+      user = build(:user)
+      expect(user.line_provider?).to be false
+    end
+
+    it "provider:line でも uid が空ならfalseを返す" do
+      user = build(:user, provider: "line", uid: "")
+      expect(user.line_provider?).to be false
+    end
+  end
+
   describe "#suspended?" do
     it "suspended_atがnilならfalseを返す" do
       user = build(:user, suspended_at: nil)

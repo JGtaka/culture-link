@@ -60,6 +60,7 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "webmock"
 end
 
 gem "tailwindcss-rails", "~> 4.4"
@@ -71,6 +72,7 @@ gem "devise-i18n"
 gem "omniauth-oauth2"
 gem "omniauth-google-oauth2"
 gem "omniauth-rails_csrf_protection"
+gem "line-bot-api", "~> 2.0"
 gem "resend"
 gem "cloudinary"
 gem "activestorage-cloudinary-service"
