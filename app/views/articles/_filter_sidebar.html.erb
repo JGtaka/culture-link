@@ -1,4 +1,18 @@
-<aside class="w-64 shrink-0 flex flex-col gap-8">
+<aside class="w-full md:w-64 shrink-0" data-controller="dropdown">
+  <%# モバイル用 開閉トグル %>
+  <button type="button" data-action="click->dropdown#toggle" class="md:hidden w-full flex items-center justify-between px-4 py-3 bg-white border border-[#e2e8f0] rounded-lg">
+    <span class="text-sm font-medium text-[#0f172a] flex items-center gap-2">
+      <svg class="size-4 text-[#64748b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+      </svg>
+      フィルター
+    </span>
+    <svg class="size-4 text-[#64748b]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+    </svg>
+  </button>
+
+  <div data-dropdown-target="menu" class="hidden md:!flex flex-col gap-6 md:gap-8 mt-3 md:mt-0">
   <%= form_with url: articles_path, method: :get, local: true, data: { controller: "filter", action: "change->filter#submit" } do |f| %>
     <%# 検索キーワードとソートを保持 %>
     <%= hidden_field_tag "q[keyword]", params.dig(:q, :keyword) %>
@@ -53,4 +67,5 @@
     <%= link_to "フィルターをリセット", articles_path,
       class: "w-full border border-[#e2e8f0] rounded-lg py-2.5 text-sm text-[#64748b] hover:bg-[#f8fafc] text-center block" %>
   <% end %>
+  </div>
 </aside>

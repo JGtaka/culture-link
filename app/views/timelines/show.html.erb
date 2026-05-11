@@ -1,8 +1,26 @@
 <% provide(:title, @study_unit.name) %>
 
-<div class="flex h-[calc(100vh-64px)]">
-  <%# サイドバー %>
-  <aside class="w-64 border-r border-[#e5e7eb] bg-white flex flex-col justify-between px-6 py-6 flex-shrink-0">
+<div class="flex flex-col md:flex-row h-[calc(100vh-64px)] md:h-[calc(100vh-80px)]">
+  <%# モバイル用: 単元選択 + 凡例 %>
+  <div class="md:hidden bg-white border-b border-[#e5e7eb] px-4 py-3 flex-shrink-0 flex flex-col gap-3">
+    <%= form_tag "", method: :get, class: "flex gap-2 items-center" do %>
+      <label class="text-xs font-medium text-[#9ca3af] tracking-wider uppercase shrink-0">単元</label>
+      <%= select_tag :unit, options_for_select(@study_units.map { |u| [u.name, timeline_path(u)] }, timeline_path(@study_unit)),
+        class: "flex-1 border border-[#e2e8f0] rounded-lg px-3 py-2 text-sm",
+        data: { controller: "timeline-select", action: "change->timeline-select#navigate" } %>
+    <% end %>
+    <div class="flex flex-wrap gap-2">
+      <% @categories.each do |category| %>
+        <div class="flex items-center gap-1.5">
+          <div class="size-2.5 rounded-full border" style="<%= category_legend_style(category) %>"></div>
+          <span class="text-[11px] text-[#111827]"><%= category.name %></span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <%# デスクトップ用サイドバー %>
+  <aside class="hidden md:flex w-64 border-r border-[#e5e7eb] bg-white flex-col justify-between px-6 py-6 flex-shrink-0">
     <div>
       <p class="text-xs font-medium text-[#9ca3af] tracking-[1.2px] uppercase mb-6">学習単元を選択</p>
       <nav class="flex flex-col">
@@ -28,8 +46,8 @@
 
   <%# メインエリア %>
   <div class="flex-1 bg-[#fafafa] flex flex-col overflow-hidden">
-    <%# ヘッダー %>
-    <div class="backdrop-blur-sm bg-white/50 border-b border-[#e5e7eb] px-6 py-4 flex-shrink-0">
+    <%# ヘッダー (デスクトップのみ表示) %>
+    <div class="hidden md:block backdrop-blur-sm bg-white/50 border-b border-[#e5e7eb] px-6 py-4 flex-shrink-0">
       <div class="flex items-center justify-between">
         <div>
           <h1 class="text-xl font-medium text-black tracking-[3.2px]"><%= @study_unit.name %></h1>

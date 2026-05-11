@@ -36,3 +36,6 @@ application.register("sortable", SortableController)
 
 import AdminUsersConfirmModalController from "./admin_users/confirm_modal_controller"
 application.register("admin-users--confirm-modal", AdminUsersConfirmModalController)
+
+import TimelineSelectController from "./timeline_select_controller"
+application.register("timeline-select", TimelineSelectController)
