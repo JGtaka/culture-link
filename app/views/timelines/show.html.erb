@@ -59,21 +59,7 @@
               <div class="relative z-10 size-4 rounded-full bg-[#3713ec] border-[3px] border-white shadow-md mt-4 flex-shrink-0"></div>
 
               <%# カード %>
-              <%= link_to event_path(event), class: "block flex-1 min-w-0" do %>
-                <div class="bg-white border border-[#e5e7eb] rounded-lg shadow-sm p-4 flex flex-col hover:shadow-md transition-shadow">
-                  <div class="mb-2">
-                    <span class="inline-block px-2 py-1 rounded text-[10px] font-medium tracking-wider uppercase" style="<%= category_badge_style(event.category) %>">
-                      <%= event.category.name %>
-                    </span>
-                  </div>
-                  <h3 class="text-base font-medium text-[#111827] mb-1"><%= event.title %></h3>
-                  <p class="text-xs font-semibold text-[#3713ec] mb-2"><%= event.year %>年</p>
-                  <p class="text-sm text-[#4b5563] leading-relaxed line-clamp-3 mb-3"><%= markdown_to_plain(event.description) %></p>
-                  <% if event.characters.any? %>
-                    <p class="text-xs text-[#94a3b8]">代表人物：<%= event.characters.map(&:name).join("、") %></p>
-                  <% end %>
-                </div>
-              <% end %>
+              <%= render "shared/timeline_card", event: event, card_class: "flex-1 min-w-0" %>
             </div>
           <% end %>
         </div>
@@ -102,21 +88,7 @@
             <div class="flex flex-col items-center <%= index.even? ? 'pt-8' : 'pb-8' %>">
               <% if index.even? %>
                 <%# カード上 + ドット下 %>
-                <%= link_to event_path(event), class: "block" do %>
-                <div class="bg-white border border-[#e5e7eb] rounded-lg shadow-sm w-72 p-6 flex flex-col hover:shadow-md transition-shadow">
-                  <div class="mb-2">
-                    <span class="inline-block px-2 py-1 rounded text-[10px] font-medium tracking-[0.25px] uppercase" style="<%= category_badge_style(event.category) %>">
-                      <%= event.category.name %>
-                    </span>
-                  </div>
-                  <h3 class="text-lg font-medium text-[#111827] mb-1"><%= event.title %></h3>
-                  <p class="text-xs font-semibold text-[#3713ec] mb-2"><%= event.year %>年</p>
-                  <p class="text-sm text-[#4b5563] leading-relaxed line-clamp-3 mb-3"><%= markdown_to_plain(event.description) %></p>
-                  <% if event.characters.any? %>
-                    <p class="text-sm text-[#94a3b8]">代表人物：<%= event.characters.map(&:name).join("、") %></p>
-                  <% end %>
-                </div>
-                <% end %>
+                <%= render "shared/timeline_card", event: event, card_class: "w-72" %>
                 <div class="flex flex-col items-center py-8 w-4">
                   <div class="size-4 rounded-full bg-[#3713ec] border-4 border-white shadow-md"></div>
                 </div>
@@ -125,21 +97,7 @@
                 <div class="flex flex-col items-center py-8 w-4">
                   <div class="size-4 rounded-full bg-[#3713ec] border-4 border-white shadow-md"></div>
                 </div>
-                <%= link_to event_path(event), class: "block" do %>
-                <div class="bg-white border border-[#e5e7eb] rounded-lg shadow-sm w-72 p-6 flex flex-col hover:shadow-md transition-shadow">
-                  <div class="mb-2">
-                    <span class="inline-block px-2 py-1 rounded text-[10px] font-medium tracking-[0.25px] uppercase" style="<%= category_badge_style(event.category) %>">
-                      <%= event.category.name %>
-                    </span>
-                  </div>
-                  <h3 class="text-lg font-medium text-[#111827] mb-1"><%= event.title %></h3>
-                  <p class="text-xs font-semibold text-[#3713ec] mb-2"><%= event.year %>年</p>
-                  <p class="text-sm text-[#4b5563] leading-relaxed line-clamp-3 mb-3"><%= markdown_to_plain(event.description) %></p>
-                  <% if event.characters.any? %>
-                    <p class="text-sm text-[#94a3b8]">代表人物：<%= event.characters.map(&:name).join("、") %></p>
-                  <% end %>
-                </div>
-                <% end %>
+                <%= render "shared/timeline_card", event: event, card_class: "w-72" %>
               <% end %>
             </div>
           <% end %>

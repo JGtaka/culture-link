@@ -16,7 +16,7 @@
     <nav class="hidden md:flex items-center gap-6 lg:gap-8">
       <%= link_to "記事一覧", articles_path, class: "text-[14px] text-[#475569] font-medium hover:text-[#0f172a]" %>
       <div class="relative" data-controller="dropdown">
-        <button type="button" data-action="click->dropdown#toggle" class="text-[14px] text-[#475569] font-medium hover:text-[#0f172a] flex items-center gap-1">
+        <button type="button" data-action="click->dropdown#toggle" aria-expanded="false" aria-haspopup="true" class="text-[14px] text-[#475569] font-medium hover:text-[#0f172a] flex items-center gap-1">
           タイムライン
           <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -46,7 +46,7 @@
 
     <%# モバイル: ハンバーガーメニュー %>
     <div class="md:hidden" data-controller="dropdown">
-      <button type="button" data-action="click->dropdown#toggle" aria-label="メニュー" class="p-2 -mr-2 text-[#475569] hover:text-[#0f172a]">
+      <button type="button" data-action="click->dropdown#toggle" aria-label="メニュー" aria-expanded="false" class="p-2 -mr-2 text-[#475569] hover:text-[#0f172a]">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
         </svg>
