@@ -53,7 +53,9 @@
           <h2 class="text-[30px] font-bold text-[#191c1d] leading-9 tracking-[-0.75px]">概要 (Overview)</h2>
         </div>
         <div class="flex flex-col gap-6">
-          <p class="text-base text-[#454652] leading-[26px]"><%= @character.description %></p>
+          <div class="prose prose-base max-w-none text-[#454652] leading-[26px] prose-headings:text-[#191c1d] prose-a:text-[#0058be] prose-strong:text-[#191c1d]">
+            <%= render_markdown(@character.description) %>
+          </div>
         </div>
       </section>
 
@@ -72,7 +74,7 @@
                 <p class="text-sm font-semibold tracking-[1.4px] uppercase text-[#ec7700] leading-5"><%= event.year %>年</p>
                 <h3 class="text-2xl font-bold text-[#191c1d] leading-8"><%= event.title %></h3>
                 <div class="pt-2">
-                  <p class="text-base text-[#454652] leading-[26px]"><%= event.description %></p>
+                  <p class="text-base text-[#454652] leading-[26px] line-clamp-3"><%= markdown_to_plain(event.description) %></p>
                 </div>
                 <% if event.image.attached? %>
                   <div class="h-52 rounded-lg overflow-hidden opacity-90 mt-2">
@@ -93,7 +95,7 @@
                   <p class="text-sm font-semibold tracking-[1.4px] uppercase text-[#dfe0ff] leading-5"><%= event.year %>年</p>
                   <h3 class="text-[30px] font-bold text-white leading-9"><%= event.title %></h3>
                   <div class="pt-2">
-                    <p class="text-base text-[rgba(223,224,255,0.8)] leading-[26px]"><%= event.description %></p>
+                    <p class="text-base text-[rgba(223,224,255,0.8)] leading-[26px] line-clamp-3"><%= markdown_to_plain(event.description) %></p>
                   </div>
                 </div>
                 <div class="aspect-square h-full bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -127,7 +129,9 @@
               </svg>
             </div>
             <div class="flex flex-col gap-2">
-              <p class="text-base text-[#454652] leading-[26px]"><%= @character.achievement %></p>
+              <div class="prose prose-base max-w-none text-[#454652] leading-[26px] prose-headings:text-[#191c1d] prose-a:text-[#0058be] prose-strong:text-[#191c1d]">
+                <%= render_markdown(@character.achievement) %>
+              </div>
             </div>
           </div>
         </div>

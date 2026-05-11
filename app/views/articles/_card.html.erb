@@ -27,7 +27,7 @@
           </div>
         </div>
         <h2 class="text-lg font-medium text-[#0f172a]"><%= article.title %></h2>
-        <p class="text-sm text-[#475569] line-clamp-2"><%= article.description %></p>
+        <p class="text-sm text-[#475569] line-clamp-2"><%= markdown_to_plain(article.description) %></p>
       </div>
     </div>
     <% end %>
@@ -60,7 +60,7 @@
           </div>
         </div>
         <h2 class="text-lg font-medium text-[#0f172a]"><%= article.name %></h2>
-        <p class="text-sm text-[#475569] line-clamp-2"><%= article.description %></p>
+        <p class="text-sm text-[#475569] line-clamp-2"><%= markdown_to_plain(article.description) %></p>
       </div>
     </div>
     <% end %>

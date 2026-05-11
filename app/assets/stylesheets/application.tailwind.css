@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /* SortableJS: ドラッグ中の視覚フィードバック */
 .sortable-ghost {
