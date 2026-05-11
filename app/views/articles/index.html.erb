@@ -4,19 +4,19 @@
 <%= render "articles/search_bar" %>
 
 <%# メインコンテンツ %>
-<div class="flex gap-8 px-8 py-8">
+<div class="flex flex-col md:flex-row gap-4 md:gap-8 px-4 md:px-8 py-6 md:py-8">
   <%# サイドバー %>
   <%= render "articles/filter_sidebar" %>
 
   <%# 記事一覧 %>
-  <div class="flex-1 flex flex-col gap-6">
+  <div class="flex-1 flex flex-col gap-4 md:gap-6 min-w-0">
     <%# 検索結果ヘッダー %>
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
       <p class="text-sm text-[#64748b]">
         検索結果: <span class="font-semibold text-[#0f172a]"><%= @articles.total_count %>件</span>
       </p>
       <%= form_with url: articles_path, method: :get, local: true, class: "flex items-center gap-2", data: { controller: "filter", action: "change->filter#submit" } do %>
-        <span class="text-sm text-[#64748b]">並び替え:</span>
+        <span class="text-sm text-[#64748b] shrink-0">並び替え:</span>
         <%# フィルター・検索パラメータを保持 %>
         <%= hidden_field_tag "q[keyword]", params.dig(:q, :keyword) %>
         <% params[:period_ids]&.each do |id| %>
@@ -29,12 +29,12 @@
             [["年代（古い順）", "year_asc"], ["年代（新しい順）", "year_desc"], ["名前順", "name_asc"]],
             params[:sort] || "year_asc"
           ),
-          class: "text-sm border border-[#e2e8f0] rounded-lg px-3 py-2" %>
+          class: "flex-1 sm:flex-none text-sm border border-[#e2e8f0] rounded-lg px-3 py-2" %>
       <% end %>
     </div>
 
     <%# カードグリッド %>
-    <div class="grid grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
       <% @articles.each do |article| %>
         <%= render "articles/card", article: article %>
       <% end %>

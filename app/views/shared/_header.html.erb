@@ -1,22 +1,22 @@
-<header class="bg-white border-b border-[#e2e8f0] w-full">
-  <div class="h-[80px] px-4 flex items-center justify-between">
+<header class="bg-white border-b border-[#e2e8f0] w-full relative">
+  <div class="h-16 md:h-[80px] px-4 flex items-center justify-between">
     <%# ロゴ %>
     <%= link_to root_path, class: "flex items-center gap-2" do %>
-      <div class="bg-[#3713ec] rounded-lg flex items-center justify-center size-10">
-        <svg width="20" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <div class="bg-[#3713ec] rounded-lg flex items-center justify-center size-8 md:size-10">
+        <svg width="20" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-5 md:h-5">
           <path d="M8.66602 8.66675L6.66602 6.66675V4.00008L12.666 6.66675M12.666 6.66675C12.666 9.97824 9.97751 12.6667 6.66602 12.6667C3.35453 12.6667 0.666016 9.97824 0.666016 6.66675C0.666016 3.35526 3.35453 0.666748 6.66602 0.666748C9.97751 0.666748 12.666 3.35526 12.666 6.66675Z" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
-      <span class="font-bold text-[20px] text-[#0f172a] tracking-[-0.5px]" style="font-family: 'Lexend', sans-serif;">
+      <span class="font-bold text-base md:text-[20px] text-[#0f172a] tracking-[-0.5px]" style="font-family: 'Lexend', sans-serif;">
         culture-link
       </span>
     <% end %>
 
-    <%# ナビゲーション %>
-    <nav class="flex items-center gap-8">
+    <%# デスクトップナビ %>
+    <nav class="hidden md:flex items-center gap-6 lg:gap-8">
       <%= link_to "記事一覧", articles_path, class: "text-[14px] text-[#475569] font-medium hover:text-[#0f172a]" %>
       <div class="relative" data-controller="dropdown">
-        <button type="button" data-action="click->dropdown#toggle" class="text-[14px] text-[#475569] font-medium hover:text-[#0f172a] flex items-center gap-1">
+        <button type="button" data-action="click->dropdown#toggle" aria-expanded="false" aria-haspopup="true" class="text-[14px] text-[#475569] font-medium hover:text-[#0f172a] flex items-center gap-1">
           タイムライン
           <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -43,5 +43,45 @@
         <%= link_to "会員登録", new_user_registration_path, class: "bg-[#3713ec] text-white text-[14px] font-medium px-5 py-2 rounded-lg shadow-[0px_4px_6px_-1px_rgba(55,19,236,0.2),0px_2px_4px_-2px_rgba(55,19,236,0.2)] hover:opacity-90" %>
       <% end %>
     </nav>
+
+    <%# モバイル: ハンバーガーメニュー %>
+    <div class="md:hidden" data-controller="dropdown">
+      <button type="button" data-action="click->dropdown#toggle" aria-label="メニュー" aria-expanded="false" class="p-2 -mr-2 text-[#475569] hover:text-[#0f172a]">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+      <div data-dropdown-target="menu" class="hidden absolute top-full left-0 right-0 bg-white border-t border-[#e2e8f0] shadow-lg z-50 max-h-[calc(100vh-4rem)] overflow-y-auto">
+        <nav class="flex flex-col py-2">
+          <%= link_to "記事一覧", articles_path, class: "px-4 py-3 text-sm text-[#475569] font-medium hover:bg-[#f8fafc] hover:text-[#0f172a]" %>
+          <div class="px-4 py-3 border-t border-[#f1f5f9]">
+            <p class="text-xs font-bold text-[#94a3b8] uppercase tracking-wider mb-2">タイムライン</p>
+            <% StudyUnit.ordered.each do |unit| %>
+              <%= link_to unit.name, timeline_path(unit), class: "block py-2 text-sm text-[#475569] hover:text-[#0f172a]" %>
+            <% end %>
+          </div>
+          <% if user_signed_in? %>
+            <% if current_user.admin? %>
+              <div class="px-4 py-3 border-t border-[#f1f5f9]">
+                <%= link_to "管理画面", admin_root_path, class: "inline-block text-sm text-white font-medium bg-[#0058be] px-4 py-2 rounded-lg" %>
+              </div>
+            <% end %>
+            <%= link_to "小テスト", quizzes_path, class: "px-4 py-3 text-sm text-[#475569] font-medium hover:bg-[#f8fafc] hover:text-[#0f172a] border-t border-[#f1f5f9]" %>
+            <%= link_to "スケジュール", new_schedule_path, class: "px-4 py-3 text-sm text-[#475569] font-medium hover:bg-[#f8fafc] hover:text-[#0f172a]" %>
+            <%= link_to "お気に入り", favorites_path, class: "px-4 py-3 text-sm text-[#475569] font-medium hover:bg-[#f8fafc] hover:text-[#0f172a]" %>
+            <%= link_to "#{current_user.name}さん", profile_path, class: "px-4 py-3 text-sm text-[#475569] font-medium hover:bg-[#f8fafc] hover:text-[#0f172a]" %>
+            <div class="px-4 py-3 border-t border-[#f1f5f9]">
+              <%= button_to "ログアウト", destroy_user_session_path, method: :delete,
+                  class: "text-sm text-[#475569] font-medium hover:text-[#0f172a] cursor-pointer" %>
+            </div>
+          <% else %>
+            <%= link_to "ログイン", new_user_session_path, class: "px-4 py-3 text-sm text-[#475569] font-medium hover:bg-[#f8fafc] hover:text-[#0f172a] border-t border-[#f1f5f9]" %>
+            <div class="px-4 py-3">
+              <%= link_to "会員登録", new_user_registration_path, class: "block bg-[#3713ec] text-white text-sm font-medium px-5 py-2 rounded-lg text-center" %>
+            </div>
+          <% end %>
+        </nav>
+      </div>
+    </div>
   </div>
 </header>
