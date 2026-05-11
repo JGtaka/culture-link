@@ -53,9 +53,7 @@
           <h2 class="text-[30px] font-bold text-[#191c1d] leading-9 tracking-[-0.75px]">概要 (Overview)</h2>
         </div>
         <div class="flex flex-col gap-6">
-          <div class="prose prose-base max-w-none text-[#454652] leading-[26px] prose-headings:text-[#191c1d] prose-a:text-[#0058be] prose-strong:text-[#191c1d]">
-            <%= render_markdown(@character.description) %>
-          </div>
+          <%= render "shared/markdown_body", content: @character.description %>
         </div>
       </section>
 
@@ -129,9 +127,7 @@
               </svg>
             </div>
             <div class="flex flex-col gap-2">
-              <div class="prose prose-base max-w-none text-[#454652] leading-[26px] prose-headings:text-[#191c1d] prose-a:text-[#0058be] prose-strong:text-[#191c1d]">
-                <%= render_markdown(@character.achievement) %>
-              </div>
+              <%= render "shared/markdown_body", content: @character.achievement %>
             </div>
           </div>
         </div>

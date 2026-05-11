@@ -1,16 +1,17 @@
 module ApplicationHelper
-  MARKDOWN_RENDERER = Redcarpet::Markdown.new(
-    Redcarpet::Render::HTML.new(
-      hard_wrap: true,
-      link_attributes: { rel: "noopener noreferrer", target: "_blank" }
-    ),
+  MARKDOWN_OPTIONS = {
     autolink: true,
     tables: true,
     fenced_code_blocks: true,
     strikethrough: true,
     no_intra_emphasis: true,
     space_after_headers: true
-  )
+  }.freeze
+
+  MARKDOWN_RENDER_OPTIONS = {
+    hard_wrap: true,
+    link_attributes: { rel: "noopener noreferrer", target: "_blank" }
+  }.freeze
 
   MARKDOWN_SANITIZE_CONFIG = Sanitize::Config.merge(
     Sanitize::Config::RELAXED,
@@ -30,14 +31,23 @@ module ApplicationHelper
   def render_markdown(text)
     return "" if text.blank?
 
-    html = MARKDOWN_RENDERER.render(text)
+    html = build_markdown_renderer.render(text)
     Sanitize.fragment(html, MARKDOWN_SANITIZE_CONFIG).html_safe
   end
 
   def markdown_to_plain(text)
     return "" if text.blank?
 
-    html = MARKDOWN_RENDERER.render(text)
+    html = build_markdown_renderer.render(text)
     Sanitize.fragment(html).squish
+  end
+
+  private
+
+  def build_markdown_renderer
+    Redcarpet::Markdown.new(
+      Redcarpet::Render::HTML.new(MARKDOWN_RENDER_OPTIONS),
+      MARKDOWN_OPTIONS
+    )
   end
 end
