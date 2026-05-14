@@ -2,7 +2,7 @@
 
 ---
 
-## サービス概要（※最後に書いてOK）
+## サービス概要
 
 このアプリ は、  
 **歴史・文化・人物・出来事をタイムラインで可視化しつながりや因果関係を理解する文化史学習アプリ**です。
@@ -119,4 +119,4 @@ Figma：<https://www.figma.com/design/vrBPJEDp9hfkNy3qDuQNQo/%E7%94%BB%E9%9D%A2%
 
 ### ER図
 
-ER図：[![Image from Gyazo](https://i.gyazo.com/3269bf65a084ecc004b1544cb751d3f9.png)](https://gyazo.com/3269bf65a084ecc004b1544cb751d3f9)
+ER図：[![Image from Gyazo](https://i.gyazo.com/d2fa16ab83fe5e4a13b0c3a46a6f96d0.png)](https://gyazo.com/d2fa16ab83fe5e4a13b0c3a46a6f96d0)
