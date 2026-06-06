@@ -16,16 +16,7 @@
 
       <%# コンテンツ %>
       <div class="p-5 flex flex-col gap-2">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-bold text-[#3713ec] uppercase tracking-wider"><%= article.year %>年</span>
-          <div class="flex items-center gap-1">
-            <svg class="size-3 text-[#94a3b8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-            </svg>
-            <span class="text-xs text-[#94a3b8]">ヨーロッパ</span>
-          </div>
-        </div>
+        <span class="text-xs font-bold text-[#3713ec] uppercase tracking-wider"><%= article.year %>年</span>
         <h2 class="text-lg font-medium text-[#0f172a]"><%= article.title %></h2>
         <p class="text-sm text-[#475569] line-clamp-2"><%= markdown_to_plain(article.description) %></p>
       </div>
@@ -49,16 +40,7 @@
 
       <%# コンテンツ %>
       <div class="p-5 flex flex-col gap-2">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-bold text-[#3713ec] uppercase tracking-wider"><%= article.year %>年</span>
-          <div class="flex items-center gap-1">
-            <svg class="size-3 text-[#94a3b8]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-            </svg>
-            <span class="text-xs text-[#94a3b8]">イタリア</span>
-          </div>
-        </div>
+        <span class="text-xs font-bold text-[#3713ec] uppercase tracking-wider"><%= article.year %>年</span>
         <h2 class="text-lg font-medium text-[#0f172a]"><%= article.name %></h2>
         <p class="text-sm text-[#475569] line-clamp-2"><%= markdown_to_plain(article.description) %></p>
       </div>
