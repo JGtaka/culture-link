@@ -1,22 +1,139 @@
 <%# ヒーローセクション %>
-<section class="bg-[#f8fafc] py-12 md:py-24 px-4 md:px-8">
-  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-    <%# テキストコンテンツ %>
-    <div class="flex flex-col gap-4 md:gap-6">
-      <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#0f172a] leading-tight">
-        歴史を<span class="text-[#3713ec]">「つながり」</span><br>でマスターする
-      </h1>
-      <p class="text-base md:text-lg text-[#475569] leading-relaxed max-w-xl">
-        年号や暗記だけの学習はもう終わり。ビジュアルタイムラインで、文明、芸術、革新の隠れたつながりを発見しましょう。
-      </p>
-      <div class="pt-2 md:pt-4">
-        <%= link_to "無料で学習を始める", articles_path,
-          class: "inline-block bg-[#3713ec] text-white text-base md:text-lg font-medium px-6 md:px-8 py-3 md:py-4 rounded-lg shadow-[0px_20px_25px_0px_rgba(55,19,236,0.25),0px_8px_10px_0px_rgba(55,19,236,0.25)] hover:opacity-90 transition" %>
+<section class="bg-gradient-to-b from-[#f8fafc] to-white px-4 md:px-8 pt-16 md:pt-20 pb-12 md:pb-16">
+  <div class="max-w-3xl mx-auto text-center flex flex-col items-center">
+    <span class="inline-block text-xs tracking-[0.1em] text-[#3713ec] bg-[#3713ec]/5 border border-[#3713ec]/15 px-4 py-1.5 rounded-full font-bold mb-6">
+      文化史学習アプリ
+    </span>
+    <h1 class="font-black text-3xl sm:text-4xl md:text-5xl lg:text-[56px] leading-tight text-[#0f172a] mb-5">
+      出来事のつながりが、<br><span class="text-[#3713ec]">一目でわかる。</span>
+    </h1>
+    <p class="text-base md:text-lg text-[#475569] leading-relaxed max-w-xl mx-auto mb-8">
+      歴史・文化・人物・出来事をタイムラインで可視化。受験や定期テストの文化史を、因果関係ごと体系的に理解できます。
+    </p>
+    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-12 md:mb-14 w-full sm:w-auto">
+      <%= link_to "無料で使ってみる", articles_path,
+        class: "inline-block bg-[#3713ec] text-white font-bold px-8 py-4 rounded-lg text-[15px] shadow-[0px_18px_40px_-24px_rgba(55,19,236,0.6)] hover:opacity-90 transition" %>
+      <%= link_to "使い方を見る", "#how-to",
+        class: "inline-block border border-[#cfd3e0] text-[#0f172a] font-medium px-8 py-4 rounded-lg text-[15px] hover:bg-[#f8fafc] transition" %>
+    </div>
+
+    <%# タイムラインのビジュアルカード %>
+    <div class="bg-white border border-[#e2e8f0] rounded-2xl shadow-[0px_18px_40px_-24px_rgba(59,63,181,0.4)] p-6 md:p-10 text-left w-full max-w-[900px]">
+      <div class="text-[11px] md:text-xs tracking-[0.14em] text-[#94a3b8] mb-7">TIMELINE — 文化の流れ</div>
+      <div class="relative flex justify-between">
+        <div class="absolute left-0 right-0 top-[7px] h-0.5 bg-[#e6e8f2]"></div>
+        <div class="absolute left-0 w-[62%] top-[7px] h-0.5 bg-[#3713ec]"></div>
+        <% [
+             ["ルネサンス", "14–16c / 人文主義", true],
+             ["バロック", "17c / 絶対王政", true],
+             ["啓蒙思想", "18c / 市民革命", true],
+             ["ロマン主義", "19c / 国民国家", false]
+           ].each do |name, sub, active| %>
+          <div class="relative text-center w-[23%]">
+            <div class="size-3 md:size-4 rounded-full mx-auto mb-3 <%= active ? "bg-[#3713ec]" : "bg-[#cfd3e0]" %>"></div>
+            <div class="font-bold text-xs md:text-sm <%= active ? "text-[#0f172a]" : "text-[#94a3b8]" %>"><%= name %></div>
+            <div class="text-[10px] md:text-xs text-[#94a3b8] mt-0.5"><%= sub %></div>
+          </div>
+        <% end %>
       </div>
     </div>
-    <%# イラスト %>
-    <div class="flex justify-center order-first md:order-last">
-      <%= image_tag "/toppage_icon.png", alt: "文化史学習のイラスト", class: "w-full max-w-xs md:max-w-md" %>
+  </div>
+</section>
+
+<%# 機能紹介セクション %>
+<section class="px-4 md:px-8 py-16 md:py-20">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-12">
+      <div class="text-[13px] tracking-[0.14em] text-[#3713ec] font-bold mb-2.5">FEATURES</div>
+      <h2 class="font-black text-2xl md:text-[34px] text-[#0f172a]">culture-link でできること</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <%# 記事の検索・閲覧 %>
+      <div class="bg-[#f8fafc] rounded-2xl p-7 md:p-8">
+        <div class="size-11 rounded-xl bg-[#e3e4f7] text-[#3713ec] flex items-center justify-center mb-5">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-lg md:text-[19px] text-[#0f172a] mb-2">記事の検索・閲覧</h3>
+        <p class="text-sm text-[#475569] leading-relaxed">文化史の出来事や人物の記事を検索して読める。</p>
+      </div>
+      <%# タイムライン閲覧 %>
+      <div class="bg-[#f8fafc] rounded-2xl p-7 md:p-8">
+        <div class="size-11 rounded-xl bg-[#e3e4f7] text-[#3713ec] flex items-center justify-center mb-5">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <h3 class="font-bold text-lg md:text-[19px] text-[#0f172a] mb-2">タイムライン閲覧</h3>
+        <p class="text-sm text-[#475569] leading-relaxed">出来事のつながりと因果関係を時間軸で理解。</p>
+      </div>
+      <%# オリジナル問題演習（会員） %>
+      <div class="bg-[#eef2ff] rounded-2xl p-7 md:p-8">
+        <div class="flex justify-between items-center mb-5">
+          <div class="size-11 rounded-xl bg-[#3713ec] text-white flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <span class="text-[11px] bg-[#3713ec] text-white px-2.5 py-0.5 rounded-full font-medium">会員機能</span>
+        </div>
+        <h3 class="font-bold text-lg md:text-[19px] text-[#0f172a] mb-2">オリジナル問題演習</h3>
+        <p class="text-sm text-[#475569] leading-relaxed">会員登録で作成済みの問題を解いて定着。</p>
+      </div>
+      <%# 学習スケジュール＋通知（会員） %>
+      <div class="bg-[#eef2ff] rounded-2xl p-7 md:p-8">
+        <div class="flex justify-between items-center mb-5">
+          <div class="size-11 rounded-xl bg-[#3713ec] text-white flex items-center justify-center">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <span class="text-[11px] bg-[#3713ec] text-white px-2.5 py-0.5 rounded-full font-medium">会員機能</span>
+        </div>
+        <h3 class="font-bold text-lg md:text-[19px] text-[#0f172a] mb-2">学習スケジュール＋通知</h3>
+        <p class="text-sm text-[#475569] leading-relaxed">計画を登録、Gmail・LINEに通知が届く。</p>
+      </div>
     </div>
   </div>
+</section>
+
+<%# 使い方3ステップ %>
+<section id="how-to" class="bg-[#0f172a] text-white px-4 md:px-8 py-16 md:py-[70px] scroll-mt-20">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-11">
+      <h2 class="font-black text-2xl md:text-3xl">使い方は3ステップ</h2>
+    </div>
+    <div class="flex flex-col md:flex-row gap-4">
+      <div class="flex-1 bg-[#1e293b] rounded-2xl p-7">
+        <div class="text-[13px] text-[#9aa0ff] font-bold mb-2.5">STEP 1</div>
+        <div class="font-bold text-[17px] mb-1.5">探す</div>
+        <p class="text-[13px] text-[#a6abc0] leading-relaxed">記事 or タイムラインを検索。</p>
+      </div>
+      <div class="flex-1 bg-[#1e293b] rounded-2xl p-7">
+        <div class="text-[13px] text-[#9aa0ff] font-bold mb-2.5">STEP 2</div>
+        <div class="font-bold text-[17px] mb-1.5">閲覧する</div>
+        <p class="text-[13px] text-[#a6abc0] leading-relaxed">タイムラインでつながりを理解。</p>
+      </div>
+      <div class="flex-1 bg-[#1e293b] rounded-2xl p-7">
+        <div class="text-[13px] text-[#9aa0ff] font-bold mb-2.5 flex items-center gap-2">
+          STEP 3 <span class="bg-[#3713ec] px-1.5 py-px rounded-full text-[10px] text-white">会員</span>
+        </div>
+        <div class="font-bold text-[17px] mb-1.5">解く・計画する</div>
+        <p class="text-[13px] text-[#a6abc0] leading-relaxed">問題演習と学習計画で習慣化。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%# 最終CTA %>
+<section class="px-4 md:px-8 py-16 md:py-[70px] text-center">
+  <h2 class="font-black text-2xl md:text-[32px] text-[#0f172a] mb-6">今日から、文化史をつながりで。</h2>
+  <% if user_signed_in? %>
+    <%= link_to "学習を続ける", articles_path,
+      class: "inline-block bg-[#3713ec] text-white font-bold px-10 py-4 rounded-lg hover:opacity-90 transition" %>
+  <% else %>
+    <%= link_to "無料で学習を始める", new_user_registration_path,
+      class: "inline-block bg-[#3713ec] text-white font-bold px-10 py-4 rounded-lg hover:opacity-90 transition" %>
+  <% end %>
 </section>
