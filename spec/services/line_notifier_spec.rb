@@ -17,6 +17,7 @@ RSpec.describe LineNotifier do
   before do
     allow(ENV).to receive(:fetch).and_call_original
     allow(ENV).to receive(:fetch).with("LINE_MESSAGING_CHANNEL_ACCESS_TOKEN").and_return("test-token")
+    ActionMailer::Base.deliveries.clear
   end
 
   describe "#schedule_registered" do
@@ -24,14 +25,14 @@ RSpec.describe LineNotifier do
       it "LINE Push APIにテキストメッセージを送信する" do
         stub = stub_request(:post, push_url)
           .with(headers: { "Authorization" => "Bearer test-token" })
-          .to_return(status: 200, body: "{}", headers: { "Content-Type" => "application/json" })
+          .to_return(status: 200, body: '{"sentMessages":[]}', headers: { "Content-Type" => "application/json" })
 
         notifier.schedule_registered(schedule)
         expect(stub).to have_been_requested
       end
 
       it "送信先(to)がuserのuidになる" do
-        stub_request(:post, push_url).to_return(status: 200, body: "{}")
+        stub_request(:post, push_url).to_return(status: 200, body: '{"sentMessages":[]}')
 
         notifier.schedule_registered(schedule)
         expect(WebMock).to have_requested(:post, push_url).with { |req|
@@ -40,7 +41,7 @@ RSpec.describe LineNotifier do
       end
 
       it "メッセージに学習期間/曜日/メモ/リンクが含まれる" do
-        stub_request(:post, push_url).to_return(status: 200, body: "{}")
+        stub_request(:post, push_url).to_return(status: 200, body: '{"sentMessages":[]}')
 
         notifier.schedule_registered(schedule)
         expect(WebMock).to have_requested(:post, push_url).with { |req|
@@ -58,7 +59,7 @@ RSpec.describe LineNotifier do
         let(:schedule) { create(:schedule, user: user, memo: nil) }
 
         it "メモ行を含めずに送信する" do
-          stub_request(:post, push_url).to_return(status: 200, body: "{}")
+          stub_request(:post, push_url).to_return(status: 200, body: '{"sentMessages":[]}')
 
           notifier.schedule_registered(schedule)
           expect(WebMock).to have_requested(:post, push_url).with { |req|
@@ -68,15 +69,44 @@ RSpec.describe LineNotifier do
         end
       end
 
-      context "API呼び出しが403を返したとき(Botブロック等)" do
+      context "API呼び出しが4xx(恒久エラー: Botブロック等)を返したとき" do
         before do
           stub_request(:post, push_url)
             .to_return(status: 403, body: '{"message":"You cannot push messages..."}')
         end
 
-        it "例外を吐かずにログだけ残す" do
-          expect(Rails.logger).to receive(:error).with(/403/)
-          expect { notifier.schedule_registered(schedule) }.not_to raise_error
+        it "例外を吐かず、リトライせず、管理者にメール通知する" do
+          expect {
+            notifier.schedule_registered(schedule)
+          }.to change { ActionMailer::Base.deliveries.size }.by(1)
+        end
+
+        it "管理者メールの宛先(ADMIN_NOTIFICATION_EMAIL)と件名が正しい" do
+          notifier.schedule_registered(schedule)
+          mail = ActionMailer::Base.deliveries.last
+          expect(mail.to).to eq([ ENV.fetch("ADMIN_NOTIFICATION_EMAIL") ])
+          expect(mail.subject).to eq("【culture-link】LINE通知の送信に失敗しました")
+        end
+      end
+
+      context "API呼び出しが5xx(一時エラー)を返したとき" do
+        before do
+          stub_request(:post, push_url).to_return(status: 500, body: '{"message":"server error"}')
+        end
+
+        it "TemporaryPushErrorを再raiseしてジョブにリトライさせる" do
+          expect { notifier.schedule_registered(schedule) }
+            .to raise_error(LineNotifier::TemporaryPushError)
+        end
+
+        it "この時点では管理者メールを送らない(リトライ枯渇後にジョブが送る)" do
+          expect {
+            begin
+              notifier.schedule_registered(schedule)
+            rescue LineNotifier::TemporaryPushError
+              nil
+            end
+          }.not_to change { ActionMailer::Base.deliveries.size }
         end
       end
 
@@ -85,9 +115,9 @@ RSpec.describe LineNotifier do
           stub_request(:post, push_url).to_raise(SocketError.new("name resolution error"))
         end
 
-        it "例外を吐かずにログだけ残す" do
-          expect(Rails.logger).to receive(:error).with(/SocketError/)
-          expect { notifier.schedule_registered(schedule) }.not_to raise_error
+        it "一時障害とみなしTemporaryPushErrorとして再raiseする" do
+          expect { notifier.schedule_registered(schedule) }
+            .to raise_error(LineNotifier::TemporaryPushError, /SocketError/)
         end
       end
     end

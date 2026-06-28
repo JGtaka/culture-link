@@ -10,6 +10,9 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'rspec/rails'
 require 'webmock/rspec'
 WebMock.disable_net_connect!(allow_localhost: true)
+
+# 管理者通知メールの宛先(テスト用)。全specで使い回す単一ソース
+ENV["ADMIN_NOTIFICATION_EMAIL"] ||= "admin-test@example.com"
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in

@@ -1,0 +1,21 @@
+<h2>LINE通知の送信に失敗しました</h2>
+
+<p>以下のユーザーへのLINE Push通知が送信できませんでした。内容をご確認ください。</p>
+
+<h3>失敗理由</h3>
+<p><%= @reason %></p>
+
+<h3>対象ユーザー</h3>
+<% if @user %>
+  <ul>
+    <li>ID: <%= @user.id %></li>
+    <li>名前: <%= @user.name %></li>
+    <li>メール: <%= @user.email %></li>
+    <li>LINE uid: <%= @user.uid %></li>
+  </ul>
+<% else %>
+  <p>（ユーザー情報を特定できませんでした）</p>
+<% end %>
+
+<hr>
+<p>このメールはculture-linkのシステムから自動送信されています。</p>
