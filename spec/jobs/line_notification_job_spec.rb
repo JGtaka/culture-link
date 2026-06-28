@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe LineNotificationJob, type: :job do
+  include ActiveJob::TestHelper
+
   let(:user) { create(:user, :line_user) }
   let(:schedule) { create(:schedule, user: user) }
 
@@ -24,6 +26,21 @@ RSpec.describe LineNotificationJob, type: :job do
     it "perform_laterでデフォルトキューに登録される" do
       expect { described_class.perform_later(:schedule_registered, schedule.id) }
         .to have_enqueued_job(described_class).on_queue("default")
+    end
+  end
+
+  describe "一時エラーのリトライ枯渇" do
+    before { ActionMailer::Base.deliveries.clear }
+
+    it "TemporaryPushErrorが5回リトライしても回復しなければ管理者にメール通知する" do
+      allow_any_instance_of(LineNotifier).to receive(:schedule_registered)
+        .and_raise(LineNotifier::TemporaryPushError, "status=500")
+
+      perform_enqueued_jobs do
+        expect {
+          described_class.perform_later(:schedule_registered, schedule.id)
+        }.to change { ActionMailer::Base.deliveries.size }.by(1)
+      end
     end
   end
 end

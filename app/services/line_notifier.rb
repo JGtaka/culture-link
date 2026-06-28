@@ -5,6 +5,9 @@ require "line/bot/v2/messaging_api/model/text_message"
 class LineNotifier
   include Rails.application.routes.url_helpers
 
+  # 一時的な障害(5xx/429/ネットワーク例外)を表す。ジョブ側でリトライ対象にする
+  class TemporaryPushError < StandardError; end
+
   WEEKDAY_NAMES = %w[月 火 水 木 金 土 日].freeze
 
   def initialize(user)
@@ -29,12 +32,35 @@ class LineNotifier
       messages: [ Line::Bot::V2::MessagingApi::TextMessage.new(text: text) ]
     )
     _body, status_code, _headers = client.push_message_with_http_info(push_message_request: request)
+    return if (200..299).cover?(status_code)
 
-    unless (200..299).cover?(status_code)
-      Rails.logger.error("[LineNotifier] push failed: status=#{status_code} uid=#{@user.uid}")
+    if temporary_status?(status_code)
+      # 一時エラー: 再raiseしてジョブのリトライに委ねる(枯渇時にジョブが管理者通知)
+      Rails.logger.error("[LineNotifier] push failed (temporary): status=#{status_code} uid=#{@user.uid}")
+      raise TemporaryPushError, "status=#{status_code}"
+    else
+      # 恒久エラー(無効uid/トークン切れ等): リトライ無意味なので即管理者通知
+      Rails.logger.error("[LineNotifier] push failed (permanent): status=#{status_code} uid=#{@user.uid}")
+      notify_admin("LINE Push APIが status=#{status_code} を返しました（恒久エラー: 無効なuid/トークン切れ等）")
     end
+  rescue TemporaryPushError
+    raise
   rescue StandardError => e
-    Rails.logger.error("[LineNotifier] push exception: #{e.class}: #{e.message}")
+    # ネットワーク例外・タイムアウト等は一時障害とみなして再raise→ジョブがリトライ
+    Rails.logger.error("[LineNotifier] push exception (temporary): #{e.class}: #{e.message}")
+    raise TemporaryPushError, "#{e.class}: #{e.message}"
+  end
+
+  # 429(レート制限)と5xx(サーバ側)は時間を置けば回復しうるので一時エラー扱い
+  def temporary_status?(status_code)
+    status_code == 429 || (500..599).cover?(status_code)
+  end
+
+  def notify_admin(reason)
+    AdminMailer.line_push_failed(user: @user, reason: reason).deliver_now
+  rescue StandardError => e
+    # 通知メール自体の失敗でpush処理を巻き込まない(ログのみ)
+    Rails.logger.error("[LineNotifier] admin notify failed: #{e.class}: #{e.message}")
   end
 
   def client
