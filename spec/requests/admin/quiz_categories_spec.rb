@@ -80,7 +80,7 @@ RSpec.describe "Admin::QuizCategories", type: :request do
           expect {
             post admin_quiz_categories_path, params: { quiz_category: { name: "" } }
           }.not_to change { QuizCategory.count }
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
 
         it "name重複なら作成されず422を返すこと" do
@@ -88,7 +88,7 @@ RSpec.describe "Admin::QuizCategories", type: :request do
           expect {
             post admin_quiz_categories_path, params: { quiz_category: { name: "ルネサンス" } }
           }.not_to change { QuizCategory.count }
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end
@@ -117,7 +117,7 @@ RSpec.describe "Admin::QuizCategories", type: :request do
         it "nameが空なら更新されず422を返すこと" do
           patch admin_quiz_category_path(category), params: { quiz_category: { name: "" } }
           expect(category.reload.name).to eq("更新前")
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end

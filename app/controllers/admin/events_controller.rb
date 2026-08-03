@@ -21,7 +21,7 @@ class Admin::EventsController < Admin::BaseController
     if @event.save
       redirect_to admin_events_path, notice: "「#{@event.title}」を作成しました"
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -31,7 +31,7 @@ class Admin::EventsController < Admin::BaseController
     if @event.update(event_params)
       redirect_to admin_events_path, notice: "「#{@event.title}」を更新しました"
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

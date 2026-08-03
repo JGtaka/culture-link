@@ -67,7 +67,7 @@ RSpec.describe "Admin::Regions", type: :request do
           expect {
             post admin_regions_path, params: { region: { name: "" } }
           }.not_to change { Region.count }
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
 
         it "name重複なら作成されず422を返すこと" do
@@ -75,7 +75,7 @@ RSpec.describe "Admin::Regions", type: :request do
           expect {
             post admin_regions_path, params: { region: { name: "近畿" } }
           }.not_to change { Region.count }
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end
@@ -104,7 +104,7 @@ RSpec.describe "Admin::Regions", type: :request do
         it "nameが空なら更新されず422を返すこと" do
           patch admin_region_path(region), params: { region: { name: "" } }
           expect(region.reload.name).to eq("更新前")
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end

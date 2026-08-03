@@ -11,7 +11,7 @@ class Account::PasswordsController < ApplicationController
       bypass_sign_in(current_user)
       redirect_to account_path, notice: "パスワードを変更しました"
     else
-      render "accounts/show", status: :unprocessable_entity
+      render "accounts/show", status: :unprocessable_content
     end
   end
 

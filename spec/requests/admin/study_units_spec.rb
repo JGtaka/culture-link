@@ -67,7 +67,7 @@ RSpec.describe "Admin::StudyUnits", type: :request do
           expect {
             post admin_study_units_path, params: { study_unit: { name: "" } }
           }.not_to change { StudyUnit.count }
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
 
         it "name重複なら作成されず422を返すこと" do
@@ -75,7 +75,7 @@ RSpec.describe "Admin::StudyUnits", type: :request do
           expect {
             post admin_study_units_path, params: { study_unit: { name: "古代日本の文化" } }
           }.not_to change { StudyUnit.count }
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end
@@ -104,7 +104,7 @@ RSpec.describe "Admin::StudyUnits", type: :request do
         it "nameが空なら更新されず422を返すこと" do
           patch admin_study_unit_path(study_unit), params: { study_unit: { name: "" } }
           expect(study_unit.reload.name).to eq("更新前")
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end

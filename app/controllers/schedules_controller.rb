@@ -15,7 +15,7 @@ class SchedulesController < ApplicationController
       redirect_to profile_path, notice: "スケジュールを作成しました"
     else
       @study_units = StudyUnit.ordered
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -28,7 +28,7 @@ class SchedulesController < ApplicationController
       redirect_to profile_path, notice: "スケジュールを更新しました"
     else
       @study_units = StudyUnit.ordered
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

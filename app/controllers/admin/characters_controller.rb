@@ -20,7 +20,7 @@ class Admin::CharactersController < Admin::BaseController
     if @character.save
       redirect_to admin_characters_path, notice: "「#{@character.name}」を作成しました"
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -30,7 +30,7 @@ class Admin::CharactersController < Admin::BaseController
     if @character.update(character_params)
       redirect_to admin_characters_path, notice: "「#{@character.name}」を更新しました"
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 
