@@ -12,7 +12,7 @@ class Admin::QuestionsController < Admin::BaseController
     if @question.save
       redirect_to admin_quiz_path(@quiz), notice: "問題を追加しました"
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -22,7 +22,7 @@ class Admin::QuestionsController < Admin::BaseController
     if @question.update(question_params)
       redirect_to admin_quiz_path(@quiz), notice: "問題を更新しました"
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

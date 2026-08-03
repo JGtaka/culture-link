@@ -140,7 +140,7 @@ RSpec.describe "Admin::Events", type: :request do
           expect {
             post admin_events_path, params: { event: valid_params.merge(title: "") }
           }.not_to change { Event.count }
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end
@@ -200,7 +200,7 @@ RSpec.describe "Admin::Events", type: :request do
         it "titleが空なら更新されず422を返すこと" do
           patch admin_event_path(event), params: { event: { title: "" } }
           expect(event.reload.title).to eq("更新前")
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
 
         it "画像を添付してバリデーション失敗しても500にならず422を返すこと" do
@@ -210,7 +210,7 @@ RSpec.describe "Admin::Events", type: :request do
               image: fixture_file_upload("test.png", "image/png")
             }
           }
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end

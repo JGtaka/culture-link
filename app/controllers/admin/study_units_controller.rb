@@ -14,7 +14,7 @@ class Admin::StudyUnitsController < Admin::BaseController
     if @study_unit.save
       redirect_to admin_masters_path, notice: "「#{@study_unit.name}」を作成しました"
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -25,7 +25,7 @@ class Admin::StudyUnitsController < Admin::BaseController
     if @study_unit.update(study_unit_params)
       redirect_to admin_masters_path, notice: "「#{@study_unit.name}」を更新しました"
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

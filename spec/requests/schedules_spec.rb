@@ -56,7 +56,7 @@ RSpec.describe "Schedules", type: :request do
 
     it "不正なパラメータでは作成できない" do
       post schedules_path, params: { schedule: { start_date: nil, end_date: nil, daily_study_hours: nil } }
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to have_http_status(:unprocessable_content)
     end
 
     it "作成成功時に登録通知メールが送信される" do

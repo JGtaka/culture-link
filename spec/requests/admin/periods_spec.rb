@@ -80,7 +80,7 @@ RSpec.describe "Admin::Periods", type: :request do
           expect {
             post admin_periods_path, params: { period: { name: "" } }
           }.not_to change { Period.count }
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
 
         it "name重複なら作成されず422を返すこと" do
@@ -88,7 +88,7 @@ RSpec.describe "Admin::Periods", type: :request do
           expect {
             post admin_periods_path, params: { period: { name: "縄文時代" } }
           }.not_to change { Period.count }
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end
@@ -117,7 +117,7 @@ RSpec.describe "Admin::Periods", type: :request do
         it "nameが空なら更新されず422を返すこと" do
           patch admin_period_path(period), params: { period: { name: "" } }
           expect(period.reload.name).to eq("更新前")
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end

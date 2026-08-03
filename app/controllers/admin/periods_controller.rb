@@ -14,7 +14,7 @@ class Admin::PeriodsController < Admin::BaseController
     if @period.save
       redirect_to admin_masters_path, notice: "「#{@period.name}」を作成しました"
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -25,7 +25,7 @@ class Admin::PeriodsController < Admin::BaseController
     if @period.update(period_params)
       redirect_to admin_masters_path, notice: "「#{@period.name}」を更新しました"
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

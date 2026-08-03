@@ -87,7 +87,7 @@ RSpec.describe "Admin::Quizzes", type: :request do
           expect {
             post admin_quizzes_path, params: { quiz: { title: "", quiz_category_id: category.id } }
           }.not_to change { Quiz.count }
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end
@@ -133,7 +133,7 @@ RSpec.describe "Admin::Quizzes", type: :request do
         it "titleが空なら更新されず422を返すこと" do
           patch admin_quiz_path(quiz), params: { quiz: { title: "", quiz_category_id: category.id } }
           expect(quiz.reload.title).to eq("更新前")
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end

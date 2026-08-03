@@ -14,7 +14,7 @@ class Admin::QuizCategoriesController < Admin::BaseController
     if @quiz_category.save
       redirect_to admin_masters_path, notice: "「#{@quiz_category.name}」を作成しました"
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -25,7 +25,7 @@ class Admin::QuizCategoriesController < Admin::BaseController
     if @quiz_category.update(quiz_category_params)
       redirect_to admin_masters_path, notice: "「#{@quiz_category.name}」を更新しました"
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

@@ -92,21 +92,21 @@ RSpec.describe "Admin::Questions", type: :request do
           expect {
             post admin_quiz_questions_path(quiz), params: valid_params(body: "")
           }.not_to change { Question.count }
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
 
         it "correct_choice_indexが空なら作成されないこと" do
           expect {
             post admin_quiz_questions_path(quiz), params: valid_params(correct_index: "")
           }.not_to change { Question.count }
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
 
         it "correct_choice_indexが範囲外なら作成されないこと" do
           expect {
             post admin_quiz_questions_path(quiz), params: valid_params(correct_index: "9")
           }.not_to change { Question.count }
-          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end

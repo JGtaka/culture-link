@@ -14,7 +14,7 @@ class Admin::RegionsController < Admin::BaseController
     if @region.save
       redirect_to admin_masters_path, notice: "「#{@region.name}」を作成しました"
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -25,7 +25,7 @@ class Admin::RegionsController < Admin::BaseController
     if @region.update(region_params)
       redirect_to admin_masters_path, notice: "「#{@region.name}」を更新しました"
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 
