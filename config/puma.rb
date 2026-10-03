@@ -24,7 +24,9 @@ threads_count = ENV.fetch("RAILS_MAX_THREADS", 3)
 threads threads_count, threads_count
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
-port ENV.fetch("PORT", 3000)
+# Puma 8から既定の待ち受けアドレスが `::`(IPv6) に変わったため、
+# 従来どおり `0.0.0.0`(IPv4) で待ち受けるようホストを明示する。
+port ENV.fetch("PORT", 3000), "0.0.0.0"
 
 # Allow puma to be restarted by `bin/rails restart` command.
 plugin :tmp_restart
