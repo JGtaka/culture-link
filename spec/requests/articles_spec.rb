@@ -75,6 +75,21 @@ RSpec.describe "Articles", type: :request do
         expect(response.body).to include("ダ・ヴィンチ")
       end
 
+      it "英字は大文字小文字を区別せずに検索できる" do
+        create(:event, title: "Rococo様式", description: "18世紀の装飾様式")
+        create(:character, name: "Mozart", description: "古典派の作曲家", achievement: "魔笛を作曲")
+
+        get articles_path, params: { q: { keyword: "rococo" } }
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("Rococo様式")
+        expect(response.body).to include("1件")
+
+        get articles_path, params: { q: { keyword: "MOZART" } }
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("Mozart")
+        expect(response.body).to include("1件")
+      end
+
       it "検索キーワードが空の場合は全件表示される" do
         get articles_path, params: { q: { keyword: "" } }
         expect(response).to have_http_status(:ok)
