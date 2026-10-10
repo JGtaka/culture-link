@@ -40,12 +40,12 @@ class ArticlesController < ApplicationController
   # Event: title, descriptionで検索
   def event_search_params
     return {} unless params[:q].present?
-    { title_or_description_cont: params[:q][:keyword] }
+    { title_or_description_i_cont: params[:q][:keyword] }
   end
 
   # Character: name, description, achievementで検索
   def character_search_params
     return {} unless params[:q].present?
-    { name_or_description_or_achievement_cont: params[:q][:keyword] }
+    { name_or_description_or_achievement_i_cont: params[:q][:keyword] }
   end
 end
